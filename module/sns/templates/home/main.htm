@@ -1,0 +1,144 @@
+<script>
+function collect_goods(id){
+	
+	var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+	var uname='<{$smarty.cookies.USER}>';
+	if(uname=='')
+	{
+		alert('<{$lang.no_logo}>');
+		window.location.href='<{$config.weburl}>/login.php?forward=shop.php?uid=<{$smarty.get.uid}>';
+		return false;
+	}
+	var pars = 'pid='+id+'&uname='+uname;
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest>1)
+			alert('<{$lang.fav_ok}>');
+		else if (originalRequest>0)
+			alert('<{$lang.fav_isbing}>');
+		else
+			alert('<{$lang.error}>');
+	}
+	
+}
+</script>
+<div class="main-widget">
+	<h3 class="item-hd">
+    	<a class="read-more" href="<{$config.weburl}>/home.php?uid=<{$smarty.get.uid}>&act=product">查看全部</a>
+        <span><a href="<{$config.weburl}>/home.php?uid=<{$smarty.get.uid}>&act=product">我分享的宝贝</a></span>
+    </h3>
+    <div class="item-bd">
+    	<ul class="clearfix">
+        	<{foreach item=list name=name from=$sharegoods}>
+            <li <{if $smarty.foreach.name.iteration==3}>class="last"<{/if}>>
+            	<div class="sitem">
+                	<div class="pic">
+                    <a title="<{$list.pname}>" href="<{$config.weburl}>/?m=product&s=detail&id=<{$list.pid}>" target="_blank"><img width="226" height="210" src="<{if $list.image}><{$list.image}><{else}>image/default/nopic.gif<{/if}>" /></a>
+                    </div>
+                	<div class="content"><{if $list.content}><{$list.content}><{else}>分享了商品<{/if}></div>
+                    <div class="func">
+                        <span class="collect">
+                            <a href="javascript:collect_goods('<{$list.pid}>');"><i></i>收藏</a>
+                            <strong> <{$list.collectnum}> </strong>
+                        </span>
+                    </div>
+                </div>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>
+<div class="main-widget clearfix">
+	<h3 class="item-hd">
+    	<a href="<{$config.weburl}>/home.php?uid=<{$smarty.get.uid}>&act=trace" class="read-more">查看全部</a>
+        <span><a href="<{$config.weburl}>/home.php?uid=<{$smarty.get.uid}>&act=trace">我的新鲜事</a></span>
+    </h3>
+    <div class="item-bd">
+    	<{foreach item=list key=num from=$blog}>
+        <div class="sns-item" <{if !$num}>style="padding-top:5px"<{/if}> >
+            
+            <div class="sns-wrap">
+           		<p class="sns-title"><a target="_blank" href="home.php?uid=<{$list.member_id}>"><{$list.member_name}></a></p>
+                <div class="sns-text"><span><{$list.title}></span></div>
+                <{if $list.original_id }>
+                <div class="quote-wrap">
+                     <{if $list.original_status==1}>
+                     原文已删除
+                     <{else}>
+                     <p class="sns-title"><a target="_blank" href="home.php?uid=<{$list.ouid}>"><{$list.ouser}></a></p>
+                    <div class="sns-text"><span><{$list.otitle}></span></div>
+                    <{if $list.oimg}>
+                    <div class="sns-img clearfix">
+                        <ul>
+                            <{foreach item=p from=$list.opic}>
+                                <{if $list.otype==2}>
+                                    <li><img class="small" src="<{$p}>_120X120.jpg"></li>
+                                <{else}>
+                                    <li><img src="<{$p}>"></li>
+                                <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                	<{/if}>
+                    <div class="sns-extra">
+                    	<span class="sns-time"><{$list.ocreate_time|date_format:"%m-%d&nbsp;%H:%M"}></span>
+                    </div>
+                    <{/if}>
+                </div>
+                <{else}>
+                	<{if $list.img}>
+                    <div class="sns-img clearfix">
+                        <ul>
+                            <{foreach item=p from=$list.pic}>
+                                <{if $list.type==2}>
+                                    <li><img class="small" src="<{$p}>_120X120.jpg"></li>
+                                <{else}>
+                                    <li><img src="<{$p}>"></li>
+                                <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                	<{/if}>
+                <{/if}>
+                <div class="sns-extra">
+                    <span class="sns-time"><{$list.create_time|date_format:"%m-%d&nbsp;%H:%M"}></span>
+                    <span class="sns-action">
+                        <span>
+                        <a data-param="{&quot;bid&quot;:&quot;<{$list.id}>&quot;}" genre="sns_forward" href="javascript:void(0);">转发</a>
+                        <a data-param="{&quot;bid&quot;:&quot;<{$list.id}>&quot;}" genre="sns_comment" href="javascript:void(0);">评论</a>
+                        </span>
+                    </span>
+                </div>
+			</div>
+        </div>
+        <{/foreach}>
+        <div class="sns-next"><a href="<{$config.weburl}>/home.php?uid=<{$smarty.get.uid}>&act=trace">去看更多新鲜事<i></i></a></div>
+    </div>
+</div>
+<script type="text/javascript" src="<{$config.weburl}>/script/dialog/dialog.js" id="dialog_js"></script>
+<script>
+$("[genre='sns_forward']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("forward_form", '转发', '<{$config.weburl}>/main.php?m=sns&s=sns&op=forward&bid='+data.bid, 500);
+	return false;
+});
+$("[genre='sns_comment']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("comment_form", '评论', '<{$config.weburl}>/main.php?m=sns&s=sns&op=comment&bid='+data.bid, 500);
+	return false;
+});
+$('.small').live('click',function(){
+	$(this).addClass('large').removeClass('small');	
+	var url=$(this).attr("src")
+	url = url.substr(0,url.lastIndexOf('_'));
+	$(this).attr("src",url);
+});
+$('.large').live('click',function(){
+	$(this).addClass('small').removeClass('large');	
+	var url=$(this).attr("src")
+	$(this).attr("src",url+"_120X120.jpg");
+});
+</script>

@@ -1,0 +1,47 @@
+<{include file="header.htm"}>
+<div class="w">
+    <div class="detailnav">
+        <strong><a href="#">帮助中心</a></strong>
+        <span> >  <{$de.con_title}></span>
+    </div>
+</div>
+<div class="w help">
+    <div class="left">
+    	<div class="help_side">
+            <{foreach item=list from=$con_groups}>
+           	<div class="current">
+                <h4><span><{$list.title}></span><b></b></h4>
+                <ul>  
+                    <{foreach item=li from=$all_web}>
+                        <{if $li.con_group==$list.id}>
+                            <li <{if $smarty.get.type==$li.con_id}>class='curr_web_con'<{/if}> >
+                            <a href="<{if $li.con_linkaddr}><{$li.con_linkaddr}><{else}><{if $li.type==1}>help.php?type=<{$li.con_id}><{else}>aboutus.php?type=<{$li.con_id}><{/if}><{/if}>"><{$li.con_title}></a>
+                            </li>
+                        <{/if}>
+                    <{/foreach}>
+                </ul>
+            </div>
+            <{/foreach}>
+        </div>
+        <script type="text/javascript">
+		$(".help_side h4").bind("click",function(){
+			var element=$(this).parent();
+			if(element.hasClass("current"))
+				element.removeClass("current");
+			else
+				element.addClass("current");
+		});
+		</script>
+    </div>		
+    
+    <div class="right">
+        <h3 class="help_tit"><{$de.con_title}></h3>
+        <div class="help_box">
+            <{$de.con_desc}>
+            <{if $de.msg_online==1}>
+            <{include file="feedback.htm"}>
+            <{/if}>
+        </div>
+    </div>
+</div>
+<{include file="footer.htm"}>

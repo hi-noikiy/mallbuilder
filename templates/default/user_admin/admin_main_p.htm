@@ -1,0 +1,227 @@
+<div class="wrap_buyer clearfix">
+    <div class="layout_l">
+        <div class="member_info">
+            <dl>
+                <dt><a title="编辑用户信息" href="main.php?m=member&s=admin_member"><{$cominfo.name}></a>&nbsp;(<{$smarty.cookies.USER}>)</dt>
+                <dd><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$cominfo.buyerpointsimg}>" title="<{$cominfo.buyerpoints}>" alt="<{$cominfo.buyerpoints}>"></dd>
+                <dd class="fr">
+				<a target="_blank" href="<{$config.weburl}>/pay/">我的<{$config.pay_name}></a>	
+                </dd>
+                <dd class="qd"><{if $is_qd}>已签到<{else}><a href="javascript:void(0)">每日签到</a><{/if}></dd>
+            </dl>
+            
+            <div class="clear"></div>
+        </div>
+        
+        <div class="weibo">
+        <form action="main.php?m=sns&s=sns" name="shareform" id="shareform" method="post">
+            <div class="clearfix">
+                <div class="charcount" id="weibo"></div>
+                <div class="weibopic"></div>
+            </div>
+            <div class="weibo_con clearfix">
+                <input type="hidden" name="act" value="share">
+                <textarea name="content" id="content"></textarea><span class="form-error"></span>
+                <div></div>
+            </div>
+            <div class="weibo_button clearfix">
+                <span>
+                    <a id="shareGoods" href="javascript:void(0)" title="分享产品"></a>
+                    <a id="shareStore" href="javascript:void(0)" title="分享店铺"></a>
+                    <a id="insertFace" href="javascript:void(0)" title="分享表情"></a><!--
+                    <a id="uploadPic" href="javascript:void(0)" title="分享图片"></a>-->
+                </span>
+                <input type="submit" id="btn" value="分享" class="button">
+			</div>
+        </form>
+        </div>
+        
+        <div class="tabmenu">
+            <ul class="tab">
+                <li class="active"><a href="javascript:void(0)">好友动态</a><div></div></li>
+            </ul>
+        </div>
+        <div class="friendtrace" id="friendtrace"></div>
+    </div>
+    
+    <div class="layout_r">
+        <div class="user_atten clearfix">
+            <ul>
+                <li><a href="main.php?m=sns&s=admin_friends"><strong><{$count.friend}></strong><span>关注 </span></a></li>
+                <li><a href="main.php?m=sns&s=admin_friends&type=fan"><strong><{$count.fan}></strong><span>粉丝 </span></a></li>
+                <li class="li"><a href=""><strong><{$count.blog}></strong><span>微博 </span></a></li>
+            </ul>
+        </div>
+        <div class="right_module">            
+            <form class="right_module_title">
+                <fieldset><legend>可能感兴趣的人</legend></fieldset>
+            </form>
+            <div class="right_module_content">
+            <{insert name="label" type="sns_friends" temp="friends_list_1" limit=3}>
+            </div>
+        </div>
+        
+        <div class="right_module">            
+            <form class="right_module_title">
+                <fieldset><legend>热门活动</legend></fieldset>
+            </form>
+            <div class="right_module_content ad174">
+            <script src='<{$config.weburl}>/api/ad.php?id=8&catid=<{$smarty.get.id}>&name=<{$smarty.get.key}>'></script>
+            </div>
+        </div>
+        
+        <div class="right_module">            
+            <form class="right_module_title">
+                <fieldset><legend>商品推荐</legend></fieldset>
+            </form>
+            <div class="right_module_content ad174">
+            <script src='<{$config.weburl}>/api/ad.php?id=9&catid=<{$smarty.get.id}>&name=<{$smarty.get.key}>'></script>
+            </div>
+        </div>
+        <div class="right_module">            
+            <form class="right_module_title">
+                <fieldset><legend>公告栏</legend></fieldset>
+            </form>
+            <div class="right_module_content con">
+            <{insert name="label" type="announcement" temp="notice_list" limit=5}>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="script/jquery.caretInsert.js"></script>
+<script>
+<{if !$is_qd}>
+$('.qd a').click(function(){					 
+	var url = 'ajax_back_end.php';
+	var sj = new Date();
+	var pars = 'shuiji=' + sj+'&qd=1&id=<{$cominfo.userid}>'; 
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{	
+		$('.qd').html("已签到");
+	}
+});
+<{/if}>
+$('.small').live('click',function(){
+	$(this).addClass('large').removeClass('small');	
+	var url=$(this).attr("src")
+	url = url.substr(0,url.lastIndexOf('_'));
+	$(this).attr("src",url);
+});
+$('.large').live('click',function(){
+	$(this).addClass('small').removeClass('large');	
+	var url=$(this).attr("src")
+	$(this).attr("src",url+"_120X120.jpg");
+});
+$('.weibo_con textarea').live('blur',function(){
+	$(this).parent().removeClass('focus');
+}).live('focus',function(){
+	$(this).parent().addClass('focus');
+});
+
+$('#friendtrace').snsinit();
+$('#friendtrace').snsshow({url:"main.php?m=sns&s=sns&curpage=1",'iIntervalId':true});
+//显示分享商品页面	
+$('#shareGoods').click(function(){	
+	ajax_form("sharegoods", '<{$lang.share_buy_and_collection_of_baby}>', '<{$config.weburl}>/main.php?m=sns&s=sns&op=sharegoods', 500);
+	return false;
+});
+//显示分享店铺页面
+$('#shareStore').click(function(){
+	ajax_form("shareshop", '<{$lang.share_shop}>', '<{$config.weburl}>/main.php?m=sns&s=sns&op=shareshop', 500);
+	return false;
+});
+$("[genre='sns_forward']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("forward_form", '<{$lang.forwarding}>', '<{$config.weburl}>/main.php?m=sns&s=sns&op=forward&bid='+data.bid, 500);
+	return false;
+});
+$("[genre='sns_comment']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("comment_form", '评论', '<{$config.weburl}>/main.php?m=sns&s=sns&op=comment&bid='+data.bid, 500);
+	return false;
+});
+$("[data_type='fd_del']").live('click',function(){
+	var data_str = $(this).attr('data-param');
+	eval("data_str = "+data_str);
+	var url = "<{$config.weburl}>/main.php?m=sns&s=sns";
+	var pars = 'bid='+data_str.bid+'&op=del';
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		var d = DialogManager.create('notice');
+		d.setTitle('<{$lang.message}>');
+		d.setContents('message', { type: 'notice', text: "<{$lang.deleted_successfully}>" });
+		d.setWidth(270);
+		d.show('center');
+		function closefunc()
+		{
+			DialogManager.close("notice");
+			$('#friendtrace').snsshow({url:"main.php?m=sns&s=sns&curpage=1",'iIntervalId':true});
+		}
+		setTimeout(closefunc,1000);
+	}
+});
+
+
+function $$(id) {
+	return !id ? null : document.getElementById(id);
+}
+$("#btn").bind('click',function(){		
+	formid='shareform';
+	var ajaxframeid = 'ajaxframe';
+	var ajaxframe = $$(ajaxframeid);
+	if(!ajaxframe){
+		var div = document.createElement('div');
+		div.style.display = 'none';
+		div.innerHTML = '<iframe name="' + ajaxframeid + '" id="' + ajaxframeid + '" loading="1"></iframe>';
+		ajaxframe = $$(ajaxframeid);
+		$$('append_parent').appendChild(div);
+	}
+	$$(formid).target = ajaxframeid;
+	$('#'+formid).validate({
+		errorPlacement: function(error, element){
+			element.next('.form-error').append(error)
+		},  
+		rules : {
+			content : {
+				required: true,
+				maxlength : 140
+			}
+		},
+		messages : {
+			content : {
+				required: '不能为空!',
+				maxlength: '不能超过140字'
+			}
+		}, 
+		submitHandler:function(form){  
+			form.submit();
+			function closefunc()
+			{
+				$("#content").val('');
+				DialogManager.close("notice");
+				$('#friendtrace').snsshow({url:"main.php?m=sns&s=sns&curpage=1",'iIntervalId':true});
+			}
+			var d = DialogManager.create('notice');
+			d.setTitle('<{$lang.message}>');
+			d.setContents('message', { type: 'notice', text: "<{$lang.share_successful}>" });
+			d.setWidth(270);
+			d.show('center');
+			setTimeout(closefunc,800);
+		}
+	});
+});
+$("#content").charCount({
+	allowed: 140,
+	warning: 10,
+	counterContainerID:'weibo',
+	firstCounterText:'还可以输入<span>',
+	endCounterText:'</span>字',
+	errorCounterText:'已经超出<span>'
+});
+</script>
+<script src="script/face/face.js"></script>

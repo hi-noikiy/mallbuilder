@@ -1,0 +1,24 @@
+<{foreach item=list key=num from=$sns}>
+<li class="fn-clear">
+    <div class="fore1 fn-clear">
+        <b><{$list.member_name}></b>
+        <span><{$list.create_time|date_format:"%m-%d&nbsp;%H:%M"}></span>
+    </div>
+    <div class="fore2 fn-clear">
+    	<div class="txt"><{$list.title}></div>
+        <{if $list.img}>
+        <div class="pic fn-clear">
+            <{foreach item=slist key=key from=$list.img}>
+            <{if $key<3}>
+                <img width="80" src="<{$slist}>" />
+            <{/if}>  
+            <{/foreach}>
+        </div>
+        <{/if}>
+    </div>
+    <div class="fore3 fn-clear">
+        <span>评论(<{$list.comment_count}>)</span>
+        <span>转发(<{$list.copy_count}>)</span>
+    </div>
+</li>
+<{/foreach}>

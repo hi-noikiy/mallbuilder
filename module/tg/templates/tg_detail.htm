@@ -1,0 +1,57 @@
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/tg/templates/tg.css">
+<div class="w">
+    <div class="detailnav">
+        <strong><a href="<{$config.weburl}>">首页</a></strong>
+        <span> >  <a href="<{$config.weburl}>/?m=tg">团购</a></span>
+    </div>
+</div>
+<div class="w">
+    <div class="itemList">
+        <div class="itemSearchResult">
+        	<div class="itemResult clearfix">
+           		<div class="title"><{$detail.name}></div>
+                <div class="tg_price">
+                	<div class="fore1"><{$config.money}><{$detail.price|number_format:2}></div>
+                    <div class="fore2">
+                    门店价：<b style="margin-right:8px;"><{$config.money}><{$detail.market_price|number_format:2}></b>
+                  	折扣：<b><{$detail.price/$detail.market_price*10|number_format:1}></b>
+                    </div>
+                    <div class="fore3">
+                        <div class="btn">
+                        <{if $detail.stock==0}>
+                          <p>抱歉，该产品已售完</p>
+                          <{else}>
+                        <a class="btn-buys" target="_blank" class="buyer" href="<{$config.weburl}>?m=<{$smarty.get.m}>&s=order&id=<{$detail.id}>">立即抢购</a>
+                         <{/if}>
+                        </div>
+                    </div>
+                    <div class="fore4">已售出<strong><{$detail.sell_amount+$detail.virtual_quantity}></strong>件</div>
+                </div>
+                <div class="tg_pic"><img width="475" height="310" src="<{$detail.pic}>"></div>
+                <div class="clearfix"></div>
+           		<div class="fenx">
+                  <div class="bshare-custom">
+                  <a title="分享到" href="http://www.bShare.cn/" id="bshare-shareto" class="bshare-more">分享到</a>
+                  <a title="分享到QQ空间" class="bshare-qzone">QQ空间</a>
+                  <a title="分享到新浪微博" class="bshare-sinaminiblog">新浪微博</a>
+                  <a title="分享到人人网" class="bshare-renren">人人网</a>
+                  <a title="分享到腾讯微博" class="bshare-qqmb">腾讯微博</a>
+                  <a title="分享到豆瓣" class="bshare-douban">豆瓣</a>
+                  <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+                  <span class="BSHARE_COUNT bshare-share-count">0</span></div>
+                  <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
+                  <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+                </div>
+            </div>
+            <div class="body"><{$detail.content}></div>
+        </div>
+        <div class="hotTg">
+        	<div class="m mt0">
+                <div class="mt"><h3>团购排行榜</h3></div>
+                <div class="mc">
+                 <{insert name="label" type="tg" temp="tg_list_1" limit=9}>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

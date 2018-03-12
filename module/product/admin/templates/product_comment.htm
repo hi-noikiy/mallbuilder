@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>产品评价</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>产品评价</h3>
+            <ul>
+                <li <{if $smarty.get.operation==''}>class="current"<{/if}>><a href="?m=product&s=product_comment.php"><span>全部评价</span></a></li>
+                
+            </ul>
+        </div>
+    </div>
+	<div class="h35"></div>  
+    
+    <script type="text/javascript">
+    $(function(){
+        /* 全选 */
+         $('.checkall').click(function(){
+            var _self = this;
+            $('.checkitem').each(function(){
+                if (!this.disabled)
+                {
+                    $(this).attr('checked', _self.checked);
+                }
+            });
+            $('.checkall').attr('checked', this.checked);
+        });	 
+    });
+    </script>
+    <form action="" method="get">
+    <input type="hidden" name="m" value="product">
+    <input type="hidden" name="s" value="product_comment.php">
+    <table class="select_table">
+        <tbody>
+            <tr>
+                <td width="70">产品名称:</td>
+                <td colspan="2"><input type="text" name="name" class="w250" value="<{$smarty.get.name}>" /></td>
+            </tr>
+            <tr>
+                <td width="70">评价等级:</td>
+                <td width="70">
+                <select name="goodbad">
+                	<option value="">请选择</option>
+                	<option value="3" <{if $smarty.get.goodbad==3}>selected="selected"<{/if}>>好评</option>
+                	<option value="2" <{if $smarty.get.goodbad==2}>selected="selected"<{/if}>>中评</option>
+                	<option value="1" <{if $smarty.get.goodbad==1}>selected="selected"<{/if}>>差评</option>
+                </select>
+                </td>
+                <td><input type="image" src="<{$config.weburl}>/image/admin/search.gif" /></td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+    <form action="" method="post" id="form" name="form">
+    <input type="hidden" name="act" value="op" />
+    <table class="table product">
+        </thead>
+        <tbody>
+            <tr class="partition">
+                <th width="1"></th>
+                <th width="20"><input type="checkbox" class="checkall" id="del"></th>
+                <th class="al" width="*">咨询内容</th>
+                <th width="100">评价者</th>
+                <th width="60">更新时间</th>
+            </tr>
+            <{foreach item=item key=key from=$de.list}>
+            <tr bgcolor="#EFF8FD">
+            	<td colspan="4" class="al pl20">
+                <a target="_blank" href="../?m=product&s=detail&id=<{$item.id}>"><{$item.name}></a>
+                </td>
+                <td><a href="?m=product&s=product_comment.php&id=<{$item.id}>"><{$item.comment|@count}>条记录</a></td>
+            </tr>   
+            <{foreach item=list from=$item.comment}>
+            <tr>
+                <td></td>
+                <td><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                <td class="al">
+                <{if $list.goodbad==1 }>
+                <img align="absmiddle" src="<{$config.weburl}>/image/default/good.gif" />
+                <{elseif $list.goodbad==0 }>
+                <img align="absmiddle" src="<{$config.weburl}>/image/default/middle.gif" />
+                <{else}>
+                <img align="absmiddle" src="<{$config.weburl}>/image/default/bad.gif" />
+                <{/if}>
+                &nbsp;<{$list.con}>
+                </td>               
+                <td><{$list.user}></td>
+				<td><{$list.uptime|date_format:"%Y-%m-%d<br>%H:%M:%S"}></td>
+               
+            </tr>
+            <{/foreach}>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+            	<td></td>
+            	<td colspan="5">
+                <input type="checkbox" class="checkall" id="del">
+                <input type="hidden" name="act" value="op" />
+				<input type="submit" value="提交" />
+                <div class="page"><{$de.page}></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    </form>
+</div>
+</body>
+</html>

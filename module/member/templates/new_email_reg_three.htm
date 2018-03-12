@@ -1,0 +1,60 @@
+<{include file="../../../templates/default/site_nav.htm"}>
+<link href="<{$config.weburl}>/templates/default/css/register.css" rel="stylesheet" type="text/css" />
+<div class="w">
+    <div class="header">
+        <a hidefocus="true" title="<{$config.company}>" href="<{$config.weburl}>"><img height="35" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.png<{/if}>" /></a>
+        <h2>账户注册</h2>
+    </div>
+    <div class="steps step-2">
+        <ol>
+            <li class="step1">1 填写账户信息</li>
+            <li class="step2">2 验证账户信息</li>
+            <li class="step3">3 注册成功</li>
+        </ol>	
+	</div>
+    <div class="register clearfix three">
+        <p>您的电子邮箱：<span><{$email}></span></p>
+        <p>登录您的注册邮箱激活账户。我们已给您的邮箱发送了一封激活信，</p>
+        <p>请收到后按照提示操作。</p>
+        <div class="resend"><a href="javascript:void(0)">没收到？再次发送</a></div>
+        <div class="noemail clearfix">
+        	<h2>还没收到激活邮件？</h2>
+            <ul>
+            	<li>确认邮件是否被你提供的邮箱系统自动拦截，或被误认为垃圾邮箱放到垃圾箱了。</li>
+            	<li class="second">如果再次发送激活信还是没有收到，请试试：<br /><a href="<{$config.weburl}>/?m=member&s=new_email_reg_two">更换激活邮箱</a></li>
+                <li>如果一直无法收到激活信，请<br /><a href="<{$config.weburl}>/aboutus.php?msg=1">联系客服</a></li>
+            </ul>
+        </div>
+    </div> 
+</div>
+<script type="text/javascript">
+var i=1;
+$(".resend a").click(function(){
+	var url = 'ajax_back_end.php';
+	var sj = new Date();
+	if(i!=1) return false;
+	i++;
+	var pars = 'shuiji=' + sj+'&remail=<{$email}>'; 
+	$.post(url, pars,function (originalRequest)
+	{
+		if(originalRequest=='true')
+		{
+			$(".resend").html("发送成功！");
+		}
+		else
+		{
+			$(".resend a").html("发送失败！");
+		}
+	
+	});
+});
+</script>
+<div class="clear"></div>
+<div class="footer clearfix">
+    <div class="w">
+        <div class="links"><{$web_con}></div>
+        <div class="copyright"><{$bt}></div>
+    </div>
+</div>
+</body>
+</html>

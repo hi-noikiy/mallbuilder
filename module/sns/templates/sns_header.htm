@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{if $title}><{$title}>,<{$config.company}><{else}><{$config.title}>,<{$config.company}><{/if}></title>
+<meta name="description" content="<{$config.description}>" />
+<meta name="keywords" content="<{$config.keyword}>" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/sns/templates/sns.css">
+</head>
+<body>
+<div class="shortcut">
+    <div class="w clearfix">
+        <ul class="fl">
+            <li><a hidefocus="true" title="<{$config.company}>" href="<{$config.weburl}>"><img src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.png<{/if}>" /></a></li>
+        </ul>
+        <ul class="fl nav">
+        	<{foreach item=list key=num from=$menus name=nav}>
+                <li><a href="<{if $list.link_addr|truncate:4:''=='http'}><{$list.link_addr}><{else}><{$config.weburl}>/<{$list.link_addr}><{/if}>"><{$list.menu_name}></a></li>
+            <{/foreach}>
+        </ul>
+        <ul class="fr">
+        	<li><a href="login.php">登录</a></li>
+            <li><a href="<{$config.regname}>">注册</a></li>
+        </ul>
+        <ul class="pr">
+            <li>
+            <form method="get">
+                <input type="hidden" name="m" value="sns" />
+            	<input type="text" class="txt" name="key" placeholder="搜索你喜欢的" value="<{$smarty.get.key}>"  />
+                <input type="submit" class="submit" value="" />
+            </form>
+            </li>
+        </ul>
+    </div>
+</div>

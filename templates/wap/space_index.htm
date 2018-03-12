@@ -1,0 +1,80 @@
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>店铺</span></section>
+    	 <section class="nav-e"><{if $custom_cat}><a class="list" id="list" href="javascript:void(0)"><nav>分类</nav></a><{/if}></section>
+    </div>
+</header>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<link href="<{$config.weburl}>/templates/wap/css/shop.css" rel="stylesheet" type="text/css" />
+<section class="shopinfo">
+	<dl>
+    	<dt><img width="80" height="80" src="<{if $com.logo}><{$com.logo}><{else}>image/default/nopic.gif<{/if}>"></dt>
+        <dd>
+            <ul>
+                <li><h1><{$com.company}></h1></li>
+                <li>店主：<{$com.name}></li>
+                <li><img alt="<{$com.sellerpoints}>" title="<{$com.sellerpoints}>" align="absmiddle" src="<{$config.weburl}>/image/points/<{$com.sellerpointsimg}>"></li>
+            </ul>
+        </dd>
+    </dl>
+    <div class="search">
+    <form method="get" name="form" id="form" action="<{$config.weburl}>/shop.php">
+        <input id="search" type="hidden" value="search" name="search">
+        <input id="uid" type="hidden" value="<{$smarty.get.uid}>" name="uid">
+        <input id="action" type="hidden" value="product_list" name="action">
+        <input id="m" type="hidden" value="product" name="m">
+        <input value="<{if $smarty.get.keyword}><{$smarty.get.keyword}><{else}><{/if}>" onclick="this.value='';" name="keyword" type="text">
+        <input type="submit" value="" />
+        <input type="hidden" name="ie" value="UTF-8" />
+    </form> 
+    </div>
+</section>
+<section class="clearfix">
+	<div class="plist itemSearchResult">
+	<h2><a href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product">全部宝贝<span></span></a></h2>
+    <ul class="list clearfix">
+        <{foreach item=list key=key from=$pro}>
+            <li>
+                <a target="_blank" title="<{$list.pname}>" href="<{$config.weburl}>/?m=product&s=detail&id=<{$list.id}>">
+                <div class="p-pic"><img src="<{$list.pic}>_220X220.jpg" width="145" height="145" alt="<{$list.pname}>" /></div>
+                <div class="p-name"><{$list.pname}></div> 
+                </a>
+                <div class="p-price"><strong><{$config.money}> <{$list.price}></strong></div>
+            </li>
+        <{/foreach}>
+    </ul>
+    <h3><a href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product">查看更多商品&gt;&gt;</a></h3>
+    </div>
+    <div class="leftcate hidden">
+        <{if $custom_cat }>
+        <h2>分类 <a class="remove" href="javascript:void(0)"><nav>取消</nav></a></h2>
+        <ul>
+        <{foreach item=list from=$custom_cat}>
+            <li>
+            <a <{if $smarty.get.cat==$list.id}>class="current"<{/if}> class="<{if $list.con}>block_ico<{else}>none_ico<{/if}>" href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product&cat=<{$list.id}>" title="<{$list.name}>"><{$list.name}></a>
+            <{if $list.con}>
+            <{foreach item=lists from=$list.con}>
+                <li><a <{if $smarty.get.cat==$lists.id}>class="current"<{/if}> href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product&cat=<{$lists.id}>" title="<{$lists.name}>">&nbsp;<{$lists.name}></a></li>
+            <{/foreach}>
+            <{/if}>
+            </li>
+        <{/foreach}>
+        </ul>
+		<{/if}>
+    </div>
+</section>
+<script>
+$("#list").click(function(){
+	window.scroll(0,0);
+ 	$('.leftcate').show();
+	$('.itemSearchResult').hide();
+	$('.main').append('<div id="leftmask"></div>')
+	$('#leftmask')[0].style.height =$(".main").height()+20;
+});
+$('.remove').click(function(){
+ 	$('.leftcate').hide();
+ 	$('.itemSearchResult').show();
+	$('#leftmask').remove();
+});
+</script>

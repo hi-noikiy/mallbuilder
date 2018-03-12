@@ -1,0 +1,1 @@
+<?php $config = array_merge($config, unserialize('a:5:{s:10:"opensuburl";s:1:"0";s:7:"rewrite";s:1:"0";s:5:"title";s:0:"";s:7:"keyword";s:0:"";s:11:"description";s:247:"Mallbuilder是专业的综合性网上购物商城。百万种商品，家用电器、手机数码、服装、电脑、母婴、化妆、图书等十几大类。Mallbuilder承诺：所售商品100％正品行货，全国联保，价格更实惠！";}'));?>

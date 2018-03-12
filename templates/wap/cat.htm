@@ -1,0 +1,17 @@
+<{include file="header.htm"}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>类目浏览</span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/help.css" rel="stylesheet" type="text/css" />
+<section>
+<ul>
+<{foreach item=list from=$cat}>
+<li><a href="<{if $list.count>0}>cat.php?id=<{else}>index.php?m=product&s=list&id=<{/if}><{$list.catid}>"><{$list.cat}></a></li>
+<{/foreach}>
+</ul>
+</section>
+<{include file="footer.htm"}>

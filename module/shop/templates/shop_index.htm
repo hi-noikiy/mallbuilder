@@ -1,0 +1,149 @@
+<link href="<{$config.weburl}>/module/shop/templates/shop.css" rel="stylesheet" type="text/css" />
+<div class="w">
+    <div class="detailnav">
+        <strong><a href="index.php">首页</a></strong>
+        <span> > <a href="?m=shop">店铺</a></span>
+    </div>
+</div>
+
+<div class="w">
+	<{if $cat }>
+    <div id="select">
+        <dl class="first">
+            <dt>分类：</dt>
+            <dd>
+                <{assign var=id value=$smarty.get.id}>
+                <{foreach item=list from=$cat}>
+                <div>
+                <a <{if $id==$list.id}>class="curr"<{/if}> href="<{$config.weburl}>/?m=shop&id=<{$list.id}>"title="<{$list.name}>"><{$list.name}></a>
+                </div>
+                <{/foreach}>
+            </dd>
+        </dl>
+    </div>     
+	<{/if}> 
+    <div class="itemSearchList">
+        <div class="itemSearchResult">
+            <div style="position:relative">
+                <div class="filter clearfix">
+                    <div class="fore1 clearfix">
+                        <div class="order">
+                            <{assign var=s value=$smarty.get.orderby}>
+                            <a <{if !$s}>class="current"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>"><span>默认排序</span></a>
+                            <a <{if $s==1}>class="current"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>&orderby=1"><span>好评率</span><b></b></a>
+                        </div>
+                        <div class="i-search">
+                        <form action="<{$config.weburl}>">
+                        <input name="m" id="m" type="hidden" value="<{$smarty.get.m}>" />
+                        <input class="text" type="text" value="<{$smarty.get.keys}>" size="20" name="keys" />
+                        <input type="submit" value="搜索" />
+                        </form>
+                        </div>
+                    </div>
+            	</div>
+				<div class="district">
+                <div class="area"><span><{if $smarty.get.province|getdistrictname}><{$smarty.get.province|getdistrictname}><{else}>所在区<{/if}></span><b></b></div>
+                <div style="display:none;" class="i-area">
+                    <ul>
+                        <{foreach item=list from=$province}>
+                        <li key="<{$list.id}>"><{$list.name}></li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div>
+            </div>
+            <{assign var=p value=$smarty.get.province}>
+			<script>
+			$(function(){
+				$(".area").click(function(){ 
+					var obj=$(this);
+					$(this).next().slideToggle("fast",function(){
+					if($(obj).next().is(":visible")){
+						$(document).one('click',function(){
+							$(".area").next().slideUp("fast");
+						});
+					}});
+				});
+				$(".i-area li").click(function(){
+					var str=$(this).html();
+					$(this).parent().parent().prev().children("span").html(str);
+					$(this).parent().parent().slideToggle();
+					var id=$(this).attr("key");
+					window.location='<{$config.weburl}>/?m=shop&id=<{$smarty.get.id}>&province='+id;
+				});
+			});
+			</script>
+        
+			<{if $info.list}>
+                <{foreach item=list from=$info.list}>
+                <div class="item clearfix">
+                    <div class="left">
+                        <div class="pic">
+                            <a target="_blank" href="<{geturl uid=$list.userid user=$list.user com=$list.company}>">
+                                <{if $list.logo}>
+                                    <img width="100" height="100" src="<{$list.logo}>">
+                                <{else}>
+                                    <img src="image/default/nopic.gif" width="100" height="100" />
+                                <{/if}>
+                            </a>
+                        </div>	
+                        <div class="info">
+                            <dl>
+                                <dt><a target="_blank" href="<{geturl uid=$list.userid user=$list.user com=$list.company}>"><{$list.company}></a></dt>
+                                <dd><span class="tit">店主：</span><span><a target="_blank" href="<{$config.weburl}>/home.php?uid=<{$list.userid}>"><{if $list.name}><{$list.name}><{else}><{$list.user}><{/if}></a></span></dd>
+                                <dd>
+                                <span class="tit">信用度：</span>
+                                <span class="tit"><{if $list.sellerpointsimg}><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$list.sellerpointsimg}>"><{else}><{$list.sellerpoints}><{/if}></span>
+                                <span class="tit">&nbsp;&nbsp;好评率：</span>
+                                <span><{$list.favorablerate|number_format:2}>%</span>
+                                </dd>
+								<dd><span class="tit">主营产品：</span><{$list.main_pro}></dd>
+                                <dd><span class="tit">联系电话：</span><{$list.tel}></dd>
+                                <dd><span class="tit">所在地区：</span><{$list.area}></dd>
+                                <dd><span class="tit">详细地址：</span><{$list.addr}></dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <ul>
+                            <{foreach item=slist from=$list.pro}>
+                            <li>
+                                <div class="p-img">            
+                                <a target="_blank" title="<{$slist.pname}>" href="<{$config.weburl}>/?m=product&s=detail&id=<{$slist.id}>">
+                                <img src="<{$slist.pic}>_220X220.jpg" width=100  height=100 alt="<{$slist.pname}>" />
+                                </a>
+                                </div>
+                                <div class="p-name">
+                                <a target="_blank" title="<{$slist.pname}>" href="<{$config.weburl}>/?m=product&s=detail&id=<{$slist.id}>"><p><{$slist.pname|truncate:50}></p>
+                                </a>
+                                </div>
+                                <div class="p-price"><{$config.money}><{$slist.price}></div>
+                            </li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                </div> 
+                <{/foreach}>
+   				<div class="page"><{$info.page}></div>
+            <{else}>
+            <div class="itemsNull">
+                <h3>很抱歉，没有找到符合条件的店铺</h3>
+                <p>
+                    <em>建议您：</em>
+                    <span>1、适当减少筛选条件，可以获得更多结果</span>
+                    <span>2、尝试其他关键字</span>
+                </p>
+            </div>
+            <{/if}>
+        </div>
+        <div class="shop">
+        	<div class="m">
+            	<div class="mt"><h3>热门店铺</h3></div>
+            	<div class="mc">
+					<{insert name="label" type="shop" o='1' temp="shop_list_li" limit=9}>
+                </div>
+            </div>
+            <div class="ad235"><script src='<{$config.weburl}>/api/ad.php?id=8'></script></div>
+        </div>
+    </div>
+</div>

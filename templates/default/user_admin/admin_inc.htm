@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{if $title}><{$title}> - <{$config.company}><{else}><{$config.title}><{/if}><{$config.company}></title>
+<meta name="description" content="<{$config.description}>">
+<meta name="keywords" content="<{$config.keyword}>">
+<link href="<{$config.weburl}>/templates/default/user_admin/user_admin.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type=text/javascript></script>
+<script src="<{$config.weburl}>/script/index.js" type=text/javascript></script>
+<script type="text/javascript" charset="utf-8" src="<{$config.weburl}>/script/jquery.ui.js" ></script>
+<script type="text/javascript" id="dialog_js" charset="utf-8" src="<{$config.weburl}>/script/dialog/dialog.js" ></script>
+<script language="javascript">
+var searchTxt = ' <{$lang.search_products}>';
+function searchFocus(e){
+	if(e.value == searchTxt){
+		e.value='';
+		$('#keyword').css("color","");
+	}
+}
+function searchBlur(e){
+	if(e.value == ''){
+		e.value=searchTxt;
+		$('#keyword').css("color","#999999");
+	}
+}
+// 收缩展开效果
+$(document).ready(function(){
+	$(".sidebar dl dt").click(function(){
+		$(this).toggleClass("hou");
+		var sidebar_id = $(this).attr("id");
+		var sidebar_dd = $(this).next("dd");
+		sidebar_dd.slideToggle("slow",function(){
+				sidebar_dd.css("display");
+		 });
+	});
+});
+</script>
+</head>
+<div id="shortcut">
+    <div class="w">
+        <div class="fl">
+            <script type="text/javascript" src="<{$config.weburl}>/login_statu.php" /></script>
+			<a href="<{$config.weburl}>/">首页</a>
+        </div>
+        <div class="fr">
+            <a href="<{$config.weburl}>/main.php?cg_u_type=1">买家中心</a>
+            <a href="<{$config.weburl}>/main.php?m=sns&s=admin_share_product">我的收藏</a>
+            <a href="<{$config.weburl}>/main.php?m=message&s=admin_message_list_inbox">站内信</a>
+        </div>
+    </div>
+</div>
+
+<div class="header">
+    <h1>
+    	<a href="<{$config.weburl}>/main.php" title="<{$config.company}>">
+        <img title="<{$config.company}>" alt="<{$config.company}>" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/default/logo.gif<{/if}>"  />
+        </a>
+        <i><{$lang.seller_center}></i>
+	</h1>
+    <div class="search">
+        <div class="i-search ld">
+        <form method="get" class="form" action="<{$config.weburl}>/">
+            <input id="m" name="m" type="hidden" value="product" />
+            <input id="s" name="s" type="hidden" value="list" />
+            <input type="text" autocomplete="off" placeholder="<{$smarty.get.key}>" id="key" name="key" class="text">
+            <input type="submit" class="search_button" value="搜索">
+        </form>
+        </div>
+        <div class="hotwords">
+            <strong>热门搜索：</strong>
+            <{insert name="label" type="searchword" temp="search_word" limit=7}>
+        </div>
+    </div>
+</div>
+
+<div class="menu clearfix">
+    <ul>
+        <{foreach item=list name=name key=num from=$menu}>
+		<li class="<{if $smarty.foreach.name.iteration==1}>first<{elseif $smarty.foreach.name.last}>last<{/if}><{if $cmenu==$num}> selected<{/if}>"><a <{if $list.action|truncate:4:''=='http'}>target="_blank"<{/if}> href="<{if $list.action|truncate:1:''!='?' and $list.action|truncate:4:''!='http'}>?action=<{/if}><{$list.action}>"><span><{$list.name}></span></a></li>
+        <{/foreach}>
+    </ul>
+	<a href="<{$config.weburl}>/shop.php?uid=<{$buid}>" class="mytb"><span>我的店铺</span></a>
+</div>
+
+<{if !$shop_statu}>
+<div class="shop_close_info">店铺开启申请审核中。</div>
+<{/if}>
+
+<{if (!$smarty.get.action or $smarty.get.action=='main') and !$smarty.get.m }>
+<div class="intro clearfix">
+    <div class="left">
+        <div class="store-pic">
+            <img width="95" height="95" src="<{if !$cominfo.logo}>image/default/user_admin/default_logo.gif<{else}><{$cominfo.logo}><{/if}>" />
+        </div>
+        <div class="userinfo">
+            <div class="basic clearfix">
+                <strong><{$smarty.cookies.USER}></strong>
+                <a href="main.php?m=shop&s=admin_certification">
+                <img src="image/default/certification<{if $cominfo.shop_auth!='1'}>_no<{/if}>.gif" />
+                </a>
+                <a href="main.php?m=shop&s=admin_certification">
+                <img src="image/default/certautonym<{if $cominfo.shopkeeper_auth!='1'}>_no<{/if}>.gif" />
+                </a>
+                &nbsp;<{$cominfo.gradename}>
+            </div>
+            <div>
+                <span>卖家信誉:</span>
+               	<img align="<{$cominfo.sellerpoints}>" title="<{$cominfo.sellerpoints}>" src="image/points/<{$cominfo.sellerpointsimg}>">
+            </div>
+            <div>
+                <span>店铺名称:</span>
+                <a target="_blank" href="<{$config.weburl}>/shop.php?uid=<{$buid}>"><{$cominfo.company}></a>
+            </div>
+            <div>
+                <span>店铺状态:</span>
+                <{if $cominfo.shop_statu==1}><{$lang.turned_display}><{else}><{$lang.closed_unopened}><{/if}>
+            </div>
+        </div>
+    </div>
+    <div class="right seller-rate">
+        <h2>店铺动态评分</h2>
+        <dl>
+            <dt>描述相符:</dt>
+            <dd class="rate-star"><em><i style="width:<{$shop_comment.aw}>%;"></i></em></dd>
+            <dd><{$shop_comment.a|number_format:1}><{$lang.pts}></dd>
+        </dl>
+        <dl>
+            <dt>服务态度:</dt>
+            <dd class="rate-star"><em><i style=" width:<{$shop_comment.bw}>%;"></i></em></dd>
+            <dd><{$shop_comment.b|number_format:1}><{$lang.pts}></dd>
+        </dl>
+        <dl>
+            <dt>发货速度:</dt>
+            <dd class="rate-star"><em><i style=" width:<{$shop_comment.cw}>%;"></i></em></dd>
+            <dd><{$shop_comment.c|number_format:1}><{$lang.pts}></dd>
+        </dl>
+    </div>
+</div>
+<{/if}>
+
+<div class="layout">
+	<div class="sidebar">
+        <{foreach item=list from=$submenu.sub}>
+        <dl>
+        	<dt><i class="pngFix"></i><{$list.name}></dt>
+            <dd style="display:">
+            	<ul>
+                	<{foreach item=slist key=akey from=$list.action}>
+                    <{if $slist}>
+                    <{assign var="gets" value=$akey|explode:"&"}>
+                        <li>
+                        <a <{if $akey|truncate:4:''=='http'}>target="_blank"<{/if}><{if $smarty.get.action==$akey or in_array($smarty.get.type,$gets) or in_array($smarty.get.s,$gets)}> class="active" <{/if}> href="<{if $akey|truncate:1:''=='?' or $akey|truncate:4:''=='http'}><{else}>?action=<{/if}><{$akey}>"><{$slist}></a>
+                        </li>
+                    <{/if}>
+                    <{/foreach}>
+                </ul>
+            </dd>
+        </dl>
+        <{/foreach}>
+    </div>
+    <div class="right_content"><{$output}></div>
+    <div class="clear"></div>
+</div>
+<div id="footer">
+  <p><{$web_con}></p>
+  <{$bt}><br>
+</div>
+</body>
+</html>

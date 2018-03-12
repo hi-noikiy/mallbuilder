@@ -1,0 +1,269 @@
+<{if $smarty.get.operation=='add' or $smarty.get.operation=='edit' }>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<div class="container">
+<form name="spec" id="spec" action="module.php?m=product&s=spec.php" method="post">
+<input name="id" type="hidden" id="id" value="<{$de.id}>">
+<table class="table3 mb0">
+    <tbody>
+    <tr>
+        <td width="70">规格名称</td>
+        <td>
+        <input name="field_name" id="field_name" type="text" class="w350" value="<{$de.field_name}>"><span id="form-error" class="form-error"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>规格备注</td>
+        <td>
+        <input name="field_desc" id="field_desc" type="text" class="w350" value="<{$de.field_desc}>">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="oflow" style="height:250px;"> 
+<table class="table3" id="tbody1">
+	<tbody>  
+    <tr>
+    	<td width="70">属性值</td>
+        <td width="70">排序</td>
+        <td>值</td>
+    </tr>
+    <tr>
+        <td rowspan="99" valign="top"></td>
+    </tr>
+    <{foreach item=list from=$de.items }>
+    <tr>
+        <td><input type="text" class="w50" value="<{$list.0}>" maxlength="3" name="displayorder[]" /></td>
+        <td><div><input type="text" class="w150" id="name" name="name[]" value="<{$list.1}>" /><a href="javascript:void(0);" class="deleterow" onClick="deleterow(this);">删除</a></div></td>
+    </tr>
+    <{foreachelse}>
+    <{section name=name loop=5}>
+    <tr>
+        <td><input type="text" class="w50" maxlength="3" name="displayorder[]" value="<{$smarty.section.name.index+1}>" /></td>
+        <td><input type="text" class="w150" id="name" name="name[]" /></td>
+    </tr>
+    <{/section}>
+    <{/foreach}>
+   
+    <tr>
+        <td colspan="2"><div><a class="addtr" onClick="addrow(this, 0,addrowkey)" href="javascript:void(0);">添加属性值</a></div></td>
+    </tr>
+   	</tbody>
+</table>
+</div>
+<table>
+<tr>
+    <td width="95">&nbsp;</td>
+    <td>
+        <input class="submit" id="spec_button" type="button" value="提交">
+        <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">
+    </td>
+</tr>
+</tbody>
+</table>
+</form>
+<span id="error"></span>
+<script>
+var rowtypedata = [
+	[
+		[1,'<input type="text" class="w50" maxlength="3" name="displayorder[]" value="{1}" />'], 
+		[1, '<div><input name="name[]" id="name" class="w150" type="text" /><a href="javascript:;" class="deleterow" onClick="deleterow(this)">删除</a></div>'],
+		[1, '']
+	],
+];
+
+var addrowdirect = 0;
+<{if $de.items}>
+var addrowkey=<{$de.items|@count}>+1;
+<{else}>
+var addrowkey=6;
+<{/if}>
+
+function addrow(obj, type) {
+	var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+	if(!addrowdirect) {
+		var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex);
+	} else {
+		var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex + addrowdirect);
+	}
+	
+	var typedata = rowtypedata[type];
+	for(var i = 0; i <= typedata.length - 1; i++) {
+		
+		var cell = row.insertCell(i);
+		cell.colSpan = typedata[i][0];
+		var tmp = typedata[i][1];
+		if(typedata[i][2]) {
+			cell.className = typedata[i][2];
+		}
+		tmp = tmp.replace(/\{(n)\}/g, function($1) {return addrowkey;});
+		tmp = tmp.replace(/\{(\d+)\}/g, function($1, $2) {return addrow.arguments[parseInt($2) + 1];});
+		cell.innerHTML = tmp;
+	}
+	addrowkey ++;
+	addrowdirect = 0;
+}
+function deleterow(obj) {
+	var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var tr = obj.parentNode.parentNode.parentNode;
+	table.deleteRow(tr.rowIndex);
+}
+
+function $$(id) {
+	return !id ? null : document.getElementById(id);
+}
+function ajaxpost(formid) {
+	
+	var ajaxframeid = 'ajaxframe';
+	var ajaxframe = $$(ajaxframeid);
+	if(!ajaxframe){
+		var div = document.createElement('div');
+		div.style.display = 'none';
+		div.innerHTML = '<iframe name="' + ajaxframeid + '" id="' + ajaxframeid + '" loading="1"></iframe>';
+		ajaxframe = $$(ajaxframeid);
+		$$('append_parent').appendChild(div);
+	}
+	$$(formid).target = ajaxframeid;
+	
+	if(!$("#field_name").val())
+	{
+		error('error','对不起，规格名称还没有填写');
+		return false;
+	}
+	
+	var name=$("#spec").find("#name");
+	var flag=1;
+	$.each(name,function(i){
+		if($(this).val()){flag=0;}
+	});
+	
+	if(flag)
+	{
+		error('error','对不起，表单还没有填写完整');
+		return false;
+	}
+	$$(formid).submit();
+	window.parent.main.document.location.reload();
+	DialogManager.close("spec");
+}
+$("#spec_button").click(function () {
+	ajaxpost("spec");
+	return false;
+});
+
+</script> 
+</div>  
+<{else}>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>产品规格</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow"> 
+            <div class="itemtitle">
+                <h3>产品规格</h3>
+            </div>
+        </div>
+        <div class="h35"></div>
+        <table class="select_table">
+            <tr>    
+                <td class="pl0">
+				<ul class="button">
+                    <li class="button">
+                        <a class="a_button" id="del_button" href="javascript:void();">删除</a>
+                    </li>
+                    <li class="button">
+                        <a class="a_button" id="add" href="javascript:void();">添加规格</a>
+                    </li>
+                </ul>
+                </td>
+                <td width="400">
+                    <a class="refresh fr" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"></a>
+                	<div class="select_box fr">
+                    <form action="" method="get">
+                        <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                        <input type="hidden" name="s" value="spec.php">
+                        <input placeholder="请输入规格名称..." type="text" name="key" class="txt s w250" value="<{$smarty.get.key}>" />
+                        <input type="submit" value="搜索" />
+                    </form>
+                    </div>
+               </td>
+            </tr>
+        </table>
+		<script type="text/javascript">
+        $(function(){
+            /* 全选 */
+             $('.checkall').click(function(){
+                var _self = this;
+                $('.checkitem').each(function(){
+                    if (!this.disabled)
+                    {
+                        $(this).attr('checked', _self.checked);
+                    }
+                });
+                $('.checkall').attr('checked', this.checked);
+            });	 
+        });
+        </script>
+        <form action="" name="form" id="form" method="post">
+        <input type="hidden" name="act" value="op" />
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th width="30" class="pl20"><input type="checkbox" class="checkall" id="del"></th>
+                    <th width="50" class="al">操作</th>
+                    <th width="150" class="al">规格名称</th>
+                    <th class="al">属性值</th>
+                </tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+                    <td class="pl20"><input type="checkbox" <{if $list.field=='color'}>disabled="disabled"<{/if}> value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                    <td class="al">
+                    <a genre="edit" href="javascript:void(0);" data-param="{'id':'<{$list.id}>'}">编辑</a>
+					</td>
+                    <td class="al"><{$list.field_name}></td>
+                    <td class="al"><{if $list.items}><{$list.items}><{else}>NULL<{/if}></td>
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <tfoot>    
+                <tr>
+                    <td colspan="99">
+                    <div class="fl">每页最多显示： 20条</div>
+                    <div class="page"><{$de.page}></div>
+                    <div class="fr">共有<{$count}>条记录</div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+    </div>
+	<script>
+    $("#del_button").click(function () {
+        $("#form")[0].submit();
+        return false;
+    });
+    $("#add").live('click',function(){
+        
+		window.parent.ajax_form("spec", '添加产品规格', '<{$config.weburl}>/admin/module.php?m=product&s=spec.php&operation=add', 800);
+        return false;
+    });
+	
+	$("[genre='edit']").live('click',function(){
+		var data_str = $(this).attr('data-param');
+		eval("data_str = "+data_str);
+		window.parent.ajax_form("spec", '编辑产品规格', '<{$config.weburl}>/admin/module.php?m=product&s=spec.php&operation=edit&editid='+data_str.id, 800);
+        return false;
+    });
+    </script>
+</body>
+</html>
+<{/if}>  

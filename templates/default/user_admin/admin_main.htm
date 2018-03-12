@@ -1,0 +1,102 @@
+<div class="fl i-fl">
+    <div class="container h166">
+        <div class="hd"><h2><{$lang.shop_tip}></h2></div>
+        <div class="content">
+            <dl class="focus">
+                <h2><{$lang.you_need_to_focus_on_the_shop}></h2>
+                <dt><{$lang.commodity_tips}></dt>
+                <dd><a href="main.php?m=product&s=admin_product_storage"><{$lang.warehouse_pending_products}> (<strong><{$shop_count.prdouct.1}></strong>)</a></dd>
+                <dt><{$lang.consulting_tip}></dt>
+                <dd><a href="main.php?m=shop&s=admin_credit"><{$lang.the_buyer_message}> (<strong><{$shop_count.pro_comment}></strong>)</a></dd>
+                <dt><{$lang.violations_tips}></dt>
+                <dd><a href="main.php?m=report&s=admin_report"><{$lang.report_lock_up}> (<strong>0</strong>)</a></dd>
+            </dl>
+            <ul>
+                <li><a href="main.php?m=product&s=admin_product_list"><{$lang.sale_of_goods}> (<strong><{$shop_count.prdouct.2+$shop_count.prdouct.3}></strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_product_storage&statu=-1"><{$lang.illegal_goods_off_the_shelf}> (<strong><{$shop_count.prdouct.0}></strong>)</a></li>
+                <li><a href="#"><{$lang.posting}> (<strong>0</strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_product_batch"><{$lang.taobao_data_import}></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container h166">
+        <div class="hd"><h2><{$lang.trading_tips}></h2></div>
+        <div class="content">
+            <dl class="focus">
+                <h2><{$lang.yntbdwito}></h2>
+                <dt><{$lang.recent_sold}></dt>
+                <dd><a href="main.php?m=product&s=admin_sellorder"><{$lang.trading_orders}> (<strong><{$shop_count.order.0}></strong>)</a></dd>
+            </dl>
+            <ul>
+                <li><a href="main.php?m=product&s=admin_sellorder&status=1"><{$lang.to_be_paid}> (<strong><{$shop_count.order.1}></strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_sellorder&status=2"><{$lang.to_be_shipped}> (<strong><{$shop_count.order.2}></strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_sellorder&status=3"><{$lang.pending_receipt}> (<strong><{$shop_count.order.3}></strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_sellorder&status=5"><{$lang.return_of_goods}> (<strong><{$shop_count.order.4}></strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_sellorder"><{$lang.recent_sold}> (<strong><{$shop_count.order.0}></strong>)</a></li>
+                <li><a href="main.php?m=product&s=admin_sellorder&status=4">待评价 (<strong><{$shop_count.order.5}></strong>)</a></li>
+            </ul>
+        </div>
+    </div>
+ <!--   <div class="container">
+        <div class="hd"><h2><{$lang.payment_account}></h2></div>
+        <div class="content">
+            <div class="ico"></div>
+            <div class="hint">
+                <h3><{$lang.your_account_balance}><{$cash|number_format:2}> <{$lang.yuan}></h3>
+                <ul>
+                    <li><a href="main.php?m=payment&s=admin_info"><{$lang.payment_account}></a></li>
+                    <li><a href="main.php?m=payment&s=admin_accounts_pickup"><{$lang.cash_withdrawal}></a></li>
+                    <li><a href="main.php?m=payment&s=admin_accounts_cashflow"><{$lang.access_to_the_details_of}></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+    
+	<!--[if IE]><script src="<{$config.weburl}>/script/excanvas.js"></script><![endif]-->
+    <div class="container">
+        <div class="hd"><h2>店铺流量</h2></div>
+        <div class="content">
+		<canvas id="cv" width="575" height="142"></canvas>
+		</div>
+	</div>
+	<script type="text/javascript" src="<{$config.weburl}>/script/Chart.js" ></script>
+    <script>
+	window.onload = function() {
+		var ctx = document.getElementById('cv').getContext('2d');
+		var data = {
+				labels : [<{foreach item=list key=num from=$date}><{if $num!=0}>,<{/if}>"<{$list|date_format:"%m-%d"}>"<{/foreach}>],
+				datasets : 
+				[
+					{
+						fillColor : "rgba(220,220,220,0.5)",
+						strokeColor : "#DCDCDC",
+						pointColor : "#DCDCDC",
+						pointStrokeColor : "#fff",
+						data : [<{foreach item=list key=num from=$count}><{if $num!=0}>,<{/if}>"<{$list}>"<{/foreach}>]
+					}
+				]
+			}
+		new Chart(ctx).Line(data);
+	};
+    </script>
+</div>
+<div class="fr i-fr">
+    <div class="news container h166">
+        <div class="hd"><h2><{$lang.mall_announcement}></h2></div>
+        <div class="content">
+            <ul>
+                <{insert name="getNotice" limit=5}>
+            </ul>
+        </div>
+    </div>
+    <div class="contact container h166">
+        <div class="hd"><h2><{$lang.platform_contact}></h2></div>
+        <div class="content">
+            <ul>
+                <li>客服电话: <{$config.owntel}></li>
+                <li>电子邮箱:<br /><{$config.email}></li>
+                <li>服务时间:<br />9:00-18:00(周一至周日)</li>
+            </ul>
+        </div>
+    </div>
+</div>

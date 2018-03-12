@@ -1,0 +1,25 @@
+@charset "utf-8";
+.itemSearchList{padding:0 15px;margin-bottom:20px;}
+.itemSearchList dl{background:#FFF;border-radius:8px 8px 8px 8px;border:1px solid #E0E1E1;margin-top:15px;min-height:80px;padding:15px 10px;position:relative;}
+.itemSearchList dt{width:80px;height:80px;float:left;}
+.itemSearchList dd{margin-left:90px;line-height:18px;font-size:14px;}
+.itemSearchList dd .p-name{max-height:36px;margin-bottom:3px;}
+.itemSearchList dd .p-price s{font-size:12px;}
+.itemSearchList dd .p-detail{font-size:12px;color:#ABABAB;margin-top:3px;}
+.itemsNull{margin:20px 0 15px;}
+.filter{margin:15px auto;padding:0 15px;}
+.filter ul{display:-webkit-box;}
+.filter li{width:100%;display:block;text-align:center;height:26px;line-height:26px;-webkit-box-flex:1;}
+.filter li a{display:inline-block;width:100%;border:1px solid #BDC0C2;border-right:none;}
+.filter li:first-child a{border-radius:5px 0 0 5px;}
+.filter li:last-child a{border-radius:0 5px 5px 0;border-right:1px solid #BDC0C2;}
+.filter li.current a{background:#DB181E;color:#FFF;border-color:#DB1A1F;}
+.handle a{background:url(../../../image/wap/del.png) center no-repeat;position:absolute;right:10px;bottom:0;display:block;height:40px;min-height:40px;overflow:hidden;padding:0;text-indent:-9876px;top:auto;width:40px;z-index:100;}
+.color{color:#999;font-size:12px;}
+.leftcate{position:absolute;right:0;top:0;width:100%;z-index:999;background:#FFF;}
+.leftcate h2{background:#F5F5F5;border-bottom:1px solid #BCBFC6;color:#AAAAAA;font-size:12px;height:32px;line-height:32px;padding:10px 16px;font-size:14px;}
+.leftcate h2 a{border:1px solid #D93438;border-radius:5px 5px 5px 5px;width:60px;height:32px;float:right;background:#D93438;color:#FFF;text-align:center;font-weight:normal;font-size:12px;}
+.leftcate ul li{display:block;line-height:39px;position:relative;}
+.leftcate ul li a{display:block;border-bottom:1px solid #D0D0D0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-indent:16px;width:100%;height:39px;}
+.leftcate ul li a.current{background:#F5F5F5;border-left:3px solid #EB5211;color:#EB5211;}
+#leftmask{position:absolute;width:100%;height:100%;background:#EEE;z-index:199;top:0;}

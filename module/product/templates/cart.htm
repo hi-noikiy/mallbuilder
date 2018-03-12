@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的购物车</title>
+<meta name="description" content="<{$config.description|regex_replace:"/[\r\t\n]/":""}>" />
+<meta name="keywords" content="<{$config.keyword|regex_replace:"/[\r\t\n]/":""}>" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/templates/default/page.css">
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/product/templates/cart.css">
+</head>
+<script language="javascript">
+function do_select()
+{
+	 var box_l = document.getElementsByName("checkbox[]").length;
+	 for(var j = 0 ; j < box_l ; j++)
+	 {
+		if(document.getElementsByName("checkbox[]")[j].checked==true){ 
+			document.getElementsByName("checkbox[]")[j].checked = false;
+		}else{
+			document.getElementsByName("checkbox[]")[j].checked = true;
+		}
+	}
+}
+</script>
+<body>
+<div id="shortcut">
+    <div class="w">
+        <ul class="fl">
+            <li class="ld">
+                <b></b>
+                <a href="javascript:addToFavorite('<{$config.weburl}>','<{$config.company}>')">
+                收藏首页
+                </a>
+            </li>
+        </ul>
+        
+		<ul class="fr">
+			<li><script src="<{$config.weburl}>/login_statu.php"></script></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?cg_u_type=1">我的商城</a></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?cg_u_type=2">卖家中心</a></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?m=sns&s=admin_share_product">我的收藏</a></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?m=message&s=admin_message_list_inbox">站内消息</a></li>
+           
+		</ul>
+    	<span class="clr"></span>
+	</div>
+</div>
+
+<div id="header" class="clearfix">
+	<div class="w header">
+    	<div class="logo ld">
+        <a hidefocus="true" title="<{$config.company}>" href="<{$config.weburl}>"><img height="46" width="243" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></a>
+        </div>
+        <div class="step fr">
+        	<img src="<{$config.weburl}>/image/default/step_1.png" />
+        </div>
+    </div>
+</div>
+	
+<div class="cart w">
+    <div class="cart-hd">
+        <h2>我的购物车</h2>
+    </div>
+    
+    <{if $smarty.get.type=="clear" || $cart.cart|@count<1}>
+        <div class="cart-empty w">
+            <div class="message">
+            购物车内暂时没有产品，您可以<a href="<{$config.weburl}>">去首页</a>挑选喜欢的
+            </div>
+        </div>
+    <{else}>  
+      
+    <{if $smarty.get.type=="numf"}>
+        <div align="center"><font color="#FF0000">库存数量不够(已经为定订购产品的最大值)</font></div>
+    <{elseif $smarty.get.type=="pronull"}>
+        <div align="center"> <font color="#FF0000">产品不存在或订购销完或已经删除</font></div>
+    <{elseif $smarty.get.type=="del"}>
+        <div align="center"><font color="#FF0000">购物车不存在该产品已经删除</font></div>
+    <{/if}>
+    
+    <form method="post" action="">
+    <table width="100%" cellpadding="0" cellspacing="0" class="cart-con">
+        <tr class="title">
+            <th width="99"><input onClick="do_select()" type="checkbox" class="checkbox" name="checkbox" id="allcheck"><label for="allcheck">全选</label></th>
+            <th width="">产品</th>
+            <th width="128">价格</th>
+            <th width="115">数量</th>
+            <th width="115">小计</th>
+            <th width="80">操作</th>
+        </tr>
+        <{foreach item=list from=$cart.cart}>  
+            <tr class="shop">
+            	<td colspan="6">
+                    卖家:<a target="_blank" href="shop.php?uid=<{$list.sell_userid}>"><{$list.company}></a>
+                </td>
+            </tr>
+            <{foreach item=pro key=n from=$list.prolist}>
+            <tr>
+                <td colspan="2">
+                <div class="pro-checkbox cell">
+                    <input class="checkbox" type="checkbox" name="checkbox[]" value="<{$pro.id}>">
+                </div>
+                <div class="pro-goods cell">
+                    <div class="pro-img">
+                        <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.pid}>">
+                            <img height="60" alt="<{$pro.name}>" src="<{$pro.pic}>_60X60.jpg">
+                        </a>
+                    </div>
+                    <div class="pro-name">
+                        <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.pid}>"><{$pro.pname}></a>
+                        <p>产品编号：<{$pro.code}></p>
+                    </div>
+                </div>
+                </td>
+                <td align="center">
+                    <span class="price"><{$config.money}><{$pro.price|number_format:2}></span>
+                </td>
+                
+                <td align="center">
+                <div class="quantity">
+                   
+                    <a class="decrement" href="<{$config.weburl}>/?m=product&s=cart&id=<{$pro.id}>&cgnum=<{$pro.num-1}>">-</a>
+                 
+                    <input readonly="readonly" name="nums" class="text" id="nums" onchange="check_nums();" type="text" size="5" value="<{$pro.num}>" />
+                   
+                    <a class="increment" href="<{$config.weburl}>/?m=product&s=cart&id=<{$pro.id}>&cgnum=<{$pro.num+1}>">+</a>
+                    
+                </div>
+                <script>
+                function check_nums()
+                {
+                    var v=document.getElementById('nums').value*1;
+                    if(!v)
+                        document.getElementById('nums').value=1;
+                    if(v><{$pro.amount}>*1)
+                    {
+                        document.getElementById('nums').value=<{$pro.amount}>*1;
+                        return false;
+                    }
+                }
+                </script>
+                </td>
+                <td align="center">
+                    <span class="price red"><{$config.money}><{$pro.sumprice|number_format:2}></span>
+                </td>
+                <td align="center">
+                    <a href="<{$config.weburl}>/?m=product&s=cart&deid=<{$pro.id}>">删除</a>
+                </td>
+            </tr>
+            <{/foreach}>
+        <{/foreach}>
+        <tr>
+            <td colspan="7" class="toolbar">
+                <div class="control fl">
+                <input type="hidden" name="act" value="del" />
+                <input type="submit" value="删除选中的产品" />
+                </div>
+                <div class="total fr">
+                    <p><span class="red"><{$config.money}><{$cart.sumprice|number_format:2}></span>总计：</p>
+                </div>
+            </td>
+        </tr>
+        <!-- <tr>
+            <td colspan="7" class="cart-total">
+                <div class="total fr">
+                    <span class="fr"><{$config.money}><{$cart.sumprice|number_format:2}></span>
+                    <b class="fr">总计（不含运费）：</b>
+                </div>
+            </td>
+        </tr>-->
+    </table>
+    </form>
+    <div class="cart-button">
+        <a class="continue" href="<{$config.weburl}>/"><span>继续购物</span></a>
+        <a class="checkout" href="<{$config.weburl}>/?m=product&s=confirm_order">去结算</a>
+        <div class="clear"></div>
+    </div>
+    <{/if}>
+</div>
+
+<div class="footer fn-clear">
+    <div class="w">
+       <dl class="link fn-clear">
+        	<dt>合作伙伴</dt>
+            <dd><{insert name="label" type="friendlink" temp="friendlink"}></dd>
+        </dl>
+        <div class="links"><{$web_con}></div>
+        <div class="copyright"><{$bt}></div>
+    </div>
+</div>
+</body>
+</html>

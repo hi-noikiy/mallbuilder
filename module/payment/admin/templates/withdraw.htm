@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>提现申请</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/moderate.js"></script>
+</head>
+<body>
+<style>
+.icon{clear:both;}
+.icon i{background:url(../image/admin/icon.png) no-repeat;float:left;width:24px;height:21px;margin:5px 5px 0 0;}
+.icon i.fore1{background-position:-6px -101px;}
+.icon i.fore1.f{background-position:-6px -1px;}
+.icon i.fore2{background-position:-72px -101px;}
+.icon i.fore2.f{background-position:-70px -1px;}
+.icon i.fore3{background-position:-132px -100px;}
+.icon i.fore3.f{background-position:-132px 0;}
+</style>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>提现申请</h3>
+            <{if $smarty.get.operation=='edit'}>
+            <ul>
+            <li class="current"><a href="#"><span>操作</span></a></li>
+            </ul>
+            <{/if}>
+		</div>
+    </div>
+    <div class="h35"></div>
+    <{if $smarty.get.operation=='edit'}>
+        <form name="form" id="form" method="post">
+        <input name="id" type="hidden" id="id" value="<{$de.id}>">
+        <input name="userid" type="hidden" id="userid" value="<{$de.pay_id}>">
+ 		<table class="table table1">
+			<tbody>
+            <tr>
+                <td width="80">申请人</td>
+                <td>
+				<p><{$de.real_name}> (<{$de.pay_email}>)</p>
+                <p class="icon" style="margin-top:5px;">
+                	<i class="fore1<{if $de.identity_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore2<{if $de.identity_verify=='false'||$de.mobile_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore3<{if $de.mobile_verify=='false'}> f<{/if}>"></i>
+                </p>
+                </td>
+            </tr>
+           
+            <tr>
+                <td>提现银行</td>
+                <td><{$de.bank}></td>
+            </tr>
+            <tr>
+                <td>银行卡号</td>
+                <td><{$de.cardno}></td>
+            </tr>
+            <tr>
+                <td>开户人</td>
+                <td><{$de.cardname}></td>
+            </tr>
+            <tr>
+                <td>提现金额</td>
+                <td><b style="color:red;font-size:14px;"><{$de.amount}></b></td>
+            </tr>
+            <tr>
+                <td>服务费</td>
+                <td><{$de.fee}></td>
+            </tr>
+            <tr>
+                <td>申请时间</td>
+                <td><{$de.add_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+            </tr>
+            <tr>
+                <td>到账时间</td>
+                <td><{$de.supportTimeName}></td>
+            </tr>
+            <tr>
+            	<td>操作</td>
+            	<td>
+                <{if $de.is_succeed==20}>完成
+                <{elseif $de.is_succeed==50}>取消
+                <{else}>
+                <{if $de.is_succeed==0}>
+                <label><input type="radio" name="result" value="10" checked="checked" />处理中</label>
+                <{else}>
+                <label><input type="radio" name="result" value="20" checked="checked" />完成</label>
+                <{/if}>
+                <label><input type="radio" name="result" value="50" />取消</label>
+                <{/if}>
+                </td>
+            </tr>
+            <{if $de.is_succeed==10||$de.is_succeed==20}>
+            <tr>
+                <td>回执流水号</td>
+                <td>
+            	<{if $de.is_succeed=='10'}>
+                	<input type="text" name="bankflow" class="w250" value="" />
+                <{else}>
+                	<{$de.bankflow}>
+                <{/if}>
+                </td>
+            </tr>
+           	<{/if}>
+            <tr>
+                <td>备注</td>
+                <td>
+            	<{if $de.is_succeed=='10'||$de.is_succeed=='0'}>
+                	<textarea name="con" class="w245"></textarea>
+                <{else}>
+                	<{$de.con}>
+                <{/if}>
+                </td>
+            </tr>
+			<{if $de.is_succeed=='10'||$de.is_succeed=='0'}>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                <input class="submit" type="submit" value="提交">
+                <input name="act" type="hidden" id="action" value="edit">
+                </td>
+            </tr>
+			<{/if}>
+            </tbody>
+        </table>
+        </form>
+    <{else}>
+    <table class="select_table">
+        <tr>
+            <td>
+                <div class="select_box">
+                    <form action="" method="get">
+                    <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                    <input type="hidden" name="s" value="withdraw.php">
+                    <input placeholder="请输入邮箱..." type="text" name="email" class="txt s w250" value="<{$smarty.get.email}>"  />
+                    <input placeholder="请输入真实姓名..." type="text" name="name" class="txt w150" value="<{$smarty.get.name}>"  />
+                    <input type="submit" value="搜索" />
+                    </form>
+                </div>
+                <a class="refresh" href="?m=<{$smarty.get.m}>&s=member.php"></a>
+            </td>
+        </tr>
+    </table>
+	<div style="position: relative;" id="threadlist">   
+    <form action="" method="post" id="form" name="form">
+    <input type="hidden" name="act" id="act" value="op" />
+    <table class="table product">
+        <tbody>
+            <tr class="header">
+                <th width="12"></th>
+                <th class="al" colspan="2">申请人</th>
+                <th width="150">提现金额</th>
+                <th width="60">服务费</th>
+                <th width="100">到账时间</th>
+                <th width="150">提现银行</th>
+                <th width="80">申请日期</th>
+                <th width="80">状态</th>
+                <th width="50">操作</th>
+            </tr>
+            <{foreach item=list from=$de.list}>
+            <tr>
+            	<td></td>              
+				<td class="al" width="80" valign="top"><img width="60" class="img" alt="<{$list.pname}>" src="<{$list.logo}>" /></td>
+                <td class="al" valign="top">
+                <h4 style="margin-bottom:5px;">
+                    <{$list.real_name}>&nbsp;&nbsp;
+                    <span style="font-weight:normal;"><{$list.pay_email}></span>
+                </h4>
+                <p>注册时间：<{$list.regtime|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+                <p class="icon">
+                	<i class="fore1<{if $list.identity_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore2<{if $list.identity_verify=='false'||$list.mobile_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore3<{if $list.mobile_verify=='false'}> f<{/if}>"></i>
+                </p>
+                </td>
+                <td><font color="red"><b><{$list.amount}></b></font></td>
+                <td><{$list.fee}></td>
+                <td><{$list.supportTimeName}></td>
+                <td><{$list.bank}></td>
+                <td><{$list.add_time|date_format:"%Y-%m-%d<br>%H:%M:%S"}></td>
+                <td>
+                <p>
+                    <{if $list.is_succeed==10}>处理中
+                    <{elseif $list.is_succeed==20}>提现成功
+                    <{elseif $list.is_succeed==50}>取消
+                    <{else}>待操作
+                    <{/if}>
+                </p>
+               	<p><{if $list.censor}><{$list.censor}><{/if}></p>
+                </td>
+                <td><a href="module.php?m=payment&s=withdraw.php&operation=edit&id=<{$list.id}>">操作</a></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="99" class="pages">
+                <div class="fl">每页最多显示： 20条</div>
+                <div class="page"><{$de.page}></div>
+				<div class="fr">共有<{$de.count}>条记录</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div id="mdly" class="hidden">
+        <a onclick="$('#mdly').addClass('cpd');" href="javascript:;" class="min">最小化</a>
+        <label>
+        <input type="checkbox" onclick="if(!($('.max')[0].innerHTML = modclickcount = checkall(this.form, 'chk'))) {$('#mdly').hide();}" name="chkall">
+        全选
+        </label>
+        <h6>
+            <span>选中</span>
+            <strong class="max" onclick="$('#mdly').removeClass('cpd');">0</strong>
+            <span>个会员: </span>
+        </h6>
+        <p style="padding:18px 0 0;">
+            <a id="button" key="pass" href="javascript:;">通过</a>
+            <a id="button" key="no" href="javascript:;">不通过</a>
+        </p>
+    </div>
+    </form>
+	</div>
+    <{/if}>
+</div>
+<script>
+$("#button").live('click',function(){
+	var key=$(this).attr("key")
+	$("#act").val(key);		
+	$("#form")[0].submit();
+	return false;
+});
+</script>
+</body>
+</html>

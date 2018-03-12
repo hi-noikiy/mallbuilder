@@ -1,0 +1,107 @@
+<{include file="sns_header.htm"}>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="w main">
+	<div class="channel_info clearfix">
+    	<h1>广场&nbsp;&nbsp;&nbsp;</h1>
+        <!--<a class="image-text" title="图文" href="">图文</a>
+        <a class="read" title="阅读" href="">阅读</a>-->
+        <a class="release" title="发布信息" href="main.php">发布信息</a>
+        <p>今日更新:<{$count2}></p>
+        <p>听众:<{$count1}></p>
+    </div>
+    <div class="list clearfix"></div>
+<div id="pageinfo"></div>
+</div>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.ui.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/masonry.pkgd.min.js" ></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/dialog/dialog.js" id="dialog_js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.validation.min.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.charCount.js"></script>
+<script type="text/javascript">
+var isLoading = true;
+var ajaxkeys = new Array();
+var onloading = false;
+var ajaxnum = 1;
+loadtopic()
+$(window).bind('scroll resize',function(event){
+	if(isLoading && !onloading){
+		var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
+		if(bodyTop+$(window).height() >= ($('.main').height())){
+			loadtopic();
+		}
+	}
+});
+var container = document.querySelector('.list');
+function loadtopic()
+{
+	var loadmsg = '<div class="pageStyle"><div class="loading">正在加载，请稍后...</div></div>';
+	if(isLoading){
+		$('#pageinfo').html(loadmsg);
+		onloading = true;
+		var myAjax = $.post('index.php?m=sns&curpage=1<{if $smarty.get.key}>&key=<{$smarty.get.key}><{/if}>&page='+ajaxnum,{},function (d){
+			if('' != d){
+				$('.list').append(d);
+				ajaxnum++;
+var msnry = new Masonry( container, {});
+			}
+			else{
+				isLoading = false;
+			}
+			onloading = false;
+			$("#pageinfo").hide();
+		});
+	}
+}
+function ajax_form(id, title, url, width, model)
+{
+    if (!width)	width = 480;
+    if (!model) model = 1;
+    var d = DialogManager.create(id);;
+    d.setTitle(title);
+    d.setContents('ajax', url);
+    d.setWidth(width);
+    d.show('center',model);
+    return d;
+}
+$("[genre='sns_forward']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("forward_form", '转发', '<{$config.weburl}>/main.php?m=sns&s=sns&op=forward&bid='+data.bid, 500);
+	return false;
+});
+$("[genre='sns_comment']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("comment_form", '评论', '<{$config.weburl}>/main.php?m=sns&s=sns&op=comment&bid='+data.bid, 500);
+	return false;
+});
+$(function(){
+	//加关注
+	$(".attention").live('click',function(){
+		
+		var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+		var uname='<{$smarty.cookies.USER}>';
+		if(uname=='')
+		{
+			alert('<{$lang.no_logo}>');
+			window.location.href='<{$config.weburl}>/login.php?forward=index.php?m=sns';
+			return false;
+		}
+		var data_str = $(this).attr('data-param');
+        eval( "data_str = "+data_str);
+		var pars = 'mid='+data_str.uid+'&uname='+uname+'&op=add';
+		$.post(url, pars,showResponse);
+		function showResponse(originalRequest)
+		{
+			if(originalRequest>1)
+				alert('成功添加');
+			else if (originalRequest>0)
+				alert('已添加');
+			else
+				alert('参数传递错误，无法完成操作');
+		}
+	});
+});
+</script>
+<{include file="sns_footer.htm"}>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{if $title}><{$title}> - <{$config.company}><{else}><{$config.title}><{/if}><{$config.company}></title>
+<meta name="description" content="<{$config.description}>">
+<meta name="keywords" content="<{$config.keyword}>">
+<link href="<{$config.weburl}>/templates/default/user_admin.css" rel="stylesheet" type="text/css" />
+</head>
+<div id="shortcut">
+    <div class="w">
+        <div class="fl">
+            <script type="text/javascript" src="<{$config.weburl}>/login_statu.php" /></script>
+			<a href="<{$config.weburl}>/"><{$lang.homepage}></a>
+        </div>
+        <div class="fr">
+            <a href="<{$config.weburl}>/main.php?cg_u_type=1"><{$lang.enter_the_buyer_center}></a>
+            <a href="<{$config.weburl}>/main.php?m=sns&s=admin_share_product"><{$lang.my_favorites}></a>
+            <a href="<{$config.weburl}>/main.php?m=message&s=admin_message_list_inbox"><{$lang.news_station}></a>
+        </div>
+    </div>
+</div>
+
+<div class="header">
+    <h1>
+    	<a href="<{$config.weburl}>/main.php" title="<{$config.company}>">
+        <img title="<{$config.company}>" alt="<{$config.company}>" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/default/logo.gif<{/if}>"  />
+        </a>
+        <i><{$lang.seller_center}></i>
+	</h1>
+    <div class="search">
+        <div class="i-search ld">
+        <form method="get" class="form" action="<{$config.weburl}>/">
+            <input id="m" name="m" type="hidden" value="product" />
+            <input id="s" name="s" type="hidden" value="list" />
+            <input type="text" autocomplete="off" value="<{$smarty.get.key}>" id="key" name="key" class="text">
+            <input type="submit" class="search_button" value="搜索">
+        </form>
+        </div>
+        <div class="hotwords">
+            <strong>热门搜索：</strong>
+            <{insert name="label" type="searchword" temp="search_word" limit=7}>
+        </div>
+    </div>
+</div>
+
+<div class="layout">
+	<div class="tip">
+        <p class="<{if $smarty.get.type}>failure<{else}>success<{/if}>">
+            <span>
+            	<{if $smarty.get.str}>
+                	<{if $smarty.get.str=='shop_statu'}>
+                    您的店铺正在审核过程中，审核通过商品管理功能才能使用！
+                    <{else}>
+            		<{$smarty.get.str}>
+                    <{/if}>
+            	<{else}>
+                	<{$lang.edit_suc}>
+            	<{/if}>
+            </span>
+        </p>
+    </div>
+</div>
+<div id="footer">
+  <p><{$web_con}></p>
+  <{$bt}><br>
+</div>
+<script>
+function gotourl(url)
+{
+	var time=900;
+	<{if $smarty.get.time}>
+	var time=<{$smarty.get.time}>;
+	<{/if}>
+	setTimeout("gotourl1('"+url+"')",time);//设定超时时间
+}
+function gotourl1(url)
+{
+	window.location=url;
+}
+<{if $smarty.get.url}>
+gotourl('<{$smarty.get.url}>');
+<{/if}>
+</script>

@@ -1,0 +1,79 @@
+<div class="consignee_list">
+    <{foreach item=list key=key from=$consignee_list}>
+    <div class="item"> 
+    <input type="radio" onclick="chose_consignee(<{$list.id}>)"  value="<{$list.id}>" id="consignee_radio_<{$list.id}>" name="consignee_radio">
+    <label for="consignee_radio_<{$list.id}>">
+    <b><{$list.name}></b>
+    <{$list.area}> <{$list.address}> <{$list.mobile}> <{$list.tel}>
+    </label>
+    </div> 
+    <{/foreach}>
+</div>
+
+<div id="use_new_address" class="item">
+    <input type="radio" id="consignee_radio_new" name="consignee_radio" onclick="NewConsignee()">
+    <label for="consignee_radio_new">使用新地址 </label>
+</div>
+
+<form method="post" action="">
+<div id="consignee_form" class="order_form">
+    <input type="hidden" name="act" value="consignee" />
+    <table width="100%">
+        <tr>
+            <td align="right"><em>*</em>收货人:</td>
+            <td colspan="3"><input type="text" name="name" id="name" onblur="check_Consignee('name')" value="<{$de.name}>"><div id="name_error" class="error"></div></td>
+        </tr>
+        <tr>
+            <td align="right"><em>*</em>所在地区:</td>
+            <td colspan="3">
+                <input type="hidden" name="t" id="t" value="<{$de.area}>" />
+                <input type="hidden" name="province" id="id_1" value="<{$de.provinceid}>" />
+                <input type="hidden" name="city" id="id_2" value="<{$de.cityid}>" />
+                <input type="hidden" name="area" id="id_3" value="<{$de.areaid}>" />
+                <{if $de.area}><div id="d_1"><{$de.area}>&nbsp;&nbsp;<a href="javascript:sd();">编辑</a></div><{/if}>
+                <div id="d_2" <{if $de.area}>class="hidden"<{/if}>>
+                <select id="select_1" onChange="district(this);check_Consignee('area');">
+                <option value="">--请选择--</option>
+                <{$prov}>
+                </select>
+                <select id="select_2" onChange="district(this);check_Consignee('area');" class="hidden"></select>
+                <select id="select_3" onChange="district(this);check_Consignee('area');" class="hidden"></select>
+                <div id="area_error" class="error"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="right"><em>*</em>详细地址:</td>
+            <td colspan="3"><input type="text" name="address" id="address" class="w420" value="<{$de.address}>" onblur="check_Consignee('address')"><div id="address_error" class="error"></div></td>
+        </tr>
+        <tr>
+            <td align="right" width="65"><em>*</em>手机号码:</td>
+            <td width="200">
+            <input type="text" name="mobile" id="mobile" value="<{$de.mobile}>" onblur="check_Consignee('mobile')">
+            </td>
+            <td align="right" width="75">固定电话:</td>
+            <td width="*">
+            <input type="text" name="tel" id="tel" value="<{$de.tel}>" onblur="check_Consignee('tel')">
+            <div id="call_error" class="error"></div>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">邮编:</td>
+            <td colspan="3"><input type="text" name="zip" id="zip" value="<{$de.zip}>" ><div id="email_error" class="error"></div></td>
+        </tr>
+    </table>
+</div>
+<div class="form_btn">
+    <a onclick="save_consignee()" class="btn_submit" href="#none">
+        <span>确认收货地址</span>
+    </a>
+</div>
+<div class="clear"></div>
+</form>
+<script>
+<{if $consignee.id}>
+chose_consignee('<{$consignee.id}>');
+<{else}>
+NewConsignee();
+<{/if}>
+</script>

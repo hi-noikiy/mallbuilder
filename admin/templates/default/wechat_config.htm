@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>微信公众平台</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>微信公众平台</h3>
+            </div>
+        </div>
+        <div class="h35"></div>  
+        <form name="form" id="form" method="post">
+        <table class="table2">
+            <tr>
+                <td class="td" colspan="2">Token</td>
+            </tr>
+            <tr>
+                <td width="200">
+                <input type="text" name="wechat" class="w250" value="<{$wechat_config.wechat}>" />
+                </td>
+                <td class="tip"><a target="_blank" href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97">什么是Token？</a></td>
+            </tr>
+            
+            <tr>
+                <td class="td" colspan="99">
+                <input class="submit" type="submit" value="提交">
+                <input name="act" type="hidden" id="action" value="save">
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

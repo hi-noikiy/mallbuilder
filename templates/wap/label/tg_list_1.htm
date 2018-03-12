@@ -1,0 +1,9 @@
+<{foreach item=list key=num from=$tg}>
+    <dl class="clearfix">
+    	<dt><span></span><a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>"><img width="105" height="66" src="<{$list.pic}>" /></a></dt>
+        <dd>
+        <p><a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>"><{$list.name}></a></p>
+        <p><{$config.money}> <{$list.price}></p>
+        </dd>
+    </dl>
+<{/foreach}>

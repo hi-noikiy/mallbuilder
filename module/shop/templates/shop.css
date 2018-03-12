@@ -1,0 +1,66 @@
+@charset "utf-8";
+#select{border:1px solid #DDDDDD;margin-bottom:10px;padding-bottom:5px;}
+#select dl{border-top:1px dotted #DDDDDD;margin:0 5px;overflow:hidden;padding:4px 0 2px;width:1188px;overflow:hidden;}
+#select dl.first{border-top:none;} 
+#select dt{float:left;font-weight:bold;line-height:25px;text-align:right;width:100px;padding-right:10px;padding-top:5px;}
+#select dd{float:right;padding:5px 0;overflow:hidden;width:1078px;}
+#select dd div{float:left;height:20px;margin-right:15px;padding-top:5px;}
+#select dd a{color:#333 /*#005AA0*/;height:15px;line-height:15px;overflow:hidden;text-decoration:none;white-space:nowrap;}
+#select dd a:hover, #select dd a.curr{background:#4598D2;color:#FFFFFF;}
+
+.filter{background:#F7F7F7;margin-bottom:10px;border:1px solid #DDDDDD;box-shadow:0 1px 1px rgba(0, 0, 0, 0.02);}
+.filter a{text-decoration:none;} 
+.filter .fore1{height:31px;overflow:hidden;}
+.filter .order a{line-height:31px;padding:0 15px 0 20px;border-color:-moz-use-text-color #D4D4D4;border-image:none;border-left:1px solid #D4D4D4;border-right:1px solid #D4D4D4;border-style:none solid;border-width:0 1px;box-shadow:2px 0 2px -1px rgba(213, 213, 213, 0.4);float:left;margin-left:-1px;} 
+.filter .order span{float:left;cursor:pointer;}
+.filter .order a.current{background:#E4393C;font-weight:bold;color:#FFF;border-color:#E4393C;}
+.filter .order b{background:url(../../../image/default/icon.png) no-repeat right -8px;height:8px;margin:12px 0 0 5px;overflow:hidden;width:7px;float:left;cursor:pointer;}
+.filter .order a.current b{background-position:right -30px;}
+.filter .i-search{float:left;padding:4px 0 0 15px;}
+.filter .i-search input[type="text"]{color:#666;border:1px solid #DDD;height:18px;background:#FFF;padding:2px 5px;float:left;}
+.filter .i-search input[type="submit"]{margin-left:10px;float:left;height:24px;border-radius:5px 5px 5px 5px;border:1px solid #DDD;background:#F7F7F7;}
+
+.district{top:5px;right:10px;position:absolute;z-index:100;}
+.area{float:right;background:-moz-linear-gradient(center top , #FFFFFF, #F1F1F1) repeat;position:relative;border:1px solid #CCCCCC;cursor:pointer;height:20px;max-width:100px;min-width:35px;overflow:hidden;padding:0 20px 0 10px;}
+.area span{color:#666666;line-height:20px;padding-right:5px;border-right:1px solid #CCCCCC;display:inline-block;font-size:12px;overflow:hidden;}
+.area b{border-color:#CCCCCC transparent transparent;border-style:solid dashed dashed;border-width:5px;height:0;overflow:hidden;position:absolute;right:5px;top:8px;width:0;}
+.i-area{display:none;right:0; position:absolute;top:23px;z-index:100;}
+.i-area ul{background:none repeat scroll 0 0 #FFFFFF;border-color:#BBBBBB #999999 #999999 #BBBBBB;border-style:solid;border-width:1px;overflow-x:hidden;padding:10px;width:330px;}
+.i-area ul li{float:left;height:auto;line-height:1.7;padding:0 5px;white-space:nowrap;width:100px;cursor:pointer;}
+.i-area ul li:hover{background:#333333;color:#FFFFFF ;}
+
+.itemsNull{background:url(../../../image/default/null.png) no-repeat 40px 20px #FFF3E8;border:1px solid #F4D9BF;color:#666666;height:85px;line-height:20px;margin:10px 0;padding:20px 40px 10px 150px;}
+.itemsNull h3{font-size:14px;margin:16px 0 10px;}
+.itemsNull span{margin-right:10px;}
+
+.itemSearchResult{float:left;width:955px;}
+.itemSearchResult .item{margin-bottom:10px;border-bottom:1px solid #ddd;padding-bottom:10px;zoom:1;}
+.itemSearchResult .item .left{width:455px;float:left;}
+.itemSearchResult .item .left .pic{margin:0 20px 0 0;border:1px solid #EEE;float:left;width:100px;}
+.itemSearchResult .item .left .info{float:left;width:330px;}
+.itemSearchResult .item .left .info dt{padding:3px 0 5px;}
+.itemSearchResult .item .left .info dt a{font-size:18px;font-weight:700;color:#416BBD;text-decoration:none;}
+.itemSearchResult .item .left .info dd{float:left;width:330px;line-height:18px;padding:3px 0;}
+.itemSearchResult .item .left .info dd span{float:left;}
+.itemSearchResult .item .left .info dd .tit{margin-right:5px;}
+.itemSearchResult .item .right{float:right;width:465px;}
+.itemSearchResult .item .right li{width:140px;float:left;margin-left:15px;}
+.itemSearchResult .item .right .p-img{border:1px solid #DDD;}
+.itemSearchResult .item .right .p-name{height:3em;margin:3px 0;} 
+.itemSearchResult .item .right .p-price{color:#F00;font-weight:700;} 
+.itemSearchResult .item .right img{padding:10px 19px;width:100px;height:100px;}
+
+.shop{float:right;width:235px;}
+.shop .m{border:1px solid #DDDDDD;margin-bottom:10px;}
+.shop .mt{border-bottom:1px solid #DDDDDD;background:#F7F7F7;}
+.shop .mt h3{padding-left:15px;}
+.shop .mc{border:none;padding:15px;}
+.shop .mc .fore1,.shop .mc .fore2{padding-bottom:10px;border-bottom:1px dotted #DDD;margin-bottom:10px;}
+.shop .mc dt{margin-bottom:5px;}
+.shop .mc dd .pic{float:left;width:50px;}
+.shop .mc dd .info{float:right;width:140px;}
+.shop .mc b{width:13px;padding-left:1px;height:14px;line-height:14px;text-align:center;float:left;margin:2px 5px 0 0;border-radius:5px 5px 5px 5px;}
+.shop .mc .fore1 b{border:1px solid #E43A3A;background:#E43A3A;color:#FFF;}
+.shop .mc .fore2 b{border:1px solid #F4F4F4;background:#F0F0F0;color:#A8A8A8;}
+.ad235{width:235px;overflow:hidden;}
+.ad235 img{width:235px;margin-bottom:10px;}

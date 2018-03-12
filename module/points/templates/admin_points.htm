@@ -1,0 +1,46 @@
+<div class="path">
+    <div>
+    	<{if $cg_u_type==1}>
+    		<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>
+        <{else}>
+    		<a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span>
+        <{/if}>
+        积分明细
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="active"><a href="main.php?m=points&s=admin_points">积分明细</a></li>
+                <li class="fr">我的积分:<{$points}></li>
+			</ul>
+        </div>
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="10"></th>
+                <th class="tl" width="100">积分变更</th>
+                <th class="tl">操作</th>
+                <th class="tl" width="140">添加时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach item=list key=num from=$de.list}>
+            <tr>
+            	<td></td>
+                <td class="tl"><{$list.points}></td>
+                <td class="tl"><{$list.desc}></td>
+                <td class="tl"><{$list.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+            	<td colspan="20" class="norecord">
+                	<i></i><span>暂无符合条件的数据记录</span>	
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+     </div>   
+</div>

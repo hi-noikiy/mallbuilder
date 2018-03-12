@@ -1,0 +1,122 @@
+<header>
+	<div class="nav-w">
+    <{if $smarty.get.type=='show'}>
+    	<section class="nav-s"><a href="<{$config.weburl}>/main.php?m=tg&s=admin_tg_order"><nav>团购订单</nav></a></section>
+    	<section class="nav-c"><span>订单详情</span></section>
+   		<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    <{else}>
+        <section class="nav-s"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+        <section class="nav-c"><span>团购订单</span></section>
+        <section class="nav-e"><a href="<{$config.weburl}>/"><nav>首页</nav></a></section>
+    <{/if}>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/orderdetail.css" rel="stylesheet" type="text/css" />
+<{if $smarty.get.type=='show'}>
+<div class="order clearfix">
+    <div class="list">
+        <p>订单状态：<b class="org"><{assign var=val value=$de.status}><{$statu_list.$val}></b></p>
+    	<p>订单编号：<{$de.order_id}></p>
+        <p>下单时间：<{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+    </div>
+	<h2>商品清单</h2>
+    <dl class="clearfix tg mt0">
+        <dt>
+            <a class="p-img" href="index.php?m=tg&s=detail&id=<{$de.tg_id}>">
+            	<img height="80" width="80" src="<{$de.tg_pic}>">
+            </a>
+        </dt>
+        <dd>
+            <p class="p-name"><a href="index.php?m=tg&s=detail&id=<{$de.tg_id}>"><{$de.tg_name}></a></p>
+            <p class="p-price"><b><{$config.money}><{$de.price}></b> X <{$de.quantity}></p>
+            <p class="p-count">实付款：<strong><{$config.money}><{$de.price*$de.quantity|number_format:2}></strong></p>
+        </dd>
+    </dl>
+    <h2>收货地址</h2>
+    <div class="list">
+		<p>收货人：<{$de.contact}></p>
+        <p>联系电话：<{$de.tel}></p>
+        <p>收货地址：<{$de.address}></p>
+    </div>
+    <{if $de.status>30 || ( $de.status==10 && $de.shipping_code )}>
+    <h2>发货地址</h2>
+    <div class="list">
+		<p>发货人：<{$de.shipping_name}></p>
+        <p>联系电话：<{$de.shipping_tel}></p>
+        <p>收货地址：<{$de.shipping_address}></p>
+    </div>
+    <h2>物流信息</h2>
+    <div class="list">
+		<p>物流名称：<{$de.shipping_company}></p>
+        <p>物流单号：<{$de.shipping_code}></p>
+    </div>
+	<{/if}>
+    <h2>操作历史</h2>
+    <div class="list">
+		<p>生成时间：<{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+        <{if $de.payment_time}>
+        <p>付款时间：<{$de.payment_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+        <{/if}>
+        <{if $de.shipping_time}>
+		<p>发货时间：<{$de.shipping_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+        <{/if}>
+        <{if $de.finished_time}>
+        <p>
+            <{if $de.status==10}>
+            取消时间：<{$de.finished_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}>&nbsp;&nbsp;原因: <{$de.admin_remark}>
+            <{else}>
+            完成时间：<{$de.finished_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}>
+            <{/if}>
+        </p>
+        <{/if}>
+    </div>
+</div>
+<{else}>
+<{if $tg.list}>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<div class="order tg clearfix">
+    <{foreach item=list key=num from=$tg.list}>
+        <dl>
+            <dt><a class="p-img" href="<{$config.weburl}>/main.php?m=tg&s=admin_tg_order&id=<{$list.id}>&type=show"><img height="80" width="80" src="<{$list.tg_pic}>"></a> </dt>
+            <dd>
+                <p class="p-name"><a href="<{$config.weburl}>/main.php?m=tg&s=admin_tg_order&id=<{$list.id}>&type=show"><{$list.tg_name}></a></p>
+                <p class="p-price"><strong><{$config.money}><{$list.price}></strong></p>
+                <p class="p-action">
+                    <{if $list.status==20}>
+                    <a href="main.php?m=payment&s=admin_pay&order_id=<{$list.order_id}>">等待付款</a>
+                    <{/if}>
+                    <{if $list.status==30}>已付款，未发货<{/if}>
+                    <{if $list.status==40}>已发货，<a href="javascript:void(0);" genre="pick_up" data-param="{'id':'<{$list.id}>'}">确定收货</a>
+                    <{/if}>
+                    <{if $list.status==50}>订单完成<{/if}>
+                    <{if $list.status==10}>订单取消<{/if}>
+                </p>
+            </dd>
+        </dl>
+    <{/foreach}>
+	<{$tg.page}>
+</div>
+<{else}>
+<div class="itemsNull">
+    <h3>没有搜索到相关宝贝</h3>
+</div>
+<{/if}>
+<{/if}>
+<script>
+$("[genre='pick_up']").live('click',function(){
+	var data_str = $(this).attr('data-param');
+	eval("data_str = "+data_str);
+	var url = "<{$config.weburl}>/main.php?m=tg&s=admin_tg_order";
+	
+	var pars = 'id='+data_str.id+'&op=pickup';
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest)
+		{
+			var id=originalRequest;
+			$('.td'+id).html('订单完成');
+		}
+	}
+});
+</script>

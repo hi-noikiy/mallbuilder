@@ -1,0 +1,136 @@
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/product/templates/pro.css">
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.validation.min.js"></script>
+<script>
+$(function(){
+	$('#form').validate({
+		errorPlacement: function(error, element){
+			Width=document.body.clientWidth/2-160;
+			Height=document.body.clientHeight/2+60;
+			$('.form-error').offset({top:Height,left:Width});
+			$('.form-error').html(error);
+		},      
+		rules : {
+			catid:{
+				required:true
+			},
+			con:{
+				required:true
+			},
+			
+		},
+		messages : {
+			catid:{
+				required:'请选择咨询类型',
+			},
+			con:{
+				required:'请填写咨询内容',
+			},
+		},
+		submitHandler:function(form){  
+			var uname='<{$smarty.cookies.USER}>';
+			if(uname=='')
+			{
+				alert('<{$lang.no_logo}>');
+				window.location.href='<{$config.weburl}>/login.php?forward='+encodeURIComponent("index.php?m=product&s=consult&pid=<{$smarty.get.pid}>");
+				return false;
+			}
+			form.submit();
+		}
+	});
+});
+</script>
+<div class="w">
+    <div class="right">
+    	<div class="product_detail">    
+            <div class="i-title">
+                <ul>
+                    <li <{if !$smarty.get.type}>class="cur"<{/if}>><a href="?m=product&s=consult&pid=<{$smarty.get.pid}>">全部购买咨询</a></li>
+                    <{foreach item=list from=$consultcat}>
+                    <{if !$list.type}>
+                    <li <{if $smarty.get.type==$list.id}>class="cur"<{/if}> ><a href="?m=product&s=consult&pid=<{$smarty.get.pid}>&type=<{$list.id}>"><{$list.name}></a></li>
+                    <{/if}>
+                    <{/foreach}>
+                </ul>
+            </div>
+            <div class="consult_search">
+            	<div class="fl">
+                	<strong>咨询前请选搜索，方便又快捷：</strong>
+                    <form method="get">
+                    <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                    <input type="hidden" name="s" value="<{$smarty.get.s}>">
+                    <input type="hidden" name="pid" value="<{$smarty.get.pid}>">
+                    <input type="text" name="k" value="<{$smarty.get.k}>">
+					<input type="image" src="templates/user_templates_default/img/btn_consult_search.png">
+                    </form>
+                </div>
+                <div class="fr">
+                <div><strong>温馨提示:</strong>因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，为此以下回复仅对提问者3天内有效，其他网友仅供参考！若由此给您带来不便请多多谅解，谢谢！</div>
+                </div>
+            </div>
+            <div class="i-con consult">
+            	<{foreach item=list from=$re.list }>
+                <div class="item">
+                     <dl class="user">
+                        <dt><b></b>网&#12288;&#12288;友：</dt>
+                        <dd><{$list.member_name}></dd>
+                    </dl>
+                    <dl class="ask">
+                        <dt><b></b>咨询内容：</dt>
+                        <dd><{$list.question}></dd>
+                    </dl>
+                    <{if $list.answer}>
+                    <dl class="answer">
+                        <dt><b></b>店铺回复：</dt>
+                        <dd>
+                        <div class="content"><{$list.answer}></div>
+                        <div class="date_answer"><{$list.answer_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></div>
+                        </dd>
+                    </dl>
+                    <{/if}>
+                </div>
+                <{foreachelse}>
+				<div class="item"><div class="norecode">暂无该类咨询！</div></div>
+                <{/foreach}>
+                <{if $re.page!='   ' && $re.page!=''}>
+				<div class="extra clearfix">
+                    <div class="page"><{$re.page}></div>
+                </div>
+                <{/if}>
+            </div>
+        </div>
+        <form method="post" id="form">
+        <input type="hidden" name="act" value="add" />
+        <input type="hidden" name="pid" value="<{$de.id}>" />
+        <input type="hidden" name="pname" value="<{$de.pname}>" />
+		<input type="hidden" name="uid" value="<{$de.userid}>">
+        <div class="review">
+        	<div class="form-error"></div>
+            <h5>发表咨询：</h5>
+            <div class="explain">声明：您可在购买前对产品包装、颜色、运输、库存等方面进行咨询，我们有专人进行回复！因厂家随时会更改一些产品的包装、颜色、产地等参数，所以该回复仅在当时对提问者有效，其他网友仅供参考！咨询回复的工作时间为：周一至周五，9:00至18:00，请耐心等待工作人员回复。</div>
+            <ul>
+                <li>	
+                	<span>咨询类型：</span>
+                    <{foreach item=list  key=key from=$consultcat}>
+                        <{if !$list.type}>
+                            <input <{if $key==0}>checked="checked"<{/if}> type="radio" name="catid" id="c_<{$list.id}>" value="<{$list.id}>"><label for="c_<{$list.id}>"><{$list.name}></label>
+                        <{/if}>
+                    <{/foreach}>
+                </li>
+                <li class="con"><span>咨询内容：</span><textarea id="con" name="con"></textarea></li>
+                <li class="buttons"><input type="image" src="templates/user_templates_default/img/btn_consult.jpg" /></li>
+            </ul>
+        </div>
+        </form>
+    </div>
+    <div class="left">
+        <div class="pinfo m">
+            <div class="mt"><h3>商品信息</h3></div>
+            <div class="mc">
+                <div class="p-img"><a target="_blank" href="?m=product&s=detail&id=<{$de.id}>"><img width="180" height="180" src="<{$de.pic}>_220X220.jpg"> </a></div>
+                <div class="p-name"><a target="_blank" href="?m=product&s=detail&id=<{$de.id}>"><{$de.pname}></a></div>
+                <div class="p-price"><strong><{$config.money}><{$de.price}></strong></div>
+            </div>
+        </div>	
+    </div>
+    <div class="clear"></div>
+</div>

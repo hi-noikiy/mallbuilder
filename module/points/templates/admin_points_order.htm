@@ -1,0 +1,193 @@
+<div class="path">
+    <div>
+    	<a href="main.php">卖家家中心</a> <span>&gt;</span> 
+		已兑换的商品 
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="<{if $smarty.get.type}>normal<{else}>active<{/if}>"><a href="main.php?m=points&s=admin_points_order">已兑换的商品</a></li>
+                <{if $smarty.get.type=='show'}>
+                <li class="active"><a href="#">订单详情</a></li>
+                <{/if}>
+            </ul>
+        </div>
+        <{if $smarty.get.type=='show'}>
+        <table class="table-list-style tg_detail">
+            <thead>
+                <tr>
+                    <th class="partition" colspan="99">订单详情</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr class="tr">
+                <td width="60">订单状态</td>
+                <td width="80"><b class="org"><{assign var=val value=$de.status}><{$statu_list.$val}></b></td>
+            
+                <td width="60">订单编号</td>
+                <td width="120"><{$de.order_id}></td>
+                
+                <td width="60">下单时间</td>
+                <td><{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table-list-style tg_detail">    
+            <thead>
+                <tr>
+                    <th class="partition" colspan="99">订单信息</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>商品</td>
+                    <td width="100">所需积分</td>
+                </tr>
+                <tr>
+                    <td width="90"><a target="_blank" href="../?m=points&s=detail&id=<{$de.tg_id}>"><img width="80" src="<{$de.pic}>"></a></td>
+                    <td><a target="_blank" href="../?m=points&s=detail&id=<{$de.product_id}>"><{$de.product_name}></a></td>
+                    <td>&nbsp;<{$de.allpoint}></td>
+                </tr>
+                <tr>
+                    <td colspan="99">下单时间: <{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                </tr>
+
+				<{if $de.shipping_time}>
+                <tr>
+                    <td colspan="99">发货时间: <{$de.shipping_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                </tr>
+                <{/if}>
+                
+                <{if $de.finnshed_time}>
+                <tr>
+                    <td colspan="99"><{if $de.status==0}>取消时间<{else}>完成时间<{/if}>: <{$de.finnshed_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}> <{if $de.admin_remark}>取消原因：<{$de.admin_remark}><{/if}></td>
+                </tr>
+                <{/if}>
+            </tbody>
+        </table>
+        <table class="table-list-style tg_detail">         
+            <thead>
+                <tr>
+                    <th class="partition" colspan="99">收货地址</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="100">收货人</td>
+                    <td><{$de.contact}></td>
+                </tr>
+                <tr>
+                    <td>联系电话</td>
+                    <td><{$de.tel}></td>
+                </tr>
+                <tr>
+                    <td>收货地址</td>
+                    <td><{$de.address}></td>
+                </tr>
+            </tbody>
+        </table>
+        <{if $de.status>10 || ( $de.status==10 && $de.shipping_code )}>
+        <table class="table-list-style tg_detail">         
+            <thead>
+                <tr>
+                    <th class="partition" colspan="99">发货地址</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="100">发货人</td>
+                    <td><{$de.shipping_name}></td>
+                </tr>
+                <tr>
+                    <td>联系电话</td>
+                    <td><{$de.shipping_tel}></td>
+                </tr>
+                <tr>
+                    <td>发货地址</td>
+                    <td><{$de.shipping_address}></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-list-style tg_detail">         
+            <thead>
+                <tr>
+                    <th class="partition" colspan="99">物流信息</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="100">物流名称</td>
+                    <td><{$de.shipping_company}></td>
+                </tr>
+                <tr>
+                    <td>物流单号</td>
+                    <td><{$de.shipping_code}></td>
+                </tr>
+            </tbody>
+        </table>
+        <{/if}>
+        <{else}>
+        <table class="table-list-style">
+        	<thead>
+            <tr>
+            	<th width="10"></th>
+				<th width="150" class="tl">订单编号</th>
+            	<th class="tl">商品名称</th>
+            	<th width="160">下单日期</th>
+            	<th width="150">订单状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach item=list key=num from=$de}>
+            <tr>
+	  			<td></td>
+                <td class="tl"><a href="<{$config.weburl}>/main.php?m=points&s=admin_points_order&id=<{$list.id}>&type=show"><{$list.order_id}></a></td>
+            	<td class="tl">
+				<a target="_blank" href="<{$config.weburl}>/?m=points&s=detail&id=<{$list.product_id}>"><{$list.product_name}></a>
+				</td>
+				<td><{$list.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                <td class='td<{$list.id}>'>
+                <{if $list.status==10}>未发货<{/if}>
+                <{if $list.status==20}>已发货，<a href="javascript:void(0);" data_type="pick_up" data-param="{'id':'<{$list.id}>'}">确定收货</a><{/if}>
+                <{if $list.status==30}>订单完成<{/if}>
+                <{if $list.status==0}>订单取消<{/if}>
+                </td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+            	<td colspan="20" class="norecord">
+                	<i></i><span>暂无符合条件的数据记录</span>	
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="20"><div class="pagination"><{$tg.page}></div></td>
+            </tr>
+            </tfoot>
+        </table>
+        <{/if}> 
+    </div>
+</div>
+<script>
+$("[data_type='pick_up']").live('click',function(){
+	var data_str = $(this).attr('data-param');
+	eval("data_str = "+data_str);
+	var url = "<{$config.weburl}>/main.php?m=points&s=admin_points_order";
+	var pars = 'id='+data_str.id+'&op=pickup';
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest)
+		{
+			var id=originalRequest;
+			$('.td'+id).html('订单完成');
+		}
+	}
+});
+</script>

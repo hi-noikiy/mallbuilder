@@ -1,0 +1,57 @@
+<{include file="site_nav.htm"}>
+<div class="header">
+	<div class="w fn-clear">
+        <div class="logo">
+        <a title="<{$config.company}>" href="<{$config.weburl}>"><img src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></a>
+        </div>
+        
+        <{if $domain}>
+        <div class="domain">
+        	<p class="p"><{$domain}></p>
+            <p><a href="<{$config.weburl}>/sub_site.php">[城市分站]</a></p>
+        </div>
+        <{/if}>
+        
+		<dl class="code">
+            <dt>扫一扫</dt>
+            <dd><img height="72" src="<{$config.weburl}>/image/phpqrcode.jpg"></dd>
+        </dl>
+        
+        <div class="search">
+            <form action="" class="form" method="get">
+            <div class="i-search">
+                <input type="hidden" value="product" name="m" id="m">
+                <input type="hidden" value="list" name="s" id="s">
+                <input type="text" class="text" name="key" id="key" value="<{$smarty.get.key}>" autocomplete="off">
+			</div>
+            <input type="submit" value="搜&nbsp;索" class="button">
+            </form>
+            <div class="hotwords">
+                <strong>热门搜索：</strong>
+                <{insert name="label" type="searchword" temp="search_word" limit=12}>
+        	</div>
+        </div>
+    </div>  
+</div>
+<div class="menu">
+    <div class="w">
+    <dl class="dl">
+        <dt class="dt"><h2><a href="javascript:void(0);">全部商品分类</a></h2></dt>
+		<dd class="dd" <{if $smarty.get.m=='product' && $smarty.get.s=='index'}>style="display:block" <{/if}> >
+            <{insert name="label" type="cat" temp="pro_cat_shop_left"}>
+            </dd>
+        </dl>
+        <ul class="menu-items">
+            <{foreach item=list key=num from=$menus name=nav}>
+            <li <{if $list.selected_flag==$current}>class="current"<{/if}>> <a href="<{if $list.link_addr|truncate:4:''=='http'}><{$list.link_addr}><{else}><{$config.weburl}>/<{$list.link_addr}><{/if}>"><{$list.menu_name}></a>
+            </li>
+            <{/foreach}>
+            <li class="cart">
+            <a href="<{$config.weburl}>?m=product&s=cart">
+            <b><script src="<{$config.weburl}>/?m=product&s=cart_number"></script></b>
+            我的购物车
+            </a>
+            </li>
+        </ul>
+    </div>
+</div>

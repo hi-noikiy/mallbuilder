@@ -1,0 +1,21 @@
+<{include file="header.htm"}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="javascript:history.back();"><nav>返回</nav></a></section>
+    	<section class="nav-c"><span>帮助中心</span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/help.css" rel="stylesheet" type="text/css" />
+<section>
+<{if !$smarty.get.id}>
+<ul>
+    <{foreach item=list from=$de}>
+    <li><a href="help.php?<{if $smarty.get.type}>id<{else}>type<{/if}>=<{$list.id}>"><{$list.title}></a></li>
+    <{/foreach}>
+</ul>    
+<{else}>
+	<div class="con"><{$de.con_desc}></div>
+<{/if}>    
+</section>
+<{include file="footer.htm"}>

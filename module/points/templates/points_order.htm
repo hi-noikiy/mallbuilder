@@ -1,0 +1,19 @@
+<form method="post">
+<div class="addr">
+<ul>
+    <{foreach item=list name=name from=$listadder}>
+        <li>
+            <input type="radio" name="addr" <{if $smarty.foreach.name.iteration==1}> checked="checked"<{/if}> id="addr<{$list.id}>" value="<{$list.id}>" />
+            <label for="addr<{$list.id}>"><{$list.area}> <{$list.address}> <{$list.name}>(收)</label>
+        </li>
+    <{foreachelse}>
+    	<li><a href="main.php?m=member&s=admin_orderadder">请添加收货地址</a></li>
+    <{/foreach}>
+</ul>
+</div>
+<div class="dialog_button">
+<input id="save" type="submit" value="确认购买">
+<input name="act" type="hidden" value="save">   
+<input name="id" type="hidden" value="<{$smarty.get.id}>">   
+</div>
+</form>

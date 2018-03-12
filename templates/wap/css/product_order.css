@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+.cart-button{height:32px;font-size:12px;line-height:32px;border-radius:5px 5px 5px 5px;width:100%;display:block;background:#D63638;color:#FFFFFF!important;border:1px solid #D63638;text-align:center;margin:15px auto;}
+.order{padding:5px 15px;font-size:14px;}
+.order h2{margin-top:10px;}
+.address{background-color:#FFFFFF;border:1px solid #E5E5E5;padding:5px 15px 10px;position:relative;word-break:break-all;margin-top:10px;border-radius:8px 8px 8px 8px;}
+.address p{overflow:hidden;margin-top:5px;}
+.item {background:#FFF;border-radius:8px 8px 8px 8px;border:1px solid #E0E1E1;min-height:80px;;position:relative;margin-bottom:15px;}
+.item:first-child{margin-top:10px;} 
+.item dl{padding:15px 10px;border-top:1px solid #E0E1E1;position:relative;}
+.item dl:first-child{border-top:none;}
+.item dt{width:80px;height:80px;float:left;}
+.item dd{margin-left:90px;line-height:18px;font-size:14px;}
+.item dd .p-name{max-height:36px;margin-bottom:8px;}
+.item dd .p-price{position:relative;overflow:inherit;height:32px;line-height:32px;}
+.item .top{background-color:#FAFAFA;border-bottom:1px solid #EAEAEA;border-top-left-radius:8px;border-top-right-radius:8px;height:28px;line-height:28px;padding-top:2px;}
+.item .top a{background:url(../../../image/wap/shop.png) no-repeat scroll 15px 0;background-size:15px 14px;color:#1F1F1F;padding-left:38px;}
+.item .top input[type="checkbox"]{margin:-1px 0 0 20px }
+.item .bottom{line-height:30px;background-color:#FAFAFA;border-top:1px solid #EAEAEA;border-bottom-left-radius:8px;border-bottom-right-radius:8px;text-align:right;padding:10px 18px;font-size:12px;} 
+.item .bottom .p-detail{font-size:12px;color:#666;float:left;}
+.item .bottom strong{color:#F00;font-size:16px;}
+.item .bottom .fr{float:right;}
+span.p-price strong{font-size:20px;}
+.form-error label{background-color:rgba(51, 51, 51, 0.9);border-radius:4px 4px 4px 4px;box-shadow:2px 2px 0 rgba(0, 0, 0, 0.1);color:#FFF;font-size:12px;font-weight:600;line-height:20px;padding:10px 30px;position:absolute;text-align:center;z-index:999;top:38%;left:25%;}
+.noaddr{text-align:center;margin-bottom:35px;}
+.noaddr a{color:#005EA7;}
+.noaddr div{background:url(../../../image/wap/msg-bg.png) top center no-repeat;height:151px;margin:40px auto 25px;}

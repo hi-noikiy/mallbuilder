@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>网站提醒</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>网站提醒</h3>
+                <ul>
+                    <li <{if $smarty.get.operation=='' and !$smarty.get.catid}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"><span>管理</span></a></li>
+                    <{foreach item=list from=$cat}>
+                    <li <{if $smarty.get.catid==$list.id}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&catid=<{$list.id}>"><span><{$list.name}></span></a></li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>
+        <script type="text/javascript">
+        $(function(){
+            /* 全选 */
+             $('.checkall').click(function(){
+                var _self = this;
+                $('.checkitem').each(function(){
+                    if (!this.disabled)
+                    {
+                        $(this).attr('checked', _self.checked);
+                    }
+                });
+                $('.checkall').attr('checked', this.checked);
+            });	 
+        });
+        </script>
+        <form action="" method="post">
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                	<th width="30"></th>
+                    <th class="al">&nbsp;&nbsp;信息内容</th>
+                    <th width="250" class="al">分类</th>
+                    <th width="120" class="al">邮件</th>
+                    <th width="120" class="al">站内信</th>
+                    <th width="120" class="al">手机</th>
+                    <th width="70"></th>
+                </tr>
+            </tbody>    
+            <{foreach item=list from=$de}>
+            <tbody>
+                <tr>
+					<td><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                    <td class="al"><input type="text" class="w350" name="name[<{$list.id}>]" value="<{$list.name}>" /></td>
+                    <td class="al">
+                    <select name="catid[<{$list.id}>]">
+                    	<{foreach item=clist from=$re}>
+                        <option <{if $clist.id==$list.catid}>selected="selected"<{/if}> <{if $clist.scat}>disabled="disabled"<{/if}> value="<{$clist.id}>"><{$clist.name}></option>
+                        <{foreach item=slist from=$clist.scat}>
+                        <option <{if $slist.id==$list.catid}>selected="selected"<{/if}> value="<{$slist.id}>">┣<{$slist.name}></option>
+                        <{/foreach}>
+                        <{/foreach}>
+                    </select>
+                    </td>
+                    <td><input type="text" name="mail_template[<{$list.id}>]" value="<{$list.mail_template}>" /></td>
+                    <td><input type="text" name="message_template[<{$list.id}>]" value="<{$list.message_template}>" /></td>
+                    <td><input type="text" name="mobile_template[<{$list.id}>]" value="<{$list.mobile_template}>" /></td>
+                    <td>
+                    <a onclick="return confirm('确定删除吗');" href="?m=sms&s=remind.php&catid=<{$smarty.get.catid}>&delid=<{$list.id}>"><{$delimg}></a>
+                    </td>
+                </tr>
+			</tbody>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+            <tbody>
+                <tr>
+                    <td class="al" colspan="99"><div><a class="addtr" onclick="addrow(this, 0)" href="javascript:void(0);">添加一级分类</a></div></td>
+                </tr>
+            </tbody>
+            
+            <tfoot>
+                <tr>
+                	<td><input type="checkbox" class="checkall" id="del"></td>
+                	<td colspan="3">
+                        <input type="hidden" name="act" value="op" />
+                        <input type="submit" name="submit" value="<{$lang.btn_submit}>" />
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+    </div>
+</body>
+<script>
+var rowtypedata = [
+	[
+	 	[1, ''],
+		[1, '<div><input name="newname[]" class="w350" type="text" /><a href="javascript:;" class="deleterow" onClick="deleterow(this)">删除</a></div>','al'],
+		[1, '<select name="newcatid[]"><{foreach item=list from=$re}><option <{if $list.scat}>disabled="disabled"<{/if}> value="<{$list.id}>"><{$list.name}></option><{foreach item=slist from=$list.scat}><option value="<{$slist.id}>">┣<{$slist.name}></option><{/foreach}><{/foreach}></select>','al'],
+		[1, ''],
+		[1, ''],
+		[1, ''],
+		[1, ''],
+	],
+	
+];
+var addrowdirect = 0;
+var addrowkey = 0;
+function addrow(obj, type) {
+	var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var tbody = obj.parentNode.parentNode.parentNode.parentNode;
+	if(!addrowdirect) {
+		var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex);
+	} else {
+		var row = table.insertRow(obj.parentNode.parentNode.parentNode.rowIndex + 1);
+	}
+	var typedata = rowtypedata[type];
+	for(var i = 0; i <= typedata.length - 1; i++) {
+		var cell = row.insertCell(i);
+		cell.colSpan = typedata[i][0];
+		var tmp = typedata[i][1];
+		if(typedata[i][2]) {
+			cell.className = typedata[i][2];
+		}
+		tmp = tmp.replace(/\{(n)\}/g, function($1) {return addrowkey;});
+		tmp = tmp.replace(/\{(\d+)\}/g, function($1, $2) {return addrow.arguments[parseInt($2) + 1];});
+		cell.innerHTML = tmp;
+	}
+	addrowkey ++;
+	addrowdirect = 0;
+}
+function deleterow(obj) {
+	var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var tr = obj.parentNode.parentNode.parentNode;
+	table.deleteRow(tr.rowIndex);
+}
+</script>
+</html>

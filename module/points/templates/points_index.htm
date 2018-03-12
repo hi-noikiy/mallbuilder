@@ -1,0 +1,43 @@
+<{include file="points_header.htm"}>
+<div class="w clearfix">
+	<div class="bannbar fl"><script src='<{$config.weburl}>/api/ad.php?id=10'></script></div>
+    <div class="launch fr"><h2></h2><div><script src='<{$config.weburl}>/api/ad.php?id=11'></script></div></div>
+</div>
+<div class="w">
+	<div class="m new">
+    	<div class="mt"></div>
+        <div class="mc clearfix">
+        	<ul>
+            	<{foreach item=list key=key from=$re}>
+            	<li <{if ($key+1)%6==0}>class="fr"<{/if}> >
+                	<a href="<{$config.weburl}>?m=points&s=detail&id=<{$list.id}>">
+                        <img src="<{$list.pic}>">
+                        <h3><{$list.name}></h3>
+                        <p>所需积分<b><{$list.points}></b></p>
+                    </a>
+                </li>
+                <{/foreach}>
+                
+            </ul>
+        </div>
+    </div>
+	<div class="m all">
+    	<div class="mt">
+            <a class="fr" href="?m=points&s=list">更多&gt;&gt;</a>
+        </div>
+        <div class="mc clearfix">
+       		<ul>
+                <{foreach item=list key=key from=$de}>
+            	<li <{if ($key+1)%6==0}>class="fr"<{/if}> >
+                	<a href="<{$config.weburl}>?m=points&s=detail&id=<{$list.id}>">
+                        <img src="<{$list.pic}>">
+                        <h3><{$list.name}></h3>
+                        <p>所需积分<b><{$list.points}></b></p>
+                    </a>
+                </li>
+				<{/foreach}>
+			</ul>
+        </div>
+    </div>
+</div>
+<{include file="points_footer.htm"}>

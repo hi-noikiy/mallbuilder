@@ -1,0 +1,41 @@
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="active"><a href="main.php?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>">消息订阅</a></li>
+			</ul>
+        </div>
+       	<div class="sms">
+        <table width="100%">
+            <tr>
+                <th>信息内容</th>
+                <th width="100">邮件</th>
+                <th width="100">站内信</th>
+                <th width="100">手机</th>
+            </tr>	
+        	<{foreach item=list from=$re}>
+            <{if $list.scat}>
+            <tr>
+                <td class="td1" colspan="4"><{$list.name}></td>
+            </tr>
+            <{foreach item=slist from=$list.scat}>
+            	<{if $slist.remind}>
+                <tr>
+                    <td class="td2" colspan="4"><{$slist.name}></td>
+                </tr>
+                <{foreach item=clist from=$slist.remind}>
+                <tr>
+                    <td class="td3"><{$clist.name}></td>
+                    <td><input type="checkbox" disabled="disabled" <{if $clist.mail}>checked="checked"<{/if}> /></td>
+                    <td><input type="checkbox" disabled="disabled" <{if $clist.message}>checked="checked"<{/if}> /></td>
+                    <td><input type="checkbox" disabled="disabled" <{if $clist.mobile}>checked="checked"<{/if}> /></td>
+                </tr>
+                <{/foreach}>
+                <{/if}>
+            <{/foreach}>
+            <{/if}>
+        	<{/foreach}>
+        </table>
+        </div>
+    </div>
+</div>

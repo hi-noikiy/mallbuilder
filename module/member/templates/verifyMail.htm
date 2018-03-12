@@ -1,0 +1,92 @@
+<script type="text/javascript">
+$(function(){
+	$('#form').validate({
+		errorPlacement: function(error, element){
+			element.nextAll('.form-error').append(error);
+		},      
+		rules : {
+			password:{
+				required:true
+			},
+			yzm:{
+				required:true,
+				chkyzm:true
+			}
+		},
+		messages : {
+			password:{
+				required:"请输入登录密码!"
+			},
+			yzm:{
+				required:"请输入验证码!"
+			}
+		}
+	});
+	jQuery.validator.addMethod("chkyzm", function(value, element) { 
+		
+		var url = 'ajax_back_end.php';
+		var sj = new Date();
+		var pars = 'shuiji=' + sj+'&yzm='+value; 
+		var ajax=$.post(url, pars,showResponse);
+		function showResponse(originalRequest)
+		{		
+			if(originalRequest=="true")
+			{
+				str = true; 
+			}
+			else
+			{
+				str = false;
+			}
+		}
+		return str;
+		
+	}, "验证码错误！");
+});
+</script>
+<div class="path">
+    <div>
+		<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>
+        <a href="main.php?m=member&s=admin_security">安全设置</a>
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="active"><a href="main.php?m=member&s=mail">验证身份</a></li>
+            </ul>
+        </div>
+        <div class="step">
+            <ul>
+                <li class="fore1">1.验证身份<b></b></li>
+                <li class="fore2">2.验证邮箱<b></b></li>
+                <li class="fore3">3.完成</li>
+            </ul>
+        </div>
+        <div class="form-style">
+        <form action="" id="form" method="post">
+        <input type="hidden" value="verify" name="submit">
+        <dl>
+            <dt>请输入登录密码：</dt>
+            <dd>
+                <input name="password" type="password" id="password" class="text w150" />
+                <div class="form-error"></div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>验证码：</dt>
+            <dd>
+                <input name="yzm" type="text" id="yzm" class="text w40" onChange="check_yzm()" />
+                <img align="absmiddle" onclick="get_randfunc(this);" src='<{$config.weburl}>/includes/rand_func.php?w=60&h=23'/>
+                <div class="form-error"></div>
+            </dd>
+        </dl>
+        <dl class="foot">
+            <dt>&nbsp;</dt>
+            <dd><input type="submit" value="<{$lang.submit}>" class="submit"></dd>
+        </dl>
+        </form>
+        </div>
+    </div>
+</div>

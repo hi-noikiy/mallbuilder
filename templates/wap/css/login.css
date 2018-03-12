@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* CSS Document */
+.login{margin:auto;text-align:center;position:relative;}
+table{text-align:center;margin:20px auto;}
+td{padding:10px;}
+input[type="text"],input[type="password"]{height:33px;width:280px;border:solid 1px #DDD;border-top-color:#BBB;padding-left:9px;color:#333;font-size:16px;-webkit-border-radius:0;-webkit-appearance:none;background:-webkit-gradient(linear,0 0,0 100%,from(#f5f5f5),to(#fdfdfd));}
+tr:first-child input{background:url(../../../image/wap/user.png) 5px no-repeat #FFF;background-size:12px;padding-left:22px;}
+tr:nth-child(2) input{background:url(../../../image/wap/password.png) 5px no-repeat #FFF;background-size:12px;padding-left:22px;}
+tr:nth-child(3) input{width:196px;}
+.form-error{background-color:rgba(51, 51, 51, 0.9);border-radius:4px 4px 4px 4px;box-shadow:2px 2px 0 rgba(0, 0, 0, 0.1);color:#FFF;font-size:12px;font-weight:600;line-height:20px;padding:10px 30px;position:absolute;text-align:center;z-index:999;top:38%;left:28%;}
+input[type="submit"]{background:#D93438;border:0 none;color:#FFFFFF;display:inline-block;font-size:24px;font-weight:700;height:44px;line-height:44px;min-width:100%;text-align:center;}

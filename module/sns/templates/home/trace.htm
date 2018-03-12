@@ -1,0 +1,88 @@
+<div class="main-widget">
+	<div class="item-bd pt0">
+    	<{foreach item=list key=num from=$blog}>
+        <div class="sns-item" <{if !$num}>style="padding-top:5px"<{/if}> >
+            
+            <div class="sns-wrap">
+           		<p class="sns-title"><a target="_blank" href="home.php?uid=<{$list.member_id}>"><{$list.member_name}></a></p>
+                <div class="sns-text"><span><{$list.title}></span></div>
+                <{if $list.original_id }>
+                <div class="quote-wrap">
+                     <{if $list.original_status==1}>
+                     原文已删除
+                     <{else}>
+                     <p class="sns-title"><a target="_blank" href="home.php?uid=<{$list.ouid}>"><{$list.ouser}></a></p>
+                    <div class="sns-text"><span><{$list.otitle}></span></div>
+                    <{if $list.oimg}>
+                    <div class="sns-img clearfix">
+                        <ul>
+                            <{foreach item=p from=$list.opic}>
+                                <{if $list.otype==2}>
+                                    <li><img class="small" src="<{$p}>_120X120.jpg"></li>
+                                <{else}>
+                                    <li><img src="<{$p}>"></li>
+                                <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                	<{/if}>
+                    <div class="sns-extra">
+                    	<span class="sns-time"><{$list.ocreate_time|date_format:"%m-%d&nbsp;%H:%M"}></span>
+                    </div>
+                    <{/if}>
+                </div>
+                <{else}>
+                	<{if $list.img}>
+                    <div class="sns-img clearfix">
+                        <ul>
+                            <{foreach item=p from=$list.pic}>
+                                <{if $list.type==2}>
+                                    <li><img class="small" src="<{$p}>_120X120.jpg"></li>
+                                <{else}>
+                                    <li><img src="<{$p}>"></li>
+                                <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                	<{/if}>
+                <{/if}>
+                <div class="sns-extra">
+                    <span class="sns-time"><{$list.create_time|date_format:"%m-%d&nbsp;%H:%M"}></span>
+                    <span class="sns-action">
+                        <span>
+                        <a data-param="{&quot;bid&quot;:&quot;<{$list.id}>&quot;}" genre="sns_forward" href="javascript:void(0);">转发</a>
+                        <a data-param="{&quot;bid&quot;:&quot;<{$list.id}>&quot;}" genre="sns_comment" href="javascript:void(0);">评论</a>
+                        </span>
+                    </span>
+                </div>
+			</div>
+        </div>
+        <{/foreach}>
+    </div>
+</div>
+<script type="text/javascript" src="<{$config.weburl}>/script/dialog/dialog.js" id="dialog_js"></script>
+<script>
+$("[genre='sns_forward']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("forward_form", '转发', '<{$config.weburl}>/main.php?m=sns&s=sns&op=forward&bid='+data.bid, 500);
+	return false;
+});
+$("[genre='sns_comment']").live('click',function(){
+	var data = $(this).attr('data-param');
+	eval("data = "+data);
+	ajax_form("comment_form", '评论', '<{$config.weburl}>/main.php?m=sns&s=sns&op=comment&bid='+data.bid, 500);
+	return false;
+});
+$('.small').live('click',function(){
+	$(this).addClass('large').removeClass('small');	
+	var url=$(this).attr("src")
+	url = url.substr(0,url.lastIndexOf('_'));
+	$(this).attr("src",url);
+});
+$('.large').live('click',function(){
+	$(this).addClass('small').removeClass('large');	
+	var url=$(this).attr("src")
+	$(this).attr("src",url+"_120X120.jpg");
+});
+</script>

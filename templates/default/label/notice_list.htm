@@ -1,0 +1,7 @@
+<{foreach item=list key=num from=$notice}>
+<{if $num==0}>
+<div><{$list.content|strip_tags|truncate:40}><a href="<{if $list.url}><{$list.url}><{else}><{$config.weburl}>/?m=announcement&s=detail&id=<{$list.id}><{/if}>" target="_blank" title="<{$list.title}>" >查看详情»</a></div> 
+<{else}>
+<p><a href="<{if $list.url}><{$list.url}><{else}><{$config.weburl}>/?m=announcement&s=detail&id=<{$list.id}><{/if}>" target="_blank" title="<{$list.title}>" ><{$list.title|truncate:26:''}></a></p>
+<{/if}>
+<{/foreach}>

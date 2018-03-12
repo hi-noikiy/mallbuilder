@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>独立页面</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script language="javascript" src="../script/Calendar.js"></script>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<script>
+$(function(){
+	$('#form').validate({
+		errorPlacement: function(error, element){
+			element.next('.form-error').append(error);
+		},      
+		rules : {
+			con_title:{
+				required:true
+			},
+		},
+		messages : {
+			con_title:{
+				required:'请填写标题',
+			},
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>独立页面</h3>
+                <ul>
+                    <li <{if $smarty.get.operation==''}>class="current"<{/if}>><a href="aboutus.php"><span>管理</span></a></li>
+                    <li <{if $smarty.get.operation=='add'}>class="current"<{/if}>><a href="aboutus.php?operation=add"><span>添加</span></a></li>
+                    <{if $smarty.get.operation=='edit'}>
+                    <li class="current"><a href="#"><span>修改</span></a></li>
+                    <{/if}>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>  
+        <{if $smarty.get.operation=='add' or $smarty.get.operation=='edit' }>
+            <form name="form" id="form" method="post">
+            <input name="id" type="hidden" id="id" value="<{$de.con_id}>">
+            <table class="table table1">
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">独立页面</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="100">名称</td>
+                    <td>
+                    <input name="con_title" id="con_title" type="text" class="w350" value="<{$de.con_title}>"><div id="form-error" class="form-error"></div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>调用网址</td>
+                    <td><input type="text" name="con_linkaddr" class="w350" value="<{$de.con_linkaddr}>" ></td>
+				</tr>
+                
+                <tr>
+                    <td>活动详情</td>
+                    <td>
+                    	<script charset="utf-8" src="../lib/kindeditor/kindeditor-min.js"></script>
+                    	<script>
+						var editor;
+						KindEditor.ready(function(K) {
+							editor = K.create('textarea[name="con_desc"]', {
+								
+							});
+						});
+						</script>
+                        <textarea style="width:80%; height:300px" name="con_desc"><{$de.con_desc }></textarea>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Template</td>
+                    <td><input type="text" name="template" class="w350" value="<{$de.template}>" ></td>
+				</tr>
+                
+                <tr>
+                    <td>SEO Title</td>
+                    <td><input type="text" name="title" class="w350" value="<{$de.title}>" ></td>
+				</tr>
+                <tr>
+                    <td>SEO keywords</td>
+                    <td><input type="text" name="keywords" class="w350" value="<{$de.keywords}>" ></td>
+				</tr>
+                <tr>
+                    <td>SEO description</td>
+                    <td><input type="text" name="description" class="w350" value="<{$de.description}>" ></td>
+				</tr>
+                
+                <tr>
+                    <td>展示状态</td>
+                    <td>
+                    <input type="radio" name="con_statu" value="1" id="open" <{if $de.con_statu==1}>checked="checked"<{/if}>/><label for="open">开启</label>
+                    <input type="radio" name="con_statu" value="0" id="close" <{if $de.con_statu!=1}>checked="checked"<{/if}>/><label for="close">关闭</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    <input class="submit" type="submit" value="提交">
+                    <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        <{else}>
+		<script type="text/javascript">
+        $(function(){
+            /* 全选 */
+             $('.checkall').click(function(){
+                var _self = this;
+                $('.checkitem').each(function(){
+                    if (!this.disabled)
+                    {
+                        $(this).attr('checked', _self.checked);
+                    }
+                });
+                $('.checkall').attr('checked', this.checked);
+            });	 
+        });
+        </script>
+        <form action="" method="post">
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th width="70" class="al">显示顺序</th>
+                    <th class="al" width="200">显示名称</th>
+                    <th class="al">调用地址</th>
+                    <th width="100">模板</th>
+                    <th width="100">状态</th>
+                    <th width="100"></th>
+                </tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+                    <td class="al"><input type="text" class="w50" maxlength="3" name="displayorder[<{$list.con_id}>]" value="<{$list.con_no}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
+                    
+                    <td class="al"><{$list.con_title}></td>
+					<td class="al">
+                    <{if $list.con_linkaddr}>                    
+                    <input readonly="readonly" name="url[<{$list.con_id}>]" class="w250" type="text" value="<{$list.con_linkaddr}>" >
+                    <{else}>
+                    <input readonly="readonly" name="url[<{$list.con_id}>]" class="w250" type="text" value="aboutus.php?type=<{$list.con_id}>">
+                    <{/if}>
+                    </td>
+                    <td><{if $list.template}><{$list.template}><{else}>Default<{/if}></td>
+                    <td><{if $list.con_statu==1}>开启<{else}>关闭<{/if}></td>
+                    <td>
+                    <a href="aboutus.php?operation=edit&editid=<{$list.con_id}>"><{$editimg}></a> 
+                    <a onclick="return confirm('确定删除吗');" href="aboutus.php?delid=<{$list.con_id}>"><{$delimg}></a> 
+                    </td>
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <tfoot>
+                <tr>
+                	<td colspan="2">
+                        <input type="hidden" name="act" value="op" />
+                        <input type="submit" value="提交" />
+                    </td>
+                    <td colspan="99"><div class="page"><{$de.page}></div></td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+        <{/if}>
+    </div>
+</body>
+</html>

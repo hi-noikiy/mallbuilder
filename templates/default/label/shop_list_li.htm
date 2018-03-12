@@ -1,0 +1,19 @@
+<{foreach item=list key=num from=$shop}>
+	<{if $num<3}>
+    <dl class="fore1">
+    	<dt><b><{$num+1}></b><a target="_blank" href="shop.php?uid=<{$list.userid}>"><{$list.company}></a><dt>
+        <dd class="clearfix">
+    		<div class="pic"><a target="_blank" href="shop.php?uid=<{$list.userid}>"><img width="50" height="50" src="<{$list.logo}>" /></a></div>
+            <div class="info">
+            	<p>店主：<a target="_blank" href="home.php?uid=<{$list.userid}>"><{$list.name}></a></p>
+                <p>信用度：<{if $list.sellerpointsimg}><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$list.sellerpointsimg}>"><{else}><{$list.sellerpoints}><{/if}></p>
+                <p>好评率：<{$list.favorablerate|number_format:2}>%</p>
+            </div>
+       </dd>
+    </dl>
+    <{else}>
+    <div class="fore2">
+    	<b><{$num+1}></b><a target="_blank" href="shop.php?uid=<{$list.userid}>"><{$list.company}></a>
+    </div>
+    <{/if}>
+<{/foreach}>

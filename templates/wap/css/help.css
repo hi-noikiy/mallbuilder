@@ -1,0 +1,7 @@
+@charset "utf-8";
+ul{margin:20px auto;}
+ul li{width:100%;margin:auto;box-sizing:border-box;border-bottom:1px solid #ccc;}
+ul li:first-child{border-top:1px solid #CCCCCC;}
+ul li a {display:block;padding:10px 25px;}
+ul li a:after{color:#666666;content:">";float:right;}
+.con{margin:20px auto;padding:0 15px;}

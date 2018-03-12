@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>支付会员管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/moderate.js"></script>
+</head>
+<body>
+<style>
+.icon{clear:both;}
+.icon i{background:url(../image/admin/icon.png) no-repeat;float:left;width:24px;height:21px;margin:5px 5px 0 0;}
+.icon i.fore1{background-position:-6px -101px;}
+.icon i.fore1.f{background-position:-6px -1px;}
+.icon i.fore2{background-position:-72px -101px;}
+.icon i.fore2.f{background-position:-70px -1px;}
+.icon i.fore3{background-position:-132px -100px;}
+.icon i.fore3.f{background-position:-132px 0;}
+</style>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>支付会员管理</h3>
+            <{if $smarty.get.operation=='edit'}>
+            <ul>
+            <li class="current"><a href="#"><span>编辑</span></a></li>
+            </ul>
+            <{/if}>
+		</div>
+    </div>
+    <div class="h35"></div>
+    <{if $smarty.get.operation=='edit'}>
+        <form name="form" id="form" method="post">
+        <input name="id" type="hidden" id="id" value="<{$de.pay_id}>">
+ 		<table class="table table1">
+            <thead>
+                <tr>
+                    <th class="partition" colspan="99">会员信息</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td width="100">邮箱</td>
+                <td><{$de.pay_email}></td>
+            </tr>
+            <{if $de.pay_mobile}>
+            <tr>
+                <td>手机</td>
+                <td><{$de.pay_mobile}></td>
+            </tr>
+            <{/if}>
+            <tr>
+                <td>真实姓名</td>
+                <td>
+				<p><{$de.real_name}></p>
+                <p class="icon" style="margin-top:5px;">
+                	<i class="fore1<{if $de.identity_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore2<{if $de.identity_verify=='false'||$de.mobile_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore3<{if $de.mobile_verify=='false'}> f<{/if}>"></i>
+                </p>
+                </td>
+            </tr>
+            <tr>
+                <td>登录密码</td>
+                <td>
+                <input type="text" name="login_pass" class="w150" value="" />
+                <p style="color:#CCC;">不填默认</p>
+                </td>
+            </tr>
+            <tr>
+                <td>支付密码</td>
+                <td>
+                <input type="text" name="pay_pass" class="w150" value="" />
+                <p style="color:#CCC;">不填默认</p>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>安全问题</td>
+                <td>
+                <input type="text" name="question" class="w150" value="" />
+                <p style="color:#CCC;">不填默认</p>
+                </td>
+            </tr>
+            <tr>
+                <td>答案</td>
+                <td>
+                <input type="text" name="answer" class="w150" value="" />
+                <p style="color:#CCC;">不填默认</p>
+                </td>
+            </tr>
+           
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                <input class="submit" type="submit" value="提交">
+                <input name="act" type="hidden" id="action" value="edit">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+        
+    <{else}>
+    <table class="select_table">
+        <tr>
+            <td>
+                <div class="select_box">
+                    <form action="" method="get">
+                    <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                    <input type="hidden" name="s" value="member.php">
+                    <input placeholder="请输入邮箱..." type="text" name="email" class="txt s w250" value="<{$smarty.get.email}>"  />
+                    <input placeholder="请输入真实姓名..." type="text" name="name" class="txt w150" value="<{$smarty.get.name}>"  />
+                    <input type="submit" value="搜索" />
+                    </form>
+                </div>
+                <a class="refresh" href="?m=<{$smarty.get.m}>&s=member.php"></a>
+            </td>
+        </tr>
+    </table>
+	<div style="position: relative;" id="threadlist">   
+    <form action="" method="post" id="form" name="form">
+    <input type="hidden" name="act" id="act" value="op" />
+    <table class="table product">
+        <tbody>
+            <tr class="header">
+                <th width="12"></th>
+                <th width="30">操作</th>
+                <th colspan="2" class="al">会员</th>
+                <th width="150">预存款</th>
+                <th width="120">最后登录</th>
+            </tr>
+            <{foreach item=list from=$de.list}>
+            <tr>
+                <td><input <{if $list.real_name=='administrator'}>disabled="disabled"<{/if}> type="checkbox" value="<{$list.pay_id}>" class="checkitem" onclick="tmodclick(this)" name="chk[]"></td>               
+                <td>
+               	<a href="module.php?m=payment&s=cashflow.php&operation=add&email=<{$list.pay_email}>">充值</a>
+                <{if $list.real_name!='administrator'}>
+               	<a href="module.php?m=payment&s=member.php&operation=edit&id=<{$list.pay_id}>">编辑</a><{/if}>
+                </td>
+                <td class="al" width="80" valign="top"><img width="60" class="img" alt="<{$list.pname}>" src="<{$list.logo}>" /></td>
+                <td class="al" valign="top">
+                <h4 style="margin-bottom:5px;">
+                    <{$list.real_name}>&nbsp;&nbsp;
+                    <span style="font-weight:normal;"><{$list.pay_email}></span>
+                </h4>
+                <p>注册时间：<{$list.regtime|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+                <p class="icon">
+                	<i class="fore1<{if $list.identity_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore2<{if $list.identity_verify=='false'||$list.mobile_verify=='false'}> f<{/if}>"></i>
+                	<i class="fore3<{if $list.mobile_verify=='false'}> f<{/if}>"></i>
+                </p>
+                </td>
+                <td>
+                <p>可用<font color="red" style="margin:0 2px;"><b><{$list.cash}></b></font>元</p>
+                <p>冻结<font color="red" style="margin:0 2px;"><b><{$list.unreachable}></b></font>元</p>
+                </td>
+                <td><{$list.lastLoginTime|date_format:"%Y-%m-%d<br>%H:%M:%S"}></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="99" class="pages">
+                <div class="fl">每页最多显示： 20条</div>
+                <div class="page"><{$de.page}></div>
+				<div class="fr">共有<{$de.count}>条记录</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <div id="mdly" class="hidden">
+        <a onclick="$('#mdly').addClass('cpd');" href="javascript:;" class="min">最小化</a>
+        <label>
+        <input type="checkbox" onclick="if(!($('.max')[0].innerHTML = modclickcount = checkall(this.form, 'chk'))) {$('#mdly').hide();}" name="chkall">
+        全选
+        </label>
+        <h6>
+            <span>选中</span>
+            <strong class="max" onclick="$('#mdly').removeClass('cpd');">0</strong>
+            <span>个会员: </span>
+        </h6>
+        <p style="padding:18px 0 0;">
+            <a id="button" key="del" href="javascript:;">删除</a>
+        </p>
+    </div>
+    </form>
+	</div>
+    <{/if}>
+</div>
+<script>
+$("#button").live('click',function(){
+	var key=$(this).attr("key")
+	$("#act").val(key);		
+	$("#form")[0].submit();
+	return false;
+});
+</script>
+</body>
+</html>

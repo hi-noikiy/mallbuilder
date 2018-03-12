@@ -1,0 +1,33 @@
+<{include file="header.htm"}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span><{$lang.edit_suc}></span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<section class="m30 red">
+<{if $smarty.get.str}>
+    <{$smarty.get.str}>
+<{else}>
+    <{$lang.edit_suc}>
+<{/if}>
+</section>
+<{include file="footer.htm"}>  
+<script>
+function gotourl(url)
+{
+	var time=900;
+	<{if $smarty.get.time}>
+	var time=<{$smarty.get.time}>;
+	<{/if}>
+	setTimeout("gotourl1('"+url+"')",time);//设定超时时间
+}
+function gotourl1(url)
+{
+	window.location=url;
+}
+<{if $smarty.get.url}>
+gotourl('<{$smarty.get.url}>');
+<{/if}>
+</script>

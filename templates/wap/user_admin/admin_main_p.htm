@@ -1,0 +1,32 @@
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>我的商城</span></section>
+    	<section class="nav-e"><!--<a href="#"><nav>设置</nav></a>--></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/main.css" rel="stylesheet" type="text/css" />
+<section>
+    <dl class="user">
+    <dt><img width="60" height="60" src="<{if $cominfo.logo}><{$cominfo.logo}><{else}>image/wap/avatar.png<{/if}>"></dt>
+    <dd><{$cominfo.user}>&nbsp;&nbsp;<img align="absmiddle" src="<{$config.weburl}>/image/points/<{$cominfo.buyerpointsimg}>" title="<{$cominfo.buyerpoints}>" alt="<{$cominfo.buyerpoints}>"></dd>
+    </dl>
+	<div class="info clearfix">
+        <ul>
+            <li><a <{if $shop_count.0}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=1"><strong><{$shop_count.0}></strong>待付款</a></li>
+            <li><a <{if $shop_count.1}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=2"><strong><{$shop_count.1}></strong>待发货</a></li>
+            <li><a <{if $shop_count.2}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=3"><strong><{$shop_count.2}></strong>待收货</a></li>
+            <li><a <{if $shop_count.3}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=4"><strong><{$shop_count.3}></strong>待评价</a></li>
+        </ul>
+    </div>
+</section>
+<section class="m clearfix">
+	<a href="main.php?m=product&s=admin_buyorder"><dl class="fore1"><dt></dt><dd>全部订单</dd></dl></a>
+	<a href="main.php?m=sns&s=admin_share_shop"><dl class="fore2"><dt></dt><dd>收藏店铺</dd></dl></a>
+	<a href="main.php?m=sns&s=admin_share_product"><dl class="fore3"><dt></dt><dd>收藏产品</dd></dl></a>
+	<a href="index.php?m=product&s=cart"><dl class="fore4"><dt></dt><dd>购物车</dd></dl></a>
+	<a href="main.php?m=member&s=admin_orderadder"><dl class="fore5"><dt></dt><dd>收货地址</dd></dl></a>
+	<a href="main.php?m=tg&s=admin_tg_order"><dl class="fore6"><dt></dt><dd>我的团购</dd></dl></a>
+	<a href="search.php"><dl class="fore7"><dt></dt><dd>搜索</dd></dl></a>
+	<a href="help.php"><dl class="fore8"><dt></dt><dd>帮助</dd></dl></a>
+</section>

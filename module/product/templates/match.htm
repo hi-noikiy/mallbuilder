@@ -1,0 +1,83 @@
+<link href="<{$config.weburl}>/templates/default/user_admin.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript" charset="utf-8" ></script>
+<script type="text/javascript">
+	$(function(){
+		/* 全选 */
+		 $('.checkall').click(function(){
+			var _self = this;
+			$('.checkitem').each(function(){
+				if (!this.disabled)
+				{
+					$(this).attr('checked', _self.checked);
+				}
+			});
+			$('.checkall').attr('checked', this.checked);
+		});	 
+	});
+</script>
+<style>
+.container{ margin:18px auto;}
+.table{ width:96%; margin:auto; border:1px solid #ddd;}
+.table .header th{ padding:10px; border-bottom:1px solid #ddd;}
+.table td{ padding:8px;}
+.table tbody td{ padding:8px; border-bottom:1px solid #ddd;}
+.page { float: right; }
+.page a, .page b { border: 1px solid #CCCCCC; float: left; font-family: arial; font-size: 14px; height: 20px; line-height: 20px; margin-left: 2px; overflow: hidden; padding: 3px 10px; border-radius: 3px 3px 3px 3px; }
+.page b { color: #CC0000; background: #FFE3E3; border-color: #CC0000; }
+</style>
+<div class="container dialog">
+<form action="" method="post">
+<table class="table" id="match_table">
+    <tbody>
+        <tr class="header">
+            <th width="20"></th>
+            <th class="al">产品名称</th>
+            <th width="70">销售价</th>
+            <th width="70">市场价</th>
+            <th width="70">库存</th>
+        </tr>
+        <{foreach item=list key=num from=$de.list}>
+        <tr>
+            <td><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+            <td class="name al">
+            <input type="hidden" value="<{$list.id}>" name="match_id[]">
+            <{$list.pname}>
+            </td>
+            <td><{$list.price}></td>
+            <td><{$list.market_price}></td>
+            <td><{$list.amount}></td>
+        </tr>
+        <{foreachelse}>
+        <tr>
+            <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+        </tr>
+        <{/foreach}>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2" class="al">
+                <div class="del" style="float:left; margin:5px 0 0 0">
+                <input type="checkbox" class="checkall" id="del" style="float:left">
+                <label for="del" style="float:left">&nbsp;全选&nbsp;</label>
+                </div>
+                <input type="button" id="save" value="保存" />
+            </td>
+            <td colspan="99"><div class="page"><{$de.page}></div></td>
+        </tr>
+    </tfoot>
+</table>
+</form>
+<script>
+$('#save').click(function(){
+	var obj=$("input[class='checkitem']:checked");
+	if(!obj.length)
+	{
+		alert("请选择数据，再进行操作!");
+		return false;
+	}
+
+	window.parent.addrow("match",0);
+	window.parent.DialogManager.close("match");
+});
+</script>
+</div>

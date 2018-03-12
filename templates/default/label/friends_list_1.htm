@@ -1,0 +1,32 @@
+<{foreach item=list key=num from=$member}>
+    <dl class="clearfix">
+        <dt><a target="_blank" href="home.php?uid=<{$list.userid}>"><img height="50" width="50" src="<{if $list.logo}><{$list.logo}><{else}>image/default/avatar.png<{/if}>" /></a></dt>
+        <dd>
+        <p class="name"><a target="_blank" href="home.php?uid=<{$list.userid}>"><{$list.name}></a></p>
+        <a class="addicon" href="javascript:void(0)" data-param="{'mid':'<{$list.userid}>'}" data_type="followbtn"><span><em>+</em>关注</span></a>
+        </dd>
+    </dl>
+<{/foreach}>
+<script>
+$(function(){
+	//加关注
+	$("[data_type='followbtn']").live('click',function(){
+		
+		var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+		var uname='<{$smarty.cookies.USER}>';
+		var data_str = $(this).attr('data-param');
+        eval( "data_str = "+data_str);
+		var pars = 'mid='+data_str.mid+'&uname='+uname+'&op=add';
+		$.post(url, pars,showResponse);
+		function showResponse(originalRequest)
+		{
+			if(originalRequest>1)
+				alert('成功添加');
+			else if (originalRequest>0)
+				alert('已添加');
+			else
+				alert('参数传递错误，无法完成操作');
+		}
+	});
+});
+</script>

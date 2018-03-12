@@ -1,0 +1,84 @@
+<{include file="site_nav.htm"}>
+<link href="<{$config.weburl}>/templates/default/css/register.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/register.js" type="text/javascript"></script>
+<div class="w">
+    <div class="header">
+        <a hidefocus="true" title="<{$config.company}>" href="<{$config.weburl}>"><img height="35" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.png<{/if}>" /></a>
+        <h2>账户注册</h2>
+    </div>
+    <{if $config.closetype==2}>
+    <div style="height:300px; padding-top:150px; color:#FF0000; border: 1px solid #A9B9D3; font-size:16px"> <{$config.closecon}></div>
+    <{else}>
+    <div class="steps step-1">
+        <ol>
+            <li class="step1">1 填写账户信息</li>
+            <li class="step2">2 验证账户信息</li>
+            <li class="step3">3 注册成功</li>
+        </ol>	
+	</div>
+    <div class="register clearfix bg">
+        <form action="" method="post">
+            <div class="item">
+                <span>会员名：</span>
+                <div class="item-ifo">
+                    <input name="user" type="text" id="user" class="text" />
+                    <div class="i-name ico"></div>
+                </div>
+                <div class="msg-box"><div></div></div>
+            </div>
+			<div class="item">
+                <span>登录密码：</span>
+                <div class="item-ifo">
+                    <input type="password"  name="password" id="password" class="text" />
+                    <div class="i-pass ico"></div>
+                </div>
+                <div class="msg-box"><div></div></div>
+            </div>
+            <div class="item">
+                <span>确认密码：</span>
+                <div class="item-ifo">
+                    <input type="password" name="re_password" id="re_password" class="text" />
+                    <div class="i-pass ico"></div>
+                </div>
+                <div class="msg-box"><div></div></div>
+            </div>
+            <div class="item">
+                <span>验证码：</span>
+                <div class="item-ifo">
+                    <input name="yzm" type="text" id="yzm" class="text w40" />
+                    <img onclick="get_randfunc(this);" src='<{$config.weburl}>/includes/rand_func.php'/>
+                </div>
+				<div class="msg-box"><div></div></div>
+            </div> 
+            <{if $config.user_reg_verf}>
+            <div class="item">
+                <span>验证问题：</span>
+                <div class="item-ifo">
+                    <input onFocus="show_yzwt();" name="ckyzwt" type="text" id="ckyzwt" class="text w40" onclick="show_yzwt();"  />
+                    <span id="yzwt"></span>
+                </div>
+				<div class="msg-box"><div></div></div>
+            </div> 
+            <{/if}> 
+            
+            <div class="item register-btn">
+                <input type="button" class="submit" value="同意协议并注册" />
+                <p class="read"><em><{$config.company}>用户注册协议</em></p>
+                <div class='agreement hidden'><{$config.association}></div>
+                <input name="forward" type="hidden" id="forward" value="<{$smarty.get.forward}>" />
+                <input name="connect_id" type="hidden" id="forward" value="<{$smarty.get.connect_id}>" />
+            </div>
+        </form>
+    </div> 
+ 	<{/if}>
+</div>
+
+<div class="clear"></div>
+<div class="footer clearfix">
+    <div class="w">
+        <div class="links"><{$web_con}></div>
+        <div class="copyright"><{$bt}></div>
+    </div>
+</div>
+</body>
+</html>

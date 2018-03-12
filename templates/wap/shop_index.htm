@@ -1,0 +1,30 @@
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>收藏店铺</span></section>
+    	<section class="nav-e"><a href="main.php?m=sns&s=admin_share_product"><nav>收藏商品</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/list.css" rel="stylesheet" type="text/css" />
+<section class="itemSearchList">
+<{if $info.list}>
+<div class="itemSearchResult clearfix">
+    <{foreach item=list key=num from=$info.list}>
+    <dl>
+        <dt><a class="p-img" href="<{geturl uid=$list.userid user=$list.user com=$list.company}>">  <img height="80" width="80" alt="<{$list.company}>" src="<{if $list.logo}><{$list.logo}><{else}>image/default/nopic.gif<{/if}>"></a> </dt>
+        <dd>
+            <p class="p-name"><a href="<{geturl uid=$list.userid user=$list.user com=$list.company}>"><{$list.company}></a></p>
+            <{if $list.sellerpointsimg}><p class="p-name color"><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$list.sellerpointsimg}>"></p><{/if}>
+            <{if $list.name}><p class="p-name color">店主：<{$list.name}></p><{/if}>
+            <p class="p-name color">好评率：<{$list.favorablerate|number_format:2}>%</p>
+        </dd>
+    </dl>
+    <{/foreach}>
+    <{$info.page}>
+</div>
+<{else}>
+<div class="itemsNull">
+    <h3>没有搜索到相关宝贝</h3>
+</div>
+<{/if}>
+</section>

@@ -1,0 +1,57 @@
+<link href="<{$config.weburl}>/templates/wap/css/index.css" rel="stylesheet" type="text/css" />
+<div class="w">
+    <section class="header">
+        <h1 class="logo">
+        <a href="<{$config.weburl}>">
+            <img src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.png<{/if}>" />
+        </a>
+        </h1>
+        <div class="search">
+        <form method="get" name="form" id="form" action="<{$config.weburl}>/">
+            <input id="m" name="m" type="hidden" value="product" />
+            <input id="s" name="s" type="hidden" value="list" />
+            <input value="<{if $smarty.get.key}><{$smarty.get.key}><{else}><{/if}>" onclick="this.value='';" name="key" type="text">
+            <input type="submit" value="" />
+            <input type="hidden" name="ie" value="UTF-8" />
+        </form> 
+        </div>
+    </section>
+</div>
+<div class="w">
+    <section class="entry">
+        <dl class="fore1">
+            <dt><a href="main.php"></a></dt>
+            <dd><a href="main.php">我的商场</a></dd>
+        </dl>
+        <dl class="fore2">
+            <dt><a href="?m=tg"></a></dt>
+            <dd><a href="?m=tg">团购</a></dd>
+        </dl>
+        <dl class="fore3">
+            <dt><a href="main.php?m=product&s=admin_buyorder"></a></dt>
+            <dd><a href="main.php?m=product&s=admin_buyorder">我的订单</a></dd>
+        </dl>
+        <dl class="fore4">
+            <dt><a href="?m=product&s=cart"></a></dt>
+            <dd><a href="?m=product&s=cart">购物车</a></dd>
+        </dl>
+    </section>
+</div>
+<{foreach item=slist name=name key=key from=$categorys}>
+<div class="w fore<{$smarty.foreach.name.iteration-1}>">
+    <section class="m clearfix">
+        <section class="mt clearfix">
+            <div class="cat"><a href="?m=product&s=list&id=<{$slist.catid}>"><h3><{$slist.name}></h3></a></div>
+            <div class="adv"><img src="<{$config.weburl}>/image/wap/adv.png"></div>
+        </section>
+        <section class="mc clearfix">
+            <{foreach item=cat key=num from=$slist.sub_cat}>
+                <a <{if $num|in_array:$slist.rand}>class="color"<{/if}> href="?m=product&s=list&id=<{$cat.catid}>"><{$cat.cat}></a>
+            <{/foreach}>
+        </section>
+    </section>
+</div>
+<{/foreach}>
+<div class="cate"><a href="cat.php">其它分类</a></div>
+
+

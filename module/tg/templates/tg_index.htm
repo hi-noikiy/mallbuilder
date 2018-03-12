@@ -1,0 +1,85 @@
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/tg/templates/tg.css">
+<div class="w">
+    <div class="detailnav">
+        <strong><a href="<{$config.weburl}>">首页</a></strong>
+        <span> >  <a href="<{$config.weburl}>/?m=tg">团购</a></span>
+    </div>
+</div>
+<div class="w">
+	<div id="select">
+    	<{if $tgcat }>
+        <dl class="first">
+            <dt>分类：</dt>
+            <dd>
+				<{foreach item=list from=$tgcat}>
+                <div><a href="<{$config.weburl}>/?m=tg&catid=<{$list.id}>"><{$list.catname}></a></div>
+                <{/foreach}>
+            </dd>
+        </dl>
+        <{/if}>          
+    </div>
+
+    <div class="filter clearfix">
+        <div class="fore1 clearfix">
+            <div class="order">
+                <{assign var=s value=$smarty.get.orderby}>
+                <a <{if !$s}>class="current"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>"><span>默认排序</span></a>
+                <a <{if $s==1}>class="current"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>&orderby=1"><span>销量</span><b></b></a>
+                <a <{if $s==2}>class="current"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>&orderby=2"><span>人气</span><b></b></a>
+                <a <{if $s==3}>class="current"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>&orderby=3"><span>最新</span><b></b></a>
+                <a <{if $s==4 || $s==5}>class="current <{if $s==4}>up<{/if}>"<{/if}> href="<{$config.weburl}>/?<{$url|replace:"&orderby=$s":""}>&orderby=<{if $s==4 }>5<{else $s==5 }>4<{/if}>"><span>价格</span><b></b></a>
+            </div>
+            <div class="i-search">
+            <form action="<{$config.weburl}>">
+            <input name="m" id="m" type="hidden" value="<{$smarty.get.m}>" />
+            <input class="text" type="text" value="<{$smarty.get.keys}>" size="20" name="keys" />
+            <input type="submit" value="搜索" />
+            </form>
+            </div>
+            <div class="pages"><{$tg.pages}></div>
+            <div class="total">共<strong><{$tg.count}></strong>个商品</div>
+        </div>
+    </div>
+    <div class="itemSearchList">
+        <{if $tg.list}>
+        <div class="itemSearchResult clearfix">
+            <ul class="clearfix">
+                <{foreach item=list key=num from=$tg.list}>
+                <li <{if ($num+1)%3==0}>class="mr0"<{/if}> >
+                    <div class="p-info">
+                        <a class="p-img" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>">  <img height="230" width="280" alt="<{$list.name}>" src="<{$list.pic}>"> </a>
+                        <a class="p-name" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>"><{$list.name}></a>
+                        <p class="p-price">
+                        <strong><{$config.money}><{$list.price}></strong>
+                        <span>门店价：<{$config.money}><{$list.market_price}></span>
+                        </p>
+                      <div class="p-shop">
+					  <span class="last">已购买<strong><{$list.virtual_quantity+$list.sell_amount}></strong>件</span>
+                      <a href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>">去看看</a>
+                      </div>
+                    </div>
+                </li>
+                <{/foreach}>
+            </ul>
+			<div class="page"><{$tg.page}></div>
+        </div>
+        <div class="hotTg">
+        	<div class="m">
+                <div class="mt"><h3>团购排行榜</h3></div>
+                <div class="mc">
+                 <{insert name="label" type="tg" temp="tg_list_1" limit=9}>
+                </div>
+            </div>
+        </div>
+        <{else}>
+            <div class="itemsNull">
+                <h3>很抱歉，没有找到符合条件的宝贝</h3>
+                <p>
+                    <em>建议您：</em>
+                    <span>1、适当减少筛选条件，可以获得更多结果</span>
+                    <span>2、尝试其他关键字</span>
+                </p>
+            </div>
+        <{/if}>
+    </div>
+</div>

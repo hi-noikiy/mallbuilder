@@ -1,0 +1,35 @@
+@charset "utf-8";
+.order{padding:0 15px;}
+.item {background:#FFF;border-radius:8px 8px 8px 8px;border:1px solid #E0E1E1;min-height:80px;;position:relative;margin-top:15px;}
+.item dl{padding:15px 10px;border-bottom:1px solid #E0E1E1;}
+.item dl:last-child{border-bottom:none;}
+.item dt{width:80px;height:80px;float:left;}
+.item dd{margin-left:90px;line-height:18px;font-size:14px;}
+.item dd .p-name{max-height:36px;margin-bottom:8px;}
+.item dd .p-detail{font-size:12px;color:#ABABAB;margin-top:3px;}
+.item dd .p-action{margin-top:5px;font-size:12px;}
+.item dd .p-action a{color:#2366A8;}
+.item .top{background-color:#FAFAFA;border-bottom:1px solid #EAEAEA;border-top-left-radius:8px;border-top-right-radius:8px;height:28px;line-height:28px;padding-top:2px;}
+.item .top a{background:url(../../../image/wap/shop.png) no-repeat scroll 15px 0;background-size:15px 14px;color:#1F1F1F;padding-left:38px;}
+.item .bottom{height:30px;line-height:30px;background-color:#FAFAFA;border-top:1px solid #EAEAEA;border-bottom-left-radius:8px;border-bottom-right-radius:8px;padding:0 18px;font-size:12px;} 
+.item .bottom strong{color:#F00;font-size:14px;}
+.item .bottom span:last-child{float:right;}
+.item .bottom span a{color:#2366A8;}
+.itemsNull{margin:20px 0 15px;}
+.select{cursor:pointer;}
+.select em{background:url(../../../image/wap/down.png);background-position:center center;background-repeat:no-repeat;background-size:contain;display:inline-block;height:13px;width:13px;}
+.select em.up{background-image:url(../../../image/wap/up.png);}
+.i-select{width:150px;position:absolute;top:50px;left:50%;margin-left:-75px;text-align:center;-webkit-transform:translateZ(0);}
+.i-select:after{content:' ';position:absolute;left:50%;top:-8px;margin-left:-1px;width:0;height:0;border:transparent 4px solid;border-bottom-color:#333;}
+.i-select ul{background-color:#333333;border-radius:8px 8px 8px 8px;overflow:hidden;}
+.i-select li{color:#FFFFFF;height:40px;padding:0 5px;cursor:pointer;}
+.i-select a{color:#FFFFFF;padding:5px 0;display:block;height:30px;line-height:30px;}
+
+.tg h2{margin:12px 0 10px;}
+.mt0{margin-top:0px !important;}
+.list{background-color:#FFFFFF;border-radius:8px 8px 8px 8px;border:1px solid #E0E1E1;padding:15px 10px;position:relative;word-break:break-all;margin-top:10px;}
+.list p{overflow:hidden;margin-top:5px;}
+.list:last-child{margin-bottom:20px;}
+
+
+

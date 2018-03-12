@@ -1,0 +1,38 @@
+<div class="path">
+    <div>
+        <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span>
+        销量统计
+    </div>
+</div>
+<div class="main">
+<div class="wrap">
+<div class="hd">
+    <ul class="tabs">
+       <li class="<{if $smarty.get.type!=''}>normal<{else}>active<{/if}>"><a href="main.php?m=product&s=admin_product_count&id=<{$smarty.get.id}>">一月统计</a></li>
+        <li class="<{if $smarty.get.type=='1'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_product_count&type=1&id=<{$smarty.get.id}>">一周统计</a></li>
+    </ul>
+</div>
+        
+<canvas id="cv"  width="780" height="400" ></canvas>
+<script type="text/javascript" src="<{$config.weburl}>/script/Chart.js" ></script>
+<script>
+window.onload = function() {
+	var ctx = document.getElementById('cv').getContext('2d');
+	var data = {
+			labels : [<{foreach item=list key=num from=$date}><{if $num!=0}>,<{/if}>"<{$list|date_format:"%m-%d"}>"<{/foreach}>],
+			datasets : 
+			[
+				{
+					fillColor : "rgba(220,220,220,0.5)",
+					strokeColor : "#DCDCDC",
+					pointColor : "#DCDCDC",
+					pointStrokeColor : "#fff",
+					data : [<{foreach item=list key=num from=$count}><{if $num!=0}>,<{/if}>"<{$list}>"<{/foreach}>]
+				}
+			]
+		}
+	new Chart(ctx).Line(data);
+};
+</script>
+</div>
+</div>

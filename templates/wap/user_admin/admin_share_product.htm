@@ -1,0 +1,29 @@
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    	<section class="nav-c"><span>收藏商品</span></section>
+    	<section class="nav-e"><a href="main.php?m=sns&s=admin_share_shop"><nav>收藏店铺</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/list.css" rel="stylesheet" type="text/css" />
+<section class="itemSearchList">
+<{if $re.list}>
+<div class="itemSearchResult clearfix">
+    <{foreach item=list key=num from=$re.list}>
+    <dl>
+        <dt><a class="p-img" href="<{$config.weburl}>/?m=product&s=detail&id=<{$list.pid}>">  <img height="80" width="80" alt="<{$list.pname}>" src="<{$list.image}>_60X60.jpg"></a> </dt>
+        <dd>
+            <p class="p-name"><a href="<{$config.weburl}>/?m=product&s=detail&id=<{$list.pid}>"><{$list.pname}></a></p>
+            <p class="p-price"><strong><{$config.money}><{$list.price}></strong></p>
+            <div class="handle"><a href="main.php?m=sns&s=admin_share_product&type=del&id=<{$list.id}>">删除</a></div>
+        </dd>
+    </dl>
+    <{/foreach}>
+    <{$re.page}>
+</div>
+<{else}>
+<div class="itemsNull">
+    <h3>暂无符合条件的数据记录</h3>
+</div>
+<{/if}>
+</section>

@@ -1,0 +1,96 @@
+<style>
+.container{padding:9px 20px 20px;text-align:left;}
+</style>
+<div class="container">
+    <ul class="district clearfix">
+    <{foreach item=list key=num from=$pv}>
+        <li>
+            <label class="province"><input type="checkbox" name="provs[]"/>&nbsp;<{$list.name}>&nbsp;<em></em></label>
+            <div class="city_box">
+            <{foreach item=slist key=cnum from=$list.city}>
+                <label class="city"><input type="checkbox" value="<{$slist.name}>" />&nbsp;<{$slist.name}></label>
+            <{/foreach}>
+            <div class="clear"></div>
+            <a class="close" href="javascript:void(0);">关闭</a>
+            </div>
+        </li>
+    <{/foreach}>
+    </ul>
+    <div class="dialog_button">
+        <input class="save" type="button" value="确定"> 
+    </div>
+</div>
+<script type="text/javascript">
+	
+Array.prototype.in_array = function(e)
+{
+	for(i=0;i<this.length && this[i]!=e;i++);
+	return !(i==this.length);
+}
+if(input.val())
+{
+	array=input.val().split(",");
+	$('.city').find('input[type="checkbox"]').each(function(){
+		if(array.in_array($(this).val()))
+		{
+			$(this).attr('checked','checked');
+			li=$(this).parent().parent().parent();
+			checkbox=li.children(".city_box").find('input[type="checkbox"]:checked');
+			em=li.find('em');
+			em.html("("+checkbox.length+")");
+			if(checkbox.length==1)
+			li.find('input[name="provs[]"]').attr("checked",true);
+		}
+	});
+}
+$('input[name="provs[]"]').unbind().click(function(){
+							   	
+	aa=$(this).parent().parent().parent();
+	li=$(this).parent().parent();
+	checkbox=li.children(".city_box").find('input[type="checkbox"]');
+	em=$(this).parent().find('em');
+	aa.find('.city_box').hide();
+	li.find(".city_box").show();
+	li.addClass("selected").siblings().removeClass("selected");
+	if($(this).attr("checked")==true)
+	{
+		checkbox.attr("checked",true);
+		em.html("("+checkbox.length+")");
+	}
+	else
+	{
+		checkbox.attr("checked",false);
+		em.html("");
+	}
+});
+$(".district .city_box").find('input[type="checkbox"]').unbind().click(function(){
+	li=$(this).parent().parent().parent();
+	div=$(this).parent().parent();
+	checkbox=div.find('input[type="checkbox"]:checked');
+	if(checkbox.length>0)
+	{
+		em=li.find('em');
+		em.html("("+checkbox.length+")");
+		li.find('input[name="provs[]"]').attr("checked",true);
+	}
+});
+$('.close').unbind().click(function(){
+	li=$(this).parent().parent();
+	checkbox=li.children(".city_box").find('input[type="checkbox"]:checked');
+	em=li.find('em');
+	li.find('.city_box').hide();
+	li.removeClass("selected");
+	em.html("("+checkbox.length+")");
+});
+$('.save').unbind().click(function(){
+	$('.city').find('input[type="checkbox"]:checked').each(function(){
+		sca.push($(this).val());
+	});
+	if(sca)
+	{
+		input.val(sca);
+		span.html(sca.join()+"&nbsp;");
+	}
+	DialogManager.close("district");
+});
+</script>

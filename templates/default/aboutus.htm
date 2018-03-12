@@ -1,0 +1,34 @@
+<{include file="header.htm"}>
+<div class="w">
+    <div class="detailnav">
+        <strong><a href="#">关于我们</a></strong>
+        <span> >  <{$de.con_title}></span>
+    </div>
+</div>
+<div class="w help">
+    <div class="left">
+    	<div class="help_side">
+           	<div class="current">
+                <h4><span>关于我们</span><b></b></h4>
+                <ul>  
+                    <{foreach item=li from=$all_web}>
+                        <li <{if $smarty.get.type==$li.con_id}>class='curr_web_con'<{/if}> >
+                        <a href="<{if $li.con_linkaddr}><{$li.con_linkaddr}><{else}><{if $li.type==1}>help.php?type=<{$li.con_id}><{else}>aboutus.php?type=<{$li.con_id}><{/if}><{/if}>"><{$li.con_title}></a>
+                        </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+    </div>		
+    
+    <div class="right">
+        <h3 class="help_tit"><{$de.con_title}></h3>
+        <div class="help_box">
+            <{$de.con_desc}>
+            <{if $de.msg_online==1}>
+            <{include file="feedback.htm"}>
+            <{/if}>
+        </div>
+    </div>
+</div>
+<{include file="footer.htm"}>

@@ -1,0 +1,74 @@
+<div class="order_detail">
+<div class="w1">
+<h2>确定收货</h2>
+<table class="table alc">    
+    <tr>
+        <td class="al" width="80">编号</td>
+        <td class="al">产品</td>
+        <td width="150">单价</td>
+        <td width="150">数量</td>
+        <td width="100">总价</td>
+    </tr>
+    <{foreach item=list from=$de.product}>
+    <tr>
+        <td class="al"><img src="<{$list.pic}>_60X60.jpg"></td>
+        <td class="al <{if $list.service}>npb<{/if}>">
+            <a target="_blank" href="index.php?m=product&s=detail&id=<{$list.pid}>">
+                <{$list.name}>
+            </a>
+        </td>
+        <td><{$config.money}><{$list.price|number_format:2}></td>
+        <td><{$list.num}></td>
+        <td><{$config.money}><{$list.num*$list.price|number_format:2}></td>
+    </tr>
+   
+   
+    <{/foreach}>
+    <tr>
+        <td colspan="99" align="right" class="pr20">
+        运费：
+        <{if $de.logistics_price==''&&$de.logistics_type==''}>
+            <{$lang.spayfee}>
+        <{else}>
+            (<{$de.logistics_type}>): <span class="price"><{$config.money}> <{$de.logistics_price|number_format:2}></span>
+        <{/if}>
+        <br />
+        应付总价：
+        <span class="price"><{$config.money}> <{$de.product_price+$de.logistics_price|number_format:2}></span>
+        </td>
+    </tr>
+    <{if $des}>
+    <tr>
+        <td class="al" colspan="99">备注: <{$de.des}></td>
+    </tr>
+    <{/if}>
+    <tr>
+        <td class="al" colspan="99">订单编号：<{$de.order_id}></td>
+    </tr>
+    <tr>
+        <td class="al" colspan="99">卖家昵称：<{$de.sellerinfo.company}>(<{$de.sellerinfo.user}>)</td>
+    </tr>
+    <tr>
+        <td class="al" colspan="99">收货信息：<{$de.buyer_addr}> <{$de.buyer_tel}> <{$de.buyer_mobile}></td>
+    </tr>
+    <tr>
+        <td class="al" colspan="99">成交时间：<{$de.creat_time|date_format}></td>
+    </tr>
+</table>
+<div class="receipt">
+	<p>请收到货后，再确定收货！否则您可能钱货两空！</p>
+    <form method="post">
+    <dl class="clearfix">
+        <dt>请输入账户支付密码</dt>
+        <dd>
+        <input type="password" class="password w150" name="password" />
+        <em>请输入正确的支付密码</em>
+        </dd>
+    </dl>
+    <input type="hidden" name="id" value="<{$smarty.get.id}>" />
+    <input type="hidden" name="act" value="act" />
+    <input type="submit" class="btn" value="确定" />
+    </form>
+</div>
+</div>
+</div>

@@ -1,0 +1,27 @@
+<{include file="header.htm"}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>搜索</span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/search.css" rel="stylesheet" type="text/css" />
+<section class="filter clearfix">
+	<ul class="clearfix">
+        <li <{if !$smarty.get.t}>class="current"<{/if}>><a href="<{$config.weburl}>/search.php"><span>商品</span></a></li>									
+        <li <{if $smarty.get.t=='shop'}>class="current"<{/if}>><a href="<{$config.weburl}>/search.php?t=shop"><span>店铺</span></a></li>
+    </ul>
+</section>
+<section>
+<div class="search">
+    <form method="get" name="form" id="form" action="<{$config.weburl}>/">
+        <input id="m" name="m" type="hidden" value="<{if $smarty.get.t=='shop'}>shop<{else}>product<{/if}>" />
+        <input id="s" name="s" type="hidden" value="<{if !$smarty.get.t}>list<{/if}>" />
+        <input value="<{if $smarty.get.key}><{$smarty.get.key}><{else}><{/if}>" onclick="this.value='';" name="key" type="text">
+        <input type="submit" value="" />
+        <input type="hidden" name="ie" value="UTF-8" />
+    </form> 
+</div>
+</section>
+<{include file="footer.htm"}>

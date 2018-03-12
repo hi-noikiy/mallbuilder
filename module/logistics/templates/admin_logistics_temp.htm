@@ -1,0 +1,281 @@
+<script src="script/my_lightbox.js"></script>
+<div class="path">
+  <div> <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span> <a href="main.php?m=logistics&s=admin_logistics_temp">物流工具</a> <span>&gt;</span> 物流工具 </div>
+</div>
+<div class="main">
+  <div class="wrap">
+    <div class="hd">
+      <ul class="tabs">
+        <li class="active"><a href="main.php?m=logistics&s=admin_logistics_temp">运费模板</a></li>
+      </ul>
+      <a href="main.php?m=logistics&s=admin_logistics_temp&type=add" class="btn3">新增运费模板 </a> </div>
+    <{if $smarty.get.type=='add'}>
+    <div class="form-style">
+      <form action="" method="post">
+        <input name="action" type="hidden" id="action" value="submit" />
+        <dl>
+          <dt><em>*</em>模板名称：</dt>
+          <dd>
+            <input value="<{$de.title}>" name="title" type="text" id="title" class="w150 text" />
+          </dd>
+        </dl>
+        <dl>
+          <dt>计价方式：</dt>
+          <dd>
+            <input onclick="cg_type(this.value);" name="price_type" value="件" data-type="number" type="radio" checked="checked"  />
+            <label> 按件数</label>
+            <input onclick="cg_type(this.value);" name="price_type" <{if $de.price_type=='kg'}>checked="checked"<{/if}> value="kg" data-type="weight" type="radio" />
+            <label> 按重量</label>
+            <input onclick="cg_type(this.value);" name="price_type" <{if $de.price_type=='m³'}>checked="checked"<{/if}> value="m³" data-type="volume" type="radio" />
+            <label> 按体积</label>
+          </dd>
+        </dl>
+        <dl>
+          <dt>运送方式：</dt>
+          <dd>
+            <p> <{foreach item=list key=num from=$config.lgs_type}>
+              <label onclick="show_lgs_con('<{$num}>');">
+              <input id="<{$num}>" class="checkbox" name="" type="checkbox" value="" />
+              <{$list}> </label>
+            <div id="<{$num}>_con"></div>
+            <{/foreach}>
+            </p>
+            <p class="hint">除指定地区外，其余地区的运费采用“默认运费”</p>
+          </dd>
+        </dl>
+        <dl class="foot">
+          <dt>&nbsp;</dt>
+          <dd>
+            <input type="submit" name="submit" value="<{$lang.submit}>" class="submit">
+          </dd>
+        </dl>
+      </form>
+    </div>
+    <div style="display:none;" id="lgs_box_con">
+      <div style="border:1px solid #999999; padding:10px;">
+        <table background="#F3FEED" width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="left" bgcolor="#F3FEED">&nbsp;
+              默认运费：
+              <input type="text" style="width:50px;" id="default_type_num" name="default_type_num[]" value="1"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" />
+              unit内，
+              <input style="width:50px;" id="default_type_price" name="default_type_price[]" type="text" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  />
+              元， 每增加
+              <input style="width:50px;" id="add_type_num" name="add_type_num[]" type="text"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  />
+              unit， 增加运费
+              <input style="width:50px;" id="add_type_price" name="add_type_price[]" type="text"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  />
+              元
+              <input name="add_type_city[]" type="hidden" value="default"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  />
+            </td>
+          </tr>
+        </table>
+        <div style="margin-top:10px;">
+          <table style="display:none; border-collapse:separate; border-spacing:1px;" id="define_table_type" width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#BBBBBB">
+            <tr>
+              <td width="220" align="center" bgcolor="#F5F5F5">运送到</td>
+              <td align="center" bgcolor="#F5F5F5">起始(unit)</td>
+              <td align="center" bgcolor="#F5F5F5">起始费(元)</td>
+              <td align="center" bgcolor="#F5F5F5">每增(unit)</td>
+              <td align="center" bgcolor="#F5F5F5">续费(元)</td>
+              <td align="center" bgcolor="#F5F5F5">操作</td>
+            </tr>
+            <tr id="tr0_type" style="display:none">
+                <td align="left" bgcolor="#FFFFFF"><input id="add_type_city_tr0" name="add_type_city[]" type="hidden" />
+                <span id="add_type_city_tr0_span"></span>
+                
+                <a data="edit" href="javascript:void(0);">编辑</a>
+                
+                </td>
+                <td align="center" bgcolor="#FFFFFF"><input style="width:50px;" id="default_type_num_tr0" name="default_type_num[]" type="text"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  /></td>
+                <td align="center" bgcolor="#FFFFFF"><input style="width:50px;" id="default_type_price_tr0" name="default_type_price[]" type="text"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  /></td>
+                <td align="center" bgcolor="#FFFFFF"><input style="width:50px;" id="add_type_num_tr0" name="add_type_num[]" type="text"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  /></td>
+                <td align="center" bgcolor="#FFFFFF"><input style="width:50px;" id="add_type_price_tr0" name="add_type_price[]" type="text"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  /></td>
+                <td align="center" bgcolor="#FFFFFF"><a style="color:#3366CC;" href="javascript:remove_tr('tr0','_type');"><{$lang.delete}></a></td>
+            </tr>
+          </table>
+        </div>
+        <a href="javascript:add_tr('_type');">为指定地区城市设置运费</a> </div>
+    </div>
+    
+  <!--  <div id="pv_box" style="display:none;">
+        <ul class="district clearfix">
+        <{foreach item=list key=num from=$pv}>
+            <li>
+                <label class="province"><input type="checkbox" name="provs[]"/><{$list.name}>&nbsp;<em></em></label>
+                <div class="city_box">
+                <{foreach item=slist key=cnum from=$list.city}>
+                    <label class="city"><input type="checkbox" value="<{$slist.name}>" /><{$slist.name}></label>
+                <{/foreach}>
+                <a class="close" href="javascript:void(0);">关闭</a>
+                </div>
+            </li>
+        <{/foreach}>
+        </ul>
+        <div class="dialog_button">
+            <input class="save" type="button" value="确定"> 
+        </div>
+    </div>-->
+    
+    <{else}>
+	
+    <{foreach item=list from=$lglist}>
+    <table style="border-collapse:separate; border-spacing:1px; margin-top:10px;" width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#BBBBBB">
+      <tr>
+        <td colspan="6" bgcolor="#E8F2FF"><span style="float:left; font-weight:bold; padding-left:5px;"><{$list.title}></span> <span style="float:right;"><a href="main.php?m=logistics&s=admin_logistics_temp&deid=<{$list.id}>">删除</a> <a href="main.php?m=logistics&s=admin_logistics_temp&type=add&edit=<{$list.id}>">编辑</a></span> </td>
+      </tr>
+      <tr>
+        <td width="10%" align="center" bgcolor="#E8F2FF">运送方式</td>
+        <td align="center" bgcolor="#E8F2FF">运送到</td>
+        <td width="10%" align="center" bgcolor="#E8F2FF">起始(<{$list.price_type}>)</td>
+        <td width="10%" align="center" bgcolor="#E8F2FF">费用(元)</td>
+        <td width="10%" align="center" bgcolor="#E8F2FF">每增(<{$list.price_type}>)</td>
+        <td width="10%" align="center" bgcolor="#E8F2FF">费用(元)</td>
+      </tr>
+      <{foreach item=slist from=$list.detail}>
+      <tr>
+        <td align="center" bgcolor="#FFFFFF"><{if $slist.logistics_type=='mail'}>平邮<{elseif $slist.logistics_type=='express'}>快递<{else}>EMS<{/if}></td>
+        <td align="left" bgcolor="#FFFFFF"><{if $slist.define_citys=='default'}><b>全国</b><{else}><{$slist.define_citys}><{/if}></td>
+        <td align="center" bgcolor="#FFFFFF"><{$slist.default_num}></td>
+        <td align="center" bgcolor="#FFFFFF"><{$slist.default_price|number_format:2}></td>
+        <td align="center" bgcolor="#FFFFFF"><{$slist.add_num}></td>
+        <td align="center" bgcolor="#FFFFFF"><{$slist.add_price|number_format:2}></td>
+      </tr>
+      <{/foreach}>
+    </table>
+    <{/foreach}>
+    <{/if}> </div>
+</div>
+<{if $smarty.get.type==add}>
+<style>
+.prov{display:block; float:left; width:160px; margin-left:8px; margin-top:15px;}
+.prov div{background-color:#FFFEC6; border:1px solid #F7E4A5;position:absolute; z-index:100000; width:300px; display:none; padding:2px;}
+</style>
+<script>
+	var ctr=0;
+	var sca=new Array();
+	var temp_str='';
+	
+	var input=span='';
+	$('a[data="edit"]').live('click',function(){
+		ajax_form("district", '选择城市', '<{$config.weburl}>/?m=logistics&s=district', 850,1);
+		input=$(this).prevAll("input");
+		span=$(this).prevAll("span");
+		sca=new Array();
+	});
+
+	units='件';
+	
+	<{if $de.price_type}>
+		units='<{$de.price_type}>';
+	<{/if}>
+	
+	function cg_type(type)
+	{
+		units=type;
+		$('#express_con').html('');
+		$('#ems_con').html('');
+		$('#mail_con').html('');
+		
+		$('#express').attr("checked",false);
+		$('#ems').attr("checked",false);
+		$('#mail').attr("checked",false);
+	}
+	
+	function show_lgs_con(id)
+	{
+		if($('#'+id).attr("checked")==true)
+		{
+			con=$('#lgs_box_con').html().replaceAll('_type','_'+id);
+			con=con.replaceAll('unit',units);
+			$('#'+id+'_con').html(con);
+		}
+		else
+		{
+			$('#'+id+'_con').html('');
+		}
+	}
+	
+	function add_tr(type,s='')
+	{
+		if($('#define_table'+type).css('display') == 'none')
+			$('#define_table'+type).show();
+		
+			i=$('#define_table'+type+' tr').length-1;
+			
+			if(s!='index')
+			{
+				var num=0;
+				$('#define_table'+type).find('tr').each(function(){
+					var id=$(this).attr('id');
+					if(id)
+					{
+						num=id.replaceAll('tr','').replaceAll(type,'');	
+					}
+				});
+				i=num*1+1;
+			}
+			var tr1="<tr id='tr"+i+type+"'>";
+			var tr2=$('#tr0'+type).html().replaceAll('tr0','tr'+i);
+			    tr2=tr2.replaceAll('unit',units);
+				var tr3="</tr>";
+				$('#define_table'+type).append(tr1+tr2+tr3);
+				$('#add'+type+'_city_tr'+i).val('');
+				$('#add'+type+'_city_tr'+i+'_span').html('');
+	}
+	
+	function remove_tr(row,table)
+	{
+		$('#add'+table+'_city_'+row).val('');
+		$('#add'+table+'_city_'+row+'_span').html('');
+		$('#add'+table+'_price_'+row).val('');
+		$('#add'+table+'_num_'+row).val('');
+		$('#default'+table+'_price_'+row).val('');
+		$('#default'+table+'_num_'+row).val('');
+		if(row=='tr0')
+			$('#define_table'+table).hide();
+		else
+			$('#'+row+table).remove();
+	}
+	
+	String.prototype.replaceAll = function (str1,str2)
+	{
+	  var str    = this;     
+	  var result   = str.replace(eval("/"+str1+"/gi"),str2);
+	  return result;
+	}
+	
+	function set_default_value(v1,v2,v3,v4,type)
+	{
+		$('#default_'+type+'_num').val(v1);
+		$('#default_'+type+'_price').val(v2);
+		$('#add_'+type+'_num').val(v3);
+		$('#add_'+type+'_price').val(v4);
+	}
+	
+	function set_tr_value(type,i,v1,v2,v3,v4,v5)
+	{
+		$('#default_'+type+'_num_tr'+i).val(v1);
+		$('#default_'+type+'_price_tr'+i).val(v2);
+		$('#add_'+type+'_num_tr'+i).val(v3);
+		$('#add_'+type+'_price_tr'+i).val(v4);
+		$('#add_'+type+'_city_tr'+i).val(v5);
+		$('#add_'+type+'_city_tr'+i+'_span').html(v5);
+	}
+	
+	/**打开自定义窗口**/
+	<{foreach item=list from=$de.logistics_default}>
+		$('#<{$list.logistics_type}>').attr("checked",true);
+		show_lgs_con('<{$list.logistics_type}>');
+		set_default_value('<{$list.default_num}>','<{$list.default_price}>','<{$list.add_num}>','<{$list.add_price}>','<{$list.logistics_type}>')
+	<{/foreach}>
+	
+	/**初始化自定义**/
+	<{foreach item=list key=num from=$de.detail}>
+		<{foreach item=slist key=snum from=$list}>
+			add_tr('_<{$num}>','index');
+			set_tr_value('<{$num}>','<{$snum+1}>','<{$slist.default_num}>','<{$slist.default_price}>','<{$slist.add_num}>','<{$slist.add_price}>','<{$slist.define_citys}>');
+		<{/foreach}>
+	<{/foreach}>
+	
+</script>
+<{/if}>

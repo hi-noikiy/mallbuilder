@@ -1,0 +1,19 @@
+<{foreach item=list key=num from=$tg}>
+<{if $num<3}>
+    <dl class="fore1">
+    	<dt><b><{$num+1}></b><a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>"><{$list.name}></a><dt>
+        <dd class="clearfix">
+    		<div class="pic"><a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>"><img width="105" height="66" src="<{$list.pic}>" /></a></div>
+            <div class="info">
+            	<p class="p-price"><strong><{$config.money}><{$list.price}></strong></p>
+                <p class="p-price"><s><{$config.money}><{$list.market_price}></s></p>
+            	<a class="btn-buy" target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>">立即抢购</a>
+            </div>
+       </dd>
+    </dl>
+    <{else}>
+    <div class="fore2">
+    	<b><{$num+1}></b><a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$list.id}>"><{$list.name}></a>
+    </div>
+<{/if}>
+<{/foreach}>

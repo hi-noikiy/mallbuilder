@@ -1,0 +1,129 @@
+<{if !$buid}>
+	正在跳转到登录页面...
+    <script>
+		parent.window.location.href = 'login.php?forward='+encodeURIComponent('<{$smarty.server.HTTP_REFERER}>');
+	</script>
+<{else}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="javascript:history.back();"><nav>返回</nav></a></section>
+    	<section class="nav-c"><span>确认订单</span></section>
+   		<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/order.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="<{$config.weburl}>/script/jquery.validation.min.js" type="text/javascript"></script>
+<section>
+<{if $addr.id}>
+<form id="form" name="form" method="post">
+<div class="order">
+	<h2>收货地址</h2>
+ 	<div class="address">
+        <a href="main.php?m=member&s=admin_orderadder&i=<{$smarty.get.id}>&t=tg">
+            <p><{$addr.name}></p>
+            <p><{$addr.area}></p>
+            <p><{$addr.address}></p>
+            <p><{$addr.mobile}> </p>
+            <input type="hidden" name="addressid" id="addressid" value="<{$addr.id}>" />
+        </a>
+    </div>
+  	<h2>商品清单</h2>
+ 	<div class="list">
+        <dl class="clearfix">
+            <dt>
+             <a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$de.id}>"><img width="50" height="50" src="<{$de.pic}>"></a>
+            </dt>
+            <dd>
+            <a target="_blank" href="<{$config.weburl}>/?m=tg&s=detail&id=<{$de.id}>"><h4><{$de.name}></h4></a>
+            <p><{$config.money}><em class="price"><{$de.price|number_format:2}></em></p>
+            </dd>
+        </dl>
+        <p class="input">
+            <input maxlength="3" type="text" name="quantity" id="quantity" value="1" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'');" onblur="count();" />
+            <{if $de.limit_quantity!=0}><br>限购:<{$de.limit_quantity}><{/if}>
+        </p>    
+        <div class="clearfix total">
+            <p>总计：<span class="red"><{$config.money}><em class="count"><{$de.price|number_format:2}></em></span></p>
+        </div>
+    </div>
+    
+    <div class="choose_btn">
+        <a class="cart-button" id="submitToPay" href="javascript:void(0)">下单完成并支付</a>
+    </div>       
+</div>
+<div class="form-error"></div>
+   
+
+</form>
+<script>
+$(function(){
+	<{if $de.limit_quantity < $de.stock }>
+		<{if $de.limit_quantity==0}>
+		num='<{$de.stock}>';
+		str='库存不足';
+		<{else}>
+		num='<{$de.limit_quantity}>';
+		str='超出限购数量';
+		<{/if}>
+	<{else}>
+	num='<{$de.stock}>';
+	str='库存不足';
+	<{/if}>
+	$('#submitToPay').click(function(){
+		$('#form').validate({
+			errorPlacement: function(error, element){
+				Width=document.body.clientWidth/2-60;
+				Height=document.body.clientHeight/2;
+				$('.form-error').offset({top:Height,left:Width});
+				$('.form-error').html(error);
+			},      
+			rules : {
+				addr:{
+					required:true
+				},
+				addressid:{
+					required:true
+				},
+				quantity:{
+					required:true,
+					digits:true,
+					max:num,
+					min:1
+				}
+			},
+			messages : {
+				addr:{
+					required:'请设置收货地址'
+				},
+				addressid:{
+					required:'请设置收货地址'
+				},
+				quantity:{
+					required:'请填写数量',
+					digits:'必须输入整数',
+					max:str,
+					min:"必须大于0"
+				}
+				
+			},
+		});
+		$('#form').submit();
+	});
+											  
+});
+function count(){
+	var	price=<{$de.price}>;
+	var	num=$('#quantity').val();
+	var count=price*1*num*1;
+	$('.count').html(count.toFixed(2));
+}
+</script>
+</section>
+<{else}>
+<div class="noaddr">
+<div></div>
+您还没有设置收货地址<br><a href="main.php?m=member&s=admin_orderadder&i=<{$smarty.get.id}>&t=tg">请点击这里设置！</a> 
+</div>
+<{/if}>
+<{/if}>

@@ -1,0 +1,60 @@
+<{include file="header.htm"}>
+<div class="w">
+    <div class="detailnav">
+        <strong><a href="index.php">首页</a></strong>
+        <span> >  <{$lang.callpass}></span>
+    </div>
+</div>
+
+<script type="text/javascript" src="script/Validator.js"></script>
+<div class="w lostpass">
+	<div class="mt"><h2><{$lang.callpass}></h2></div>
+	<div class="mc">
+        <form method="post" action="" onSubmit="return Validator.Validate(this,3)">
+            <table cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="300" align="right">用户名：</td>
+                <td><input name="user" class="i-text" type="text" id="user" dataType="Require" msg="<{$lang.pls_user}>" size="25" value="<{$smarty.post.user}>" style="width:300px;"/></td>
+              </tr>
+              <tr>
+                <td align="right">邮箱地址：</td>
+                <td><input name="email" class="i-text" size="25" type="text" value="<{$smarty.post.email}>" dataType="Email" msg="<{$lang.pls_email}>"style="width:300px;" /></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" >
+                    <input type="submit" name="Submit" value="<{$lang.isure}>" />
+                    <input name="action" type="hidden" id="action" value="com" />
+                  </td>
+              </tr>
+            </table>
+        </form>		
+        <{if $smarty.post.action!=''}>
+         <{if $company.userid!=""}>
+        <form action="" method="post">
+        <table>
+            <tr>
+                <td width="300"></td>
+                <td>
+                <input name="userid" type="radio" value="<{$company.userid}>|<{$company.email}>" /><a href="shop.php?uid=<{$company.userid}>" target="_blank"><{$company.user}></a>
+                </td>
+            </tr> 
+            <tr>  
+                <td></td>
+                <td>     
+                <input name="action" type="hidden" id="action" value="submit" />
+                <input name="<{$lang.isure}>" type="submit" value="<{$lang.isure}>" />
+                </td>
+            </tr>
+        </table>
+        </form>
+        <{else}>
+        <p>
+        <{$lang.nosearch}><a href="<{$config.regname}>" target="_blank"><{$lang.reguser}></a>
+        <{$lang.contactme}><a href="aboutus.php?type=3" target="_blank"><{$lang.conme}></a>．
+        </p>
+        <{/if}>
+        <{/if}>
+	</div>
+</div>
+<{include file="footer.htm"}>

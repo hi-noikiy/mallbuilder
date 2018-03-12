@@ -1,0 +1,53 @@
+<{include file="points_header.htm"}>
+<div class="w clearfix">
+	<div class="left">
+    	<div class="m hot">
+        	<div class="mt">热销礼品</div>
+            <div class="mc clearfix">
+                <ul class="clearfix">
+                    <{foreach item=list key=key from=$re}>
+                    <li>
+                        <a href="<{$config.weburl}>?m=points&s=detail&id=<{$list.id}>">
+                            <img src="<{$list.pic}>">
+                            <h3><{$list.name}></h3>
+                        </a>
+                    </li>
+                    <{/foreach}>
+                </ul>      
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="m">
+            <div class="filter">
+            	<div class="fore1"><{$catname|truncate:8}></div>
+            	<div class="fore2">
+                	<ul>
+                    	<{foreach item=list from=$cats}>
+                    	<li><a href="<{$config.weburl}>/?m=points&s=list&id=<{$list.id}>"><{$list.catname}></a></li>
+                        <{/foreach}>
+                    </ul>
+                    <div class="order">
+                        <a <{if !$smarty.get.order}>class="current"<{/if}> href="<{$config.weburl}>?m=points&s=list&id=<{$smarty.get.id}>">销量</a>
+                        <a <{if $smarty.get.order==1}>class="current"<{/if}> href="<{$config.weburl}>?m=points&s=list&id=<{$smarty.get.id}>&order=1">价格</a>
+                        <a <{if $smarty.get.order==2}>class="current"<{/if}> href="<{$config.weburl}>?m=points&s=list&id=<{$smarty.get.id}>&order=2">上架时间</a>
+                    </div>
+                </div>
+            </div>            
+            <div class="mc clearfix">
+                <ul class="clearfix">
+                    <{foreach item=list key=key from=$de.list}>
+                    <li <{if ($key+1)%5==0}>class="fr"<{/if}> >
+                        <a href="<{$config.weburl}>?m=points&s=detail&id=<{$list.id}>">
+                            <img src="<{$list.pic}>">
+                            <h3><{$list.name}></h3>
+                            <p>所需积分<b><{$list.points}></b></p>
+                        </a>
+                    </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<{include file="points_footer.htm"}>

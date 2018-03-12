@@ -1,0 +1,54 @@
+<{if !$smarty.get.d}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="javascript:history.back();"><nav>返回</nav></a></section>
+    	<section class="nav-c"><span>详情页</span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/datial.css" rel="stylesheet" type="text/css" />
+<section class="detail">
+<div class="p-img">
+	<img width="220" src="<{$detail.pic}>">
+</div>
+<div class="p-name"><{$detail.name}></div>
+<ul class="info">
+	<li class="price">
+        <span>原　　价：</span>
+        <div><s><{$config.money}><{$detail.market_price|number_format:2}></s></div>
+    </li>
+    <li class="price">
+        <span>团 &nbsp;购 &nbsp;价：</span>
+        <div><{$config.money}><{$detail.price|number_format:2}></div>
+    </li>
+    <li><span>折　　扣：</span><{$detail.price/$detail.market_price*10|number_format:1}>折</li>
+    <li class="sell">
+        <span>销　　量：</span>
+        已售出<em><{$list.sell_amount+$list.virtual_quantity}></em>件 
+    </li>
+</ul>
+<div class="sep-line"></div>
+<div class="choose_btn">
+    <a href="<{$config.weburl}>?m=<{$smarty.get.m}>&s=order&id=<{$detail.id}>">立刻抢购</a>
+</div>
+<div class="goto"><a href="?m=tg&s=detail&id=<{$smarty.get.id}>&d=1">查看图文详情</a></div>
+
+<div class="sep-line"></div>
+<div class="hotlist"><{insert name="label" type="tg" temp="tg_list_1" limit=3}></div>
+
+<div class="goto"><a href="?m=tg">更多</a></div>
+<{else}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="javascript:history.back();"><nav>返回</nav></a></section>
+    	<section class="nav-c"><span>详情页</span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/datial.css" rel="stylesheet" type="text/css" />
+<section class="detail">
+    <div class="content">
+    	<{$detail.content}>
+    </div>
+<{/if}>
+</section>

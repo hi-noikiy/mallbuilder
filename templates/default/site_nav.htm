@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{if $title}><{$title}>,<{$config.company}><{else}><{$config.title}>,<{$config.company}><{/if}></title>
+<meta name="description" content="<{$config.description}>" />
+<meta name="keywords" content="<{$config.keyword}>" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="<{$config.weburl}>/script/base.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link href="<{$config.weburl}>/templates/<{$config.temp}>/css/page.css" rel="stylesheet" type="text/css" />
+</head>
+<body <{if $current=='index'}>class="gray"<{/if}>>
+<div class="shortcut">
+    <div class="w fn-clear">
+		<ul class="fn-right">
+			<li><script src="<{$config.weburl}>/login_statu.php"></script></li>
+            <li><s></s><a href="<{$config.weburl}>/main.php?cg_u_type=1">我的商城</a></li>
+            <li><s></s><a href="<{$config.weburl}>/main.php?cg_u_type=2">卖家中心</a></li>
+            <li><s></s><a href="<{$config.weburl}>/main.php?m=sns&s=admin_share_product">我的收藏</a></li>
+            <li><s></s><a href="<{$config.weburl}>/main.php?m=message&s=admin_message_list_inbox">站内消息</a></li>
+		</ul>
+        <ul class="fn-left">
+            <li class="index"><b></b><a href="javascript:addToFavorite('<{$config.weburl}>','<{$config.company}>')"> 收藏首页</a></li>
+            <li class="mobile"><b></b><a href="wap.php">手机版</a></li>
+			<{if $config.domaincity&&$config.baseurl}>
+			<li><a href="<{$config.weburl}>/sub_site.php">城市分站</a></li>
+            <{/if}>
+        </ul>
+	</div>
+</div>

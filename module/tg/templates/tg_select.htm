@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>团购会员登录</title>
+<meta name="description" content="<{$config.description}>" />
+<meta name="keywords" content="<{$config.keyword}>" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link href="<{$config.weburl}>/templates/default/page.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/tg/templates/tg.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="lg"><img src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></div>
+    <form method="get">
+        <input type="hidden" name="m" value="tg">
+        <input type="hidden" name="s" value="login">
+        <span class="text">
+            <input type="text" maxlength="20" name="code" autocomplete="off">
+        </span>
+        <input type="submit" value="搜索">
+    </form>  
+    <{if $re}>
+    	<div class="code"><{$re.code}>存在</div>
+    <{/if}>
+</div>
+</body>
+</html>

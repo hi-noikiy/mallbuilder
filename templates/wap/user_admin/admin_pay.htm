@@ -1,0 +1,41 @@
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+    	<section class="nav-c"><span>定单支付</span></section>
+   		<section class="nav-e"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/pay.css" rel="stylesheet" type="text/css" />
+<section class="pay">
+    <form action="" method="post">
+        <input type="hidden" value="add" name="submit">
+        <dl>
+            <dt>账户余额：</dt>
+            <dd><span class="red"><{$config.money}><{$account.cash}></span></dd>
+        </dl>
+        <dl>
+            <dt>流 &nbsp;水 &nbsp;号：</dt>
+            <dd><{$de.flow_id}></dd>
+        </dl>
+        <dl>
+            <dt>订单编号：</dt>
+            <dd><{$de.order_id}></dd>
+        </dl>
+        <dl>
+            <dt>产品信息</dt>
+            <dd><{$de.note}></dd>
+        </dl>
+        <dl>
+            <dt>支付金额：</dt>
+            <dd><span class="red"><{$config.money}><{$de.price*-1|number_format:2 }></span></dd>
+        </dl>
+        <dl>
+            <dt>支付密码：</dt>
+            <dd>
+            	<input name="pay_pass" type="password" id="pay_pass" class="password w150" />
+            </dd>
+        </dl>
+        <input type="submit" value="提交" class="submit">
+	</form>
+</section>
+

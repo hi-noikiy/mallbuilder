@@ -1,0 +1,23 @@
+<{foreach item=list key=key from=$consult}>
+<div class="item">
+     <dl class="usern">
+        <dt><b></b>网&#12288;&#12288;友：</dt>
+        <dd><{$list.member_name}></dd>
+    </dl>
+    <dl class="ask">
+        <dt><b></b>咨询内容：</dt>
+        <dd><{$list.question}></dd>
+    </dl>
+    <{if $list.answer}>
+    <dl class="answer">
+        <dt><b></b>网站回复：</dt>
+        <dd>
+        <div class="content"><{$list.answer}></div>
+        <div class="date_answer"><{$list.answer_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></div>
+        </dd>
+    </dl>
+    <{/if}>
+</div>
+<{foreachelse}>
+<div class="item"><div class="norecode">暂无该类咨询！</div></div>
+<{/foreach}>

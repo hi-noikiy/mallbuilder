@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>确定订单</title>
+<meta name="description" content="<{$config.description|regex_replace:"/[\r\t\n]/":""}>" />
+<meta name="keywords" content="<{$config.keyword|regex_replace:"/[\r\t\n]/":""}>" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/templates/default/page.css">
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/product/templates/shop.css">
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type=text/javascript></script>
+<script src="<{$config.weburl}>/script/district.js" type=text/javascript></script>
+<script src="<{$config.weburl}>/script/order.js" type=text/javascript></script>
+<script src="<{$config.weburl}>/script/jquery.checkout.js" type=text/javascript></script>
+</head>
+<script language="javascript">
+var weburl="<{$config.weburl}>";
+function do_select()
+{
+	 var box_l = document.getElementsByName("checkbox[]").length;
+	 for(var j = 0 ; j < box_l ; j++)
+	 {
+		if(document.getElementsByName("checkbox[]")[j].checked==true){ 
+			document.getElementsByName("checkbox[]")[j].checked = false;
+		}else{
+			document.getElementsByName("checkbox[]")[j].checked = true;
+		}
+	}
+}
+</script>
+<body>
+<div id="shortcut">
+    <div class="w">
+        <ul class="fl">
+            <li class="ld">
+                <b></b>
+                <a href="javascript:addToFavorite('<{$config.weburl}>','<{$config.company}>')">
+                收藏首页
+                </a>
+            </li>
+        </ul>
+        
+		<ul class="fr">
+			<li><script src="<{$config.weburl}>/login_statu.php"></script></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?cg_u_type=1">我的商城</a></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?cg_u_type=2">卖家中心</a></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?m=sns&s=admin_share_product">我的收藏</a></li>
+            <li class="ld"><s></s><a href="<{$config.weburl}>/main.php?m=message&s=admin_message_list_inbox">站内消息</a></li>
+           
+		</ul>
+    	<span class="clr"></span>
+	</div>
+</div>
+
+<div id="header" class="clearfix">
+	<div class="w header">
+    	<div class="logo ld">
+        <a hidefocus="true" title="<{$config.company}>" href="<{$config.weburl}>"><img height="46" width="243" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></a>
+        </div>
+        <div class="step fr">
+        	<img src="<{$config.weburl}>/image/default/step_2.png" />
+        </div>
+    </div>
+</div>
+
+
+<{if $smarty.get.type=='login'}>
+<div class="w" style="margin:80px auto;">
+<a href="<{$config.weburl}>/login.php">请先登录</a>
+</div>
+<{elseif  $smarty.get.type=='orders'}>
+<div class="w" style="margin:80px auto;">
+订单提交成功<br>
+<a href="<{$config.weburl}>/?m=product">继续购物</a>
+<a href="<{$config.weburl}>/main.php?m=product&s=admin_buyorder">进入后台</a>
+</div>
+<{elseif $smarty.get.type=='orderf'}>
+<div class="w" style="margin:80px auto;">
+产品库存不足
+</div>
+<{else}>
+<form action="" method="post">
+<div class="w">
+    <div class="order_title"><h3>填写核对订单信息</h3></div>
+    <div class="order">
+    <div class="order_info">
+    	
+        <div id="step-1" class="step">
+        	<div class="step-title">
+            	<strong>收货人信息</strong>
+                <span class="step-action" id="consignee_edit_action">
+                	<a onclick="open_Module('consignee')" href="#none">[修改]</a>
+                </span>
+            </div>
+        	<div class="step-content">
+            	<div id="consignee">
+                    <p><{$consignee.name}>&nbsp;&nbsp;<{$consignee.mobile}>&nbsp;&nbsp;<{$consignee.tel}></p>
+                    <p><{$consignee.area}> <{$consignee.address}></p>
+                </div>
+           	</div>
+        </div>
+        
+    	<div id="step-4" class="step">
+        	<div class="step-title">
+            	<strong>产品清单</strong>
+            </div>
+        	<div class="step-content">
+            <table width="100%" cellpadding="0" cellspacing="0" class="order_product">
+               <thead>
+               <tr class="title">
+                    <th>产品</th>
+                    <th width="150">价格</th>
+                    <th width="150">数量</th>
+                    <th width="150">小计</th>
+                </tr> 
+                </thead>
+                <tbody>
+                <{foreach item=list from=$cart}>
+                <tr>
+                    <th colspan="4" class="shop">
+                    店铺:&nbsp;<a target="_blank" href="shop.php?uid=<{$list.sell_userid}>"><{$list.company}></a>
+                    </th>
+                </tr>
+                <{foreach item=pro from=$list.prolist}>
+                <tr>
+                    <td class="product">
+                        <div class="fl">
+                        <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.pid}>"><img height="80" alt="<{$pro.pname}>" src="<{$pro.pic}>"></a>
+                        </div>
+                        <div class="fr">
+                        <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.pid}>"><{$pro.pname}></a>
+                        <p>产品编号:<{$pro.code}></p>
+                        </div>
+                    </td>
+                    <td class="ac"><{$config.money}><{$pro.price|number_format:2}></td>
+                    <td class="ac"><{$pro.num}></td>
+                    <td class="ac"><b class="price"><{$config.money}> <{$pro.sumprice|number_format:2}></b></td>
+                </tr>
+                <{/foreach}>
+                <tr><td colspan="5"></td></tr>
+                <tr>
+                    <td class="msg">
+                    <div style="position:relative">
+                    <div class="fl">给卖家留言: </div>
+                    <label for="msg_<{$list.sell_userid}>">选填，可告诉卖家您的特殊要求</label>
+                    <textarea onclick="h(<{$list.sell_userid}>)" id="msg_<{$list.sell_userid}>" class="textarea" name="msg_<{$list.sell_userid}>"></textarea>
+                    
+                    <input name="logistics_type_<{$list.sell_userid}>" id="logistics_type_<{$list.sell_userid}>" type="hidden" value="快递" />
+                    <input name="logistics_price_<{$list.sell_userid}>" id="logistics_price_<{$list.sell_userid}>" type="hidden" value="<{$list.express}>" />
+                    </div>
+                    </td>
+                    <td colspan="3" class="ar">
+                    <div>
+                    运费方式：
+                    <{if $list.mail>0 or $list.express>0 or $list.ems>0}>
+                    <select id='cem_<{$list.sell_userid}>' onchange="count_price('<{$list.sell_userid}>');">
+                    
+                    <{if $list.express>=0}>
+                    <option value="快递,<{$list.express}>">快递 <{$config.money}><{$list.express|number_format:2}></option>
+                    <{/if}>
+                    
+                    <{if $list.mail>=0}>
+                    <option value="平邮,<{$list.mail}>">平邮 <{$config.money}><{$list.mail|number_format:2}></option>
+                    <{/if}>
+                    
+                    <{if $list.ems>=0}>
+                    <option value="EMS,<{$list.ems}>">EMS <{$config.money}><{$list.ems|number_format:2}></option>
+                    <{/if}>
+                    </select>
+                    <{else}>
+                    卖家承担
+                    <{/if}>
+                    <{if $list.mail>0 or $list.express>0 or $list.ems>0}>
+                    <b>
+                        <{$config.money}>
+                        <span id="show_cem_<{$list.sell_userid}>">
+                        <{$list.express|number_format:2}>
+                        </span>
+                    </b>
+                    <{/if}>
+                    </div>
+                    <div>
+                    店铺合计(含运费)：
+                    <b>
+                        <{$config.money}> 
+                        <span class="shop_total_price" id="s_csumprice_<{$list.sell_userid}>">
+                        <{$list.sumprice+$list.express|number_format:2}>
+                        </span>
+                    </b>
+                    </div>
+                    </td>
+                </tr>
+            <{/foreach}>
+           		</tbody>
+            </table>       
+            </div>
+        </div>
+        <div class="order_sum">
+       		<input type="hidden" name="act" value="order" />
+            <input type="hidden" name="hidden_consignee_id" id="hidden_consignee_id" value="<{$consignee.id}>" />
+            <span class="total">应付总额：
+            <strong><{$config.money}><span id="s_sumprice"></span></strong>
+            </span>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="w fn-clear" id="order_buttons">
+	<input type="submit" value="" class="order_submit">
+</div>    
+</form>
+<script>
+<{if !$consignee.id}>
+open_Module("consignee");
+<{/if}>
+function h(id)
+{
+	$("#msg_"+id).prev().hide();
+	$("#msg_"+id).css("width","300px");
+	$("#msg_"+id).css("height","30px");
+	
+}
+function count_price(id)
+{	//计算单店铺
+	v=$('#cem_'+id).val();
+	value=v.split(',');
+	
+	$('#logistics_type_'+id).val(value[0]);
+	$('#logistics_price_'+id).val(value[1]);
+	
+	//单店总价-物流=商品总价
+	zj=$('#s_csumprice_'+id).html().replace(',','')*1-$('#show_cem_'+id).html()*1;
+	
+	$('#show_cem_'+id).html(roundAmount(value[1]));//选中的快递费
+	$('#s_csumprice_'+id).html(roundAmount(value[1]*1+zj*1));
+	
+	count_all_price();
+}
+function count_all_price()
+{	//计算本次购物总价,购物总价+所有物流价格
+	var total=0;
+	var stotal=$('.shop_total_price');
+	for (var i=0;i<stotal.length;i++)
+	{
+		total+=stotal[i].innerHTML.replace(',','')*1;
+	}
+	
+	$('#s_sumprice').html(roundAmount(total));
+}
+count_all_price();
+function roundAmount(n)
+{  
+  var   s   =   ""   +   Math.round(n*100)/100  
+  var   i   =   s.indexOf('.')  
+  if(i<0)   return   s   +   ".00"  
+  var   t=s.substring(0,   i   +   1)   +    
+		  s.substring(i   +   1,   i   +   3)  
+  if(i   +   2   ==   s.length)   t   +=   "0"  
+  return   t  
+}
+function check()
+{
+	if($('#addres').val()==0)
+	{
+		alert('请填写收货地址');
+		return false;
+	}
+	
+	return true;
+}
+
+function alocation(id)
+{
+	if(confirm('收货地址更改后,需要重新确认订单'))
+	{
+		window.location='<{$config.weburl}>/?m=product&s=confirm_order&arrid='+id;
+		showadder();
+	}
+}
+
+</script> 
+<{/if}>
+<div class="footer fn-clear">
+    <div class="w">
+        <dl class="link fn-clear">
+        	<dt>合作伙伴</dt>
+            <dd><{insert name="label" type="friendlink" temp="friendlink"}></dd>
+        </dl>
+        <div class="links"><{$web_con}></div>
+        <div class="copyright"><{$bt}></div>
+    </div>
+</div>
+</body>
+</html>

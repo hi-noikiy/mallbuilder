@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>资金明细</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script language="javascript" src="../script/Calendar.js"></script>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<script language="javascript">
+var cdr = new Calendar("cdr");
+document.write(cdr);
+cdr.showMoreDay = true;
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>资金明细</h3>
+            <ul>
+                <li <{if $smarty.get.operation==''}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"><span>资金明细</span></a></li>
+                <li <{if $smarty.get.operation=='add'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=add"><span>手动操作</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="h35"></div>
+    <{if $smarty.get.operation=='add' or $smarty.get.operation=='edit' }>
+    <script>
+	$(function(){
+		$('#form').validate({
+			errorPlacement: function(error, element){
+				element.next('.form-error').append(error);
+			},      
+			rules : {
+				email:{
+					required:true
+				},
+				cash:{
+					required:true,
+					digits:true
+				}
+			},
+			messages : {
+				email:{
+					required:'请填写Email'
+				},
+				cash:{
+					required:'请填写充值金额'
+				}
+			}
+		});
+	});
+	</script>
+    <form id="form" method="post">
+     <table class="table table1">
+        <tr>
+            <td width="80">Email</td>
+            <td>
+            <input class="w250" name="email" id="email" value="<{$smarty.get.email}>" type="text" />
+            <div class="form-error"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>增减类型</td>
+            <td>
+           <div class="catalogBox">
+                <input type="hidden" value="+" name="type" id="type">
+                <div class="select w215">
+                    <span>增加</span>
+                    <b></b>
+                </div>
+                <div style="display:none;" class="i-select w252">
+                    <ul>
+                        <li key="+" class="sub-line">增加</li>
+                        <li key="-" class="sub-line">减少</li>
+                    </ul>
+                </div>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td>充值金额</td>
+            <td>
+            <input class="w250" name="cash" type="text" id="cash" maxlength="10" />
+            <div class="form-error"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td><textarea name="note" class="w245"></textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+            <input class="submit" type="submit" value="提交">
+            <input name="act" type="hidden" id="action" value="add">
+            </td>
+        </tr>
+    </table>
+    </form>
+    <{else}>
+    <table class="select_table">
+        <tr>    
+            <td>
+                <div class="select_box">
+                <form action="" method="get">
+                    <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                    <input type="hidden" name="s" value="cashflow.php">
+                    <input placeholder="会员名称" type="text" name="name" class="txt s w200" value="<{$smarty.get.name}>" />
+                    <div class="catalogBox">
+                        <input type="hidden" value="<{$smarty.get.type}>" name="type" id="type">
+                        <div class="select">
+                            <span>
+                            <{if $smarty.get.type}>
+                			<{assign var=n value=$smarty.get.type-1}>
+                            <{$payment_type.$n}>
+                            <{else}>
+                            全部类型
+                            <{/if}></span>
+                            <b></b>
+                        </div>
+                        <div style="display:none;" class="i-select">
+                            <ul>
+                                <li key="" class="sub-line">全部类型</li>
+                                <{foreach item=list key=num from=$payment_type}>
+                                <li key="<{$num+1}>"><{$list}></li>
+                                <{/foreach}>
+                            </ul>
+                        </div>
+                    </div>
+                    <input onFocus="cdr.show(this);" class="txt c w95" type="text" name="stime" id="stime" value="<{$smarty.get.stime}>"> 
+                    <em class="fl mr5">-</em> 
+                    <input onFocus="cdr.show(this);" class="txt c w95" type="text" name="etime" id="etime" value="<{$smarty.get.etime}>">
+                    <input type="submit" value="搜索" />
+                </form>
+                </div>
+                <a class="refresh" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"></a>
+           </td>
+        </tr>
+    </table>
+    <form action="" method="post">
+    <table class="table">
+        <tbody>
+            <tr class="header">
+                <th width="140" class="al">流水号</th>
+                <th width="100" class="al">会员名称</th>
+                <th width="100">创建时间</th>
+                <th width="120">金额(元)</th>
+                <th width="60">管理员</th>
+                <th width="120">类型</th>
+                <th class="al">描述</th>
+				<th width="60">状态</th>
+            </tr>
+            <{foreach item=list from=$de.list}>
+            <tr>
+                <td class="al"><{$list.flow_id}></td>
+                <td class="al"><{if $list.userid!=0}><{$list.user}><{else}>系统账户<{/if}></td>
+                <td><{$list.time|date_format:"%Y-%m-%d&nbsp;%H:%M"}></td>
+                <td><{$list.price|number_format:2}></td>
+                <td><{$list.censor}></td>
+                <td><{assign var=num value=$list.mold}><{$payment_type.$num}></td>
+                <td class="al"><{$list.note}></td>
+                <td><{assign var=num1 value=$list.statu}><{$payment_statu.$num1}></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="pages" colspan="99">
+                <div class="fl">每页最多显示： 20条</div>
+                <div class="page"><{$de.page}></div>
+                <div class="fr">共有<{$count}>条记录</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    </form>
+    <{/if}>
+</div> 
+<script>
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+			if($(obj).next().is(":visible")){
+				$(document).one('click',function(){
+					$(".select").next().slideUp("fast");
+				});
+			}
+		});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().prev().attr("value",$(this).attr("key"));
+		$(this).parent().parent().prev().children().html(str);
+		$(this).parent().parent().slideToggle();
+	});
+});
+</script>
+</body>
+</html>

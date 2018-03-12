@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>产品咨询</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>产品咨询</h3>
+            <ul>
+                <li <{if $smarty.get.operation==''}>class="current"<{/if}>><a href="?m=product&s=product_consult.php"><span>全部咨询</span></a></li>
+            </ul>
+        </div>
+    </div>
+	<div class="h35"></div>  
+    <script type="text/javascript">
+    $(function(){
+        /* 全选 */
+         $('.checkall').click(function(){
+            var _self = this;
+            $('.checkitem').each(function(){
+                if (!this.disabled)
+                {
+                    $(this).attr('checked', _self.checked);
+                }
+            });
+            $('.checkall').attr('checked', this.checked);
+        });	 
+    });
+    </script>
+    <form action="" method="get">
+    <input type="hidden" name="m" value="product">
+    <input type="hidden" name="s" value="product_consult.php">
+    <table class="select_table">
+        <tbody>
+            <tr>
+                <td width="70">产品名称:</td>
+                <td colspan="2"><input type="text" name="name" class="w250" value="<{$smarty.get.name}>" /></td>
+            </tr>
+            <tr>
+                <td width="70">咨询内容:</td>
+                <td colspan="2"><input type="text" name="key" class="w250" value="<{$smarty.get.key}>" /></td>
+            </tr>
+            <tr>    
+                <td width="70">咨询分类:</td>
+                <td colspan="2">
+                <select name="catid">
+                	<option value="">请选择</option>
+                    <{foreach item=list from=$consultcat}>
+                    <option <{if $smarty.get.catid==$list.id}> selected="selected"<{/if}> value="<{$list.id}>"><{$list.name}></option>
+                    <{/foreach}>
+                </select>
+                </td>
+            </tr>
+            <tr>    
+                <td width="70">咨询分类:</td>
+                <td width="50">
+                <select name="status">
+                	<option value="">请选择</option>
+                    <option <{if $smarty.get.status==1}> selected="selected"<{/if}> value="1">未回复</option>
+                    <option <{if $smarty.get.status==2}> selected="selected"<{/if}> value="2">回复</option>
+                </select>
+                </td>
+                <td><input type="image" src="<{$config.weburl}>/image/admin/search.gif" /></td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+    <form action="" method="post" id="form" name="form">
+    <input type="hidden" name="act" value="op" />
+    <table class="table product">
+        </thead>
+        <tbody>
+            <tr class="partition">
+                <th width="1"></th>
+                <th width="20"><input type="checkbox" class="checkall" id="del"></th>
+                <th class="al" width="*">咨询内容</th>
+                <th width="100">提问者</th>
+                <th width="60">更新时间</th>
+            </tr>
+            <{foreach item=item from=$de.list}>
+            <tr bgcolor="#EFF8FD">
+            	<td colspan="4" class="al pl20">
+                <a target="_blank" href="../?m=product&s=detail&id=<{$item.id}>"><{$item.pname}></a>
+                <strong class="red ml10"><{$config.money}><{$item.price}></strong>
+                <span class="ml10">库存：<{$item.stock}></span>
+                </td>
+                <td><a href="?m=product&s=product_consult.php&id=<{$item.id}>"><{$item.consult|@count}>条记录</a></td>
+            </tr>   
+            <{foreach item=list from=$item.consult}>
+            <tr>
+                <td></td>
+                <td><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                <td class="al"><{if $list.status==2}><{$list.question}><{else}><span class="red"><{$list.question}><{/if}></span></td>
+               
+                <td><{$list.member_name}></td>
+				<td><{$list.question_time|date_format:"%Y-%m-%d<br>%H:%M:%S"}></td>
+			</tr>
+            <{/foreach}>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+            	<td></td>
+            	<td colspan="5">
+                <input type="checkbox" class="checkall">
+                <input type="hidden" name="act" value="op" />
+				<input type="submit" value="提交" />
+                <div class="page"><{$de.page}></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    </form>
+</div>
+</body>
+</html>

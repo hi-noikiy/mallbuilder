@@ -1,0 +1,42 @@
+<div id="J_Category" class="category">
+    <div class="navcatgory">
+        <ul>
+      	  	<{foreach item=cList key=num from=$cat}>
+            <li class="j_MenuItem">
+                <p>
+                    <em style="background-image:url(<{$cList.pic}>);"><{$cList.cat|truncate:8:""}></em>
+                </p>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+    <div id="J_SubCategory" class="subCategory">
+        <{foreach item=cList key=num from=$cat}>
+        <div class="j_SubView fn-clear">
+            <div class="catlist">  
+                <{foreach item=sublist key=n from=$cList.scat}>
+                <dl class="fore<{$n+1}>">
+                    <dt><a href="<{$config.weburl}>/?m=product&s=list&id=<{$sublist.catid}>"><{$sublist.cat}></a></dt>
+                    <dd>
+                    <{foreach item=slist from=$sublist.scat}>
+                    <a href="<{$config.weburl}>/?m=product&s=list&id=<{$slist.catid}>"><{$slist.cat}></a>
+                    <{/foreach}>
+                    </dd>
+                    
+                    <{if $sublist.brand}>
+                    <dd class="barnd">
+                        <{foreach item=lists from=$sublist.brand}>
+                        <a href="<{$config.weburl}>/?m=product&s=list&brand=<{$lists.name}>"><{$lists.name}></a>
+                        <{/foreach}>
+                    </dd>
+                    <{/if}>
+                </dl>
+                <{/foreach}>
+            </div>
+            <div class="adv">
+            <script src='<{$config.weburl}>/api/ad.php?id=6&catid=<{$num+1}>&name=<{$smarty.get.key}>'></script>
+            </div>
+        </div>
+        <{/foreach}>
+    </div>   
+</div>

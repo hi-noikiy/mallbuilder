@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript" charset="utf-8" ></script>
+</head>
+<body>
+<div class="container">
+    <div class="oflow" style="height:530px;">
+        <table class="select_table">
+            <tr>
+                <td>
+                    <div class="select_box">
+                    <form action="" method="get">
+                        <input type="hidden" name="key" value="<{$smarty.get.key}>">
+                        <input type="hidden" name="m" value="product">
+                        <input type="hidden" name="s" value="product_list.php">
+                        <input placeholder="请输入产品名称..." type="text" name="name" class="txt s w250" value="<{$smarty.get.name}>"  />
+                        <input type="submit" value="搜索" />
+                    </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+   		<form action="home_config.php" id="form" method="post" target="main">    
+        <input type="hidden" name="act" value="save">
+        <input type="hidden" name="<{$smarty.get.key}>[]" value="<{$val}>"> 
+        <{foreach item=list key=key from=$de.list}>
+        <li class="plist<{if ($key+1)%5==0}> nmr<{/if}>">
+            <div class="m">
+                <div class="checkbox"><input type="checkbox" name="<{$smarty.get.key}>[]" value="<{$list.id}>" /></div>
+                <div class="p-img"><img src="<{$list.pic}>_120X120.jpg"></div>
+                <div class="p-name"><{$list.pname}></div>
+                <div class="p-price"><strong><{$config.money}><{$list.price}></strong></div>
+            </div>
+        </li>
+        <{/foreach}>
+    	</form>
+        <div class="page clear"><{$de.page}></div> 
+	</div>
+    <div class="dialog_button">
+        <input id="save" type="button" value="保存">
+    </div>
+</div>
+<script type="text/javascript">
+$('.plist').hover(function(){					 
+	$(this).addClass("hover");
+},function(){
+	$(this).removeClass("hover");	
+});
+$('#save').click(function(){
+						  
+	var length=$(".container").find("input[name='<{$smarty.get.key}>[]']:checked").length;
+	if(length>0){$("#form").submit()};
+	window.parent.DialogManager.close("list");
+});
+</script>
+</body>
+</html>

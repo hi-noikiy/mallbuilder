@@ -1,0 +1,661 @@
+<script src="<{$config.weburl}>/script/jquery.jqzoom1.0.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+function seebig(url,id)
+{
+	if(url=='')
+		return;
+    document.getElementById('imgmove').innerHTML='<a class="jqzoom" href="'+url+'" target="_blank">'+'<img id="img'+id+'" border="0" width="310" height="310" src="'+url+'" ></a><span style=""></span>';
+	$(".jqzoom").jqzoom();
+}
+$(function() {
+	$(".jqzoom").jqzoom();
+});
+$(document).ready(function(){
+	$("#add_cart").click(
+		function()
+		{
+			flag=buy();
+			if(flag)
+			{
+				var price=$('#price').html();
+				var num=$('#nums').val();
+				var sid=$('#sid').val();
+				var sku=$('#sku').val();
+				var pid='<{$smarty.get.id}>';
+				$('#cart_show').fadeIn(500);
+				$('#cart_show').load('<{$config.weburl}>/?m=product&s=cart&add_cart=1&price='+price+'&nums='+num+'&id='+pid+'&sid='+sid+'&sku='+sku);
+				x=$(".buy_box").offset();
+				$("#cart_show").offset({top:x.top,left:x.left});
+				return false;
+			}
+		}
+	);
+	$("#low_num").click(
+	function()
+	{
+		var num=$('#nums').val()*1;
+		if(num>1)
+			$('#nums').val(num-1)
+	}
+	);
+	$("#add_num").click(
+	function()
+	{
+		var num=$('#nums').val()*1;
+		if(num<$('#stock').html())
+			$('#nums').val(num+1)
+	}
+	);
+});
+function collect_goods(id){
+	var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+	var uname='<{$smarty.cookies.USER}>';
+	if(uname=='')
+	{
+		alert('<{$lang.no_logo}>');
+		window.location.href='<{$config.weburl}>/login.php?forward=shop.php?uid=<{$smarty.get.uid}>';
+		return false;
+	}
+	var pars = 'pid='+id+'&uname='+uname;
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest>1)
+			alert('<{$lang.fav_ok}>');
+		else if (originalRequest>0)
+			alert('<{$lang.fav_isbing}>');
+		else
+			alert('<{$lang.error}>');
+	}
+}
+function buy()
+{
+	var flag = false;
+	$('ul[genre="property"]').each(function(){
+	
+		if(!$(this).find('a').hasClass('checked')){
+	        flag = true;
+		}
+	});
+	
+    if (goodsspec.getSpec() == null || flag)
+    {
+        alert('请选择相关规格');
+        return !flag;
+    }
+	else
+	{
+		return !flag;	
+	}
+}
+</script>
+<div class="title">
+    <h1><{$de.pname}></h1>
+    <{if $de.promotion_tips}><h1 class="red"><{$de.promotion_tips}></h1><{/if}>
+    <div class="report">
+        <div class="i-report">
+            <span><a href="javascript:void(0)">举报中心<i></i></a></span>
+            <ul>
+                <li><a href="main.php?m=report&s=admin_add_report&pid=<{$de.id}>">举报该商品</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="con clearfix">
+    <div class="summary clearfix">
+        <div class="gallery">
+            <div id="imgmove" class="img">       
+                <a class="jqzoom" title="zoom" href="<{if $de.pic}><{$de.pic}><{else}>image/default/nopic.gif<{/if}>">
+                    <{if $de.pic}>
+                        <{assign var=img value=$de.pic}>
+                    <{else}>
+                        <{assign var=img value='image/default/nopic.gif'}>
+                    <{/if}>
+                    <img height="310" width="310" alt="<{$de.pname}>" src="<{if $de.pic}><{$de.pic}><{else}>image/default/nopic.gif<{/if}>" title="<{$de.pname}>">
+                </a>
+                <span style="position:absolute;left:660px;top:450px;"></span>
+            </div>
+            <{if $de.pic.0!=''}>
+            <ul class="clearfix">         
+            <{foreach item=pic key=num from=$de.pic_more}>
+                <li <{if $num==4}>class="mr0"<{/if}>>
+                <img onMouseOver="seebig('<{$pic}>',<{$num}>)" src="<{$pic}>_60X60.jpg" height="50" width="50"></li>
+                </li>
+             <{/foreach}>
+            </ul>
+            <{/if}>
+        </div>
+        <div class="property">
+            <ul class="info">
+                <li class="price">
+                    <span>价　　格：</span>
+                    <strong><em><{$config.money}></em><font id="price"><{$de.price|number_format:2}></font></strong>
+                </li>
+                <li><span>产品编号：</span><font id="code"><{$de.code}></font></li>
+                <li>
+                    <span>物流运费：</span>
+                    <{if $de.freight_type==0}>
+                        <{$lang.sell_freight}>
+                    <{else}>
+                        <{if $de.user_ip}><{$de.area}>|<{$lang.to}> <{$de.user_ip}><{/if}>
+                        <{if !$de.freight}>
+                            平邮：<{$de.post_price}>
+                            快递：<{$de.express_price}>
+                            EMS：<{$de.ems_price}>
+                        <{else}>
+                            <{$de.freight_count}>
+                        <{/if}>
+                    <{/if}>
+                </li>
+                <li class="sell">
+                    <span>销　　量：</span>
+                    已售出<em><{$de.sell_amount}></em>件 
+                </li>
+                <li class="evaluate">
+                    <span>评　　价：</span>
+                    <em class="stars"><em><i style="width:90%"></i></em></em>
+                </li>
+                <li><span>宝贝类型：</span><{$de.ptype}></li>
+            </ul>
+            <div class="sep-line"></div>
+           
+            <{if $de.isbuy==1}>
+			<{if $validTime==1}>
+                <{if $stime==1}>
+                <div class="buy_box">
+                    <form onsubmit="return buy()" action="<{$config.weburl}>/?m=product&s=cart" method="post">
+                    <div class="select_style clearfix">
+                        <{if $de.porperty}>
+                            <{foreach item=list from=$de.extfiled.d}>
+                                <{$list}>
+                            <{/foreach}>
+                        <{/if}>
+                        <dl>
+                            <dt>购买数量：</dt>
+                            <dd>
+                                <span id="low_num">-</span>
+                                <input onkeyup="check_nums();" size="3" name="nums" id="nums" type="text" value="1" />
+                                <span id="add_num">+</span>
+                                <span class="stock">(库存<span id="stock"><{$de.amount}></span>件)</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="choose_result"></div>
+                    <div class="clear"></div>
+                    <input name="id" type="hidden" value="<{$de.id}>" />
+                    <input name="sid" id="sid" type="hidden" value="0" />
+                    <input name="sku" id="sku" type="hidden" value="0" />
+                    <div class="choose_btn">
+                    <{if $buid!=$de.userid}>
+                    <img id="add_cart" src="<{$config.weburl}>/templates/user_templates_default/img/buy.png" />
+                    <{/if}>
+                    <a href="javascript:collect_goods('<{$de.id}>');">收藏</a>
+                    </div>
+                    </form>
+                </div>
+                <{else}>
+               	 	<div class="nobuy">此产品未上架</div>
+                <{/if}>
+            <{else}>
+            	<div class="nobuy">此产品已过期</div>
+            <{/if}>
+            <{else}>
+            	<div class="nobuy">此产品不支持在线购买功能</div>
+            <{/if}>
+            <div class="clear"></div>
+            <div class="img">
+            <img width="74" src="uploadfile/product/<{$de.userid}>/<{$de.id}>.jpg" />
+            </div>
+            <div id="cart_show"></div>
+        </div>
+    </div>
+</div>
+<script>
+function check_nums()
+{
+	var v=document.getElementById('nums').value*1;
+	if(!v)
+		document.getElementById('nums').value=1;
+	if(v>$('#stock').html()*1)
+	{
+		document.getElementById('nums').value=$('#stock').html()*1;
+		return false;
+	}
+}
+function spec(id, spec, price, stock, code)
+{
+	this.id    = id;
+	this.spec  = spec;
+	this.price = price;
+	this.stock = stock;
+	this.code  = code;
+}
+function goodsspec(specs, specQty, defSpec)
+{
+	this.specs = specs;
+	this.specQty = specQty;
+	this.defSpec = defSpec;
+	this.spec1 = null;
+	this.spec2 = null;
+	if (this.specQty >= 1)
+	{
+		for(var i = 0; i < this.specs.length; i++)
+		{
+			if (this.specs[i].id == this.defSpec)
+			{
+				<{foreach item=list key=num from=$de.extfiled.d}>
+				this.spec<{$num+1}> = this.specs[i].spec[<{$num}>];
+				<{/foreach}>
+				break;
+			}
+		}
+	}
+	this.getSpec = function()
+	{
+		for (var i = 0; i < this.specs.length; i++)
+		{
+			<{foreach item=list key=num from=$de.extfiled.d}>
+			if (this.specs[i].spec[<{$num}>] != this.spec<{$num+1}>) continue;
+			<{/foreach}>
+			return this.specs[i];
+		}
+		return null;
+	}
+
+}
+function selectSpec(num,obj, SID)
+{
+	goodsspec['spec' + num] = SID;
+	var data_str = $(obj).attr('data-param');
+	if(data_str)
+	{
+		eval("data_str = "+data_str);
+		$('#imgmove img').attr("src",data_str.src);
+	}
+	else{
+		var src="<{$img}>";
+		$('#imgmove img').attr("src",src);
+	}
+	$(obj).addClass("checked");
+	$(obj).parents('li').siblings().find('a').removeClass("checked");
+	
+	var spec = goodsspec.getSpec();
+	var sign = 't';
+	$('ul[genre="property"]').each(function(){
+		if(!$(this).find('a').hasClass('checked')){
+			sign = 'f';
+		}
+	});
+	if (spec != null && sign == 't')
+	{
+		$('#stock').html(spec.stock);
+		$('#price').html(spec.price.toFixed(2));
+		$('#price1').html(spec.price.toFixed(2));
+		$('#prices').html(spec.price.toFixed(2));
+		$('#code').html(spec.code);
+		$('#sid').val(spec.id);
+		$('#sku').val(spec.code);
+		$('#sid1').val(spec.id);
+		$('#sku1').val(spec.code);
+		
+		if(parseInt(spec.stock) == 0)
+		{
+			$('[class="choose_result"]').show().html('<div class="dd"><em>库存量不足，请选择其它。</em></div>');
+			$('#addcart_submit').attr('disabled',true).css('cursor','pointer');
+		}
+		else
+		{
+			SP_V = '';
+			$('ul[genre="property"]').find('li > .checked').each(function(i){
+				SP_V += '<strong>"'+$(this).text()+'"</strong>，';
+			});
+			SP_V = SP_V.substr(0,SP_V.length-1);
+			$('[class="choose_result"]').show().html('<em>您选择了：</em>'+SP_V+'');
+			$('#addcart_submit').attr('disabled',false).css('cursor','auto');
+		}
+	}
+	
+}
+var specs = new Array();
+<{foreach item=list key=num from=$de.porperty}>
+specs.push(new spec(<{$list.id}>, ['<{$list.property_value_id|replace:",":"','"}>'], <{$list.price}>, <{$list.stock}>, '<{$list.sku}>'));
+var specQty = <{$de.extfiled.d|@count}>;
+var defSpec = <{$de.porperty.0.id}>;
+<{foreachelse}>
+specs.push(new spec('', '', '', '', ''));
+var specQty = 0;
+var defSpec = 0;
+<{/foreach}>
+var goodsspec = new goodsspec(specs, specQty, defSpec);
+</script>
+
+<{if $match}>
+<div class="m match clearfix">
+    <div class="mt">
+        <ul class="tab">
+            <li class="curr"><a href="javascript:;">推荐配件</a></li>
+        </ul>
+    </div>
+    <form id="forms" method="post" action="<{$config.weburl}>/?m=product&s=cart">
+    <input type="hidden" name="act" value="match" />
+    <input name="id" type="hidden" value="<{$de.id}>" />
+    <input name="nums" type="hidden" value="1" />
+	<input name="sid" id="sid1" type="hidden" value="0" />
+    <input name="sku" id="sku1" type="hidden" value="0" />
+    <div class="mc">
+        <div class="master">
+            <s></s>
+            <div class="p-img"><a href="<{$config.weburl}>/?m=product&s=detail&id=<{$de.id}>"><img width="130" height="130" src="<{$de.pic}>" /></a></div>
+            <div class="p-name"><a href="<{$config.weburl}>/?m=product&s=detail&id=<{$de.id}>"><{$de.pname}></a></div>    
+            <div class="p-price"><{$config.money}><span id="price1"><{$de.price}></span></div>                            
+        </div>
+        <div class="suits">
+        <{assign var=count value=$match|@count}>
+        <ul style="width:<{$count*145}>px">
+        <{foreach item=list from=$match}>
+            <li>
+                <div class="p-img"><a target="_blank" href="?m=product&s=detail&id=<{$list.id}>"><img width="130" height="130" src="<{$list.pic}>" /></a></div>
+                <div class="p-name"><a target="_blank" href="?m=product&s=detail&id=<{$list.id}>"><{$list.pname}></a></div>    
+                <div class="p-price">
+                <{if $list.tid}>
+                <input onclick="sum('<{$list.id}>_<{$list.tid}>')" class="fl chk" type="checkbox" value="<{$list.tid}>" id="chk_<{$list.id}>_<{$list.tid}>" name="chk1[<{$list.id}>][]" />
+                <label for="chk_<{$list.id}>_<{$list.tid}>" class="fl">
+                <{$config.money}><span id="price_<{$list.id}>_<{$list.tid}>"><{$list.money}></span>
+                </label>
+                <input type="hidden" value="<{$list.sku}>" name="skus<{$list.tid}>" />
+                <{else}>
+                <input onclick="sum('<{$list.id}>')" class="fl chk" type="checkbox" value="<{$list.id}>" id="chk_<{$list.id}>" name="chk[<{$list.id}>]" />
+                <label for="chk_<{$list.id}>" class="fl">
+                <{$config.money}><span id="price_<{$list.id}>"><{$list.price}></span>
+                </label>
+                <input type="hidden" value="<{$list.code}>" name="skus[<{$list.id}>]" />
+                <{/if}>
+                </div>
+            </li>
+        <{/foreach}>
+        </ul>
+        </div>
+        <div class="clearfix"></div>
+    	<div class="sum">
+    		<div class="fr">
+            	<span>套餐价：</span>
+           		<span class="price"><{$config.money}><span id="prices"><{$de.price}></span></span>
+                <div class="btns"><a class="btn-buy">立刻购买</a></div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<script>
+function sum(id)
+{
+	flag=buy();
+	if(flag)
+	{
+		checked=$("#chk_" + id).attr("checked");
+		aa=$("#price_"+id).html();
+		bb=$("#prices").html();
+		bb=bb.replace(",",""); 
+		if(checked==true)
+		{
+			cc=parseInt(aa)+parseInt(bb);
+			$("#prices").html(cc.toFixed(2));
+		}
+		else
+		{
+			cc=parseInt(bb)-parseInt(aa);
+			$("#prices").html(cc.toFixed(2));
+		}
+	}
+	else
+	{
+		checked=$("#chk_" + id).attr("checked","");	
+	}
+}
+$('.btn-buy').click(function(){
+	$("#forms").submit();
+});
+</script>
+<{/if}>
+<div class="layout clearfix">
+    <div class="left">
+    	<div class="m">
+        	<div class="mt"><h3>热销产品</h3></div>
+        	<div class="mc">
+            <{insert name="label" type="product" uid=$de.userid o='1' temp="product_list_li" limit=5}>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+    	<div class="i-title">
+        	<ul>
+            	<li class="cur"><a id="desc" href="#desc">商品详情</a></li>
+            	<li><a id="reviews" href="#reviews">评价详情</a></li>
+            	<li><a id="deal-record" href="#deal-record">成交记录</a></li>
+            </ul>
+        </div>
+        <div class="i-con clearfix">
+        	<div class="attributes clearfix">
+            	<ul class="clearfix">
+                	<li><{$lang.brand}>：<{$de.brand}></li>
+					<{foreach item=list from=$de.extfiled.s}><{$list}><{/foreach}>
+                </ul>
+            </div>
+			<div class="description"><{$de.detail}></div>
+        </div>
+        <div class="i-con hidden">
+            <div class="score-box">
+            <table width="90%" style="margin:auto" >
+            <tr>
+                <td class="td1"><h4>与描述相符</h4><p><{$u.a|number_format:1}><{$lang.fraction}></p></td>
+                <td class="td2">
+                    <div class="scroller">
+                    <span style="width: <{$u.aw}>%;"><em><{$u.a|number_format:1}></em></span>
+                    </div>
+                    <div class="rate-desc">
+                        <ul>
+                            <li><{$lang.very_dissatisfied}></li>
+                            <li><{$lang.displeasure}></li>
+                            <li><{$lang.general}></li>
+                            <li><{$lang.satisfaction}></li>
+                            <li><{$lang.very_satisfied}></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </table>
+            </div>
+            <div class="taglist">
+                <ul class="clearfix">
+                    <li class="cur">全部评论</li>
+                    <li>好评</li>
+                    <li>中评</li>
+                    <li>差评</li>
+				</ul>
+                <div class="clear"></div>
+            </div>
+            <div class="reviews">
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <{foreach item=list from=$review.list}>
+                    <tr>
+                    	<td align="center">
+                        <p class="pic">
+                        <a href="home.php?uid=<{$list.userid}>">
+                        <{if $list.logo || $list.logo==0 }>
+                        <img width="40" height="40" src="image/default/avatar.png">
+                        <{else}>
+                        <img width="40" height="40" src="<{$list.logo}>">
+                        <{/if}>
+                        </a>
+                        </p>
+                        <p><a href="home.php?uid=<{$list.userid}>"><{$list.user}></a></p>
+                        </td>
+                        <td width="85%" valign="top">
+                        <p><{$list.con}></p>
+                        <span><{$list.uptime|date_format}></span>
+                        </td>
+                    </tr>
+                <{foreachelse}>
+                <tr><td height="70" class="pt0"><{$lang.no_results_found}></td></tr>
+                <{/foreach}>
+            </table>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" class="hidden">
+               <{foreach item=list from=$review2.list}>
+                    <tr>
+                    	<td align="center">
+                        <p class="pic">
+                        <a href="home.php?uid=<{$list.userid}>">
+                        <{if $list.logo || $list.logo==0 }>
+                        <img width="40" height="40" src="image/default/avatar.png">
+                        <{else}>
+                        <img width="40" height="40" src="<{$list.logo}>">
+                        <{/if}>
+                        </a>
+                        </p>
+                        <p><a href="home.php?uid=<{$list.userid}>"><{$list.user}></a></p>
+                        </td>
+                        <td width="85%" valign="top">
+                        <p><{$list.con}></p>
+                        <span><{$list.uptime|date_format}></span>
+                        </td>
+                    </tr>
+                <{foreachelse}>
+                <tr><td height="70" class="pt0"><{$lang.no_results_found}></td></tr>
+                <{/foreach}>
+            </table>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" class="hidden">
+                <{foreach item=list from=$review3.list}>
+                    <tr>
+                    	<td align="center">
+                        <p class="pic">
+                        <a href="home.php?uid=<{$list.userid}>">
+                        <{if $list.logo || $list.logo==0 }>
+                        <img width="40" height="40" src="image/default/avatar.png">
+                        <{else}>
+                        <img width="40" height="40" src="<{$list.logo}>">
+                        <{/if}>
+                        </a>
+                        </p>
+                        <p><a href="home.php?uid=<{$list.userid}>"><{$list.user}></a></p>
+                        </td>
+                        <td width="85%" valign="top">
+                        <p><{$list.con}></p>
+                        <span><{$list.uptime|date_format}></span>
+                        </td>
+                    </tr>
+                <{foreachelse}>
+                <tr><td height="70" class="pt0"><{$lang.no_results_found}></td></tr>
+                <{/foreach}>
+            </table>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" class="hidden">
+               <{foreach item=list from=$review4.list}>
+                    <tr>
+                    	<td align="center">
+                        <p class="pic">
+                        <a href="home.php?uid=<{$list.userid}>">
+                        <{if $list.logo || $list.logo==0 }>
+                        <img width="40" height="40" src="image/default/avatar.png">
+                        <{else}>
+                        <img width="40" height="40" src="<{$list.logo}>">
+                        <{/if}>
+                        </a>
+                        </p>
+                        <p><a href="home.php?uid=<{$list.userid}>"><{$list.user}></a></p>
+                        </td>
+                        <td width="85%" valign="top">
+                        <p><{$list.con}></p>
+                        <span><{$list.uptime|date_format}></span>
+                        </td>
+                    </tr>
+                <{foreachelse}>
+                <tr><td height="70" class="pt0"><{$lang.no_results_found}></td></tr>
+                <{/foreach}>
+            </table>
+            </div>
+        </div>
+        <div id="deal-record" class="i-con hidden">
+            <table class="table" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th class="pl15">买家</th>
+                    <th width="20%">价格</th>
+                    <th width="12%">数量</th>
+                    <th width="20%">付款时间</th>
+                    <th width="25%">规格</th>
+                </tr>
+                <{foreach item=list from=$buy_rec.list}>
+                <tr>
+                    <td class="pl15">
+                    <p>&nbsp;<{$list.user}></p>
+                    <p><img title="<{$list.buyerpointsdesc}>个买家信用积分" src="image/points/<{$list.buyerpointsimg}>" /></p>
+                    </td>
+                    <td><span><{$config.money}><b><{$list.price*$list.num|number_format:2}></b></span></td>
+                    <td><{$list.num}></td>
+                    <td><{$list.time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                    <td><{$list.setmeal}></td>
+                </tr>
+                <{/foreach}>
+            </table>
+        </div>
+        <div class="product_detail mt20">    
+            <div class="i-title">
+                <ul>
+                    <li class="cur"><a href="javascript:;">全部购买咨询</a></li>
+                    <{foreach item=list from=$consultcat}>
+                    <li><a href="javascript:;"><{$list.name}></a></li>
+                    <{/foreach}>
+                </ul>
+            </div>
+            <div class="consult_search consult">
+            	<div class="fl">
+                	<strong>咨询前请选搜索，方便又快捷：</strong>
+                    <form method="get" target="_blank" action="<{$config.weburl}>/">
+                    <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                    <input type="hidden" name="s" value="consult">
+                    <input type="hidden" name="pid" value="<{$smarty.get.id}>">
+                    <input type="text" name="k" value="">
+                    <input type="image" src="templates/user_templates_default/img/btn_consult_search.png">
+                    </form>
+                </div>
+                <div class="fr">
+                <div><strong>温馨提示:</strong>因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，为此以下回复仅对提问者3天内有效，其他网友仅供参考！若由此给您带来不便请多多谅解，谢谢！</div>
+                </div>
+            </div>
+            <div class="i-con clearfix consult">
+                <{insert name="label" type="product_consult" product_id=$de.id limit=5 temp="consult_list_1"}>
+				<div class="extra clearfix">
+                    <div class="fr"><a target="_blank" href="<{$config.weburl}>?m=product&s=consult&pid=<{$smarty.get.id}>">浏览所有咨询信息&gt;&gt;</a></div>
+					<div class="join">购买之前，如有问题，请<a target="_blank" href="<{$config.weburl}>?m=product&s=consult&pid=<{$smarty.get.id}>">咨询</a></div>
+                </div>
+            </div>
+            <{foreach item=slist from=$consultcat}>
+                <div class="product_detaila_content<{if $slist.type!=1}> consult<{/if}> hidden">
+                <{if $slist.type==1}>
+                <{$slist.con}>
+                <{else}>
+				<{insert name="label" type="product_consult" product_id=$de.id catid=$slist.id limit=5 temp="consult_list_1"}>
+                <div class="extra clearfix">
+                    <div class="fr"><a target="_blank" href="?m=product&s=consult&pid=<{$smarty.get.id}>">浏览所有咨询信息&gt;&gt;</a></div>
+					<div class="join">购买之前，如有问题，请<a target="_blank" href="<{$config.weburl}>?m=product&s=consult&pid=<{$smarty.get.id}>">咨询</a></div>
+                </div>
+                <{/if}>
+                </div>
+            <{/foreach}>
+        </div>
+    </div>
+</div>
+<script>
+$(".i-title li").click(function(){
+	var b=$(".i-title li").index($(this));
+	$(this).addClass("cur").siblings().removeClass("cur");
+	$(".right .i-con").eq(b).show().siblings(".i-con").hide();
+});
+$(".taglist li").click(function(){
+	var b=$(".taglist li").index($(this));
+	$(this).addClass("cur").siblings().removeClass("cur");
+	$(".reviews table").eq(b).show().siblings("table").hide();
+});
+</script>

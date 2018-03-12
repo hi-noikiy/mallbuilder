@@ -1,0 +1,10 @@
+<{foreach item=link key=key from=$links}>
+    <dl>
+        <dt style="background:url(image/default/<{$key+1}>.png) no-repeat left center;">
+            <strong><{$link.title}></strong>
+        </dt>
+        <{foreach item=list from=$link.list}>
+        <dd><a href="<{$list.con_linkaddr}>"><{$list.con_title}></a></dd>
+        <{/foreach}>
+    </dl>
+<{/foreach}>

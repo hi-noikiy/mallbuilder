@@ -1,0 +1,21 @@
+@charset "utf-8";
+ul{padding:20px 0 15px;}
+ul li{border:1px solid #999999;margin-bottom:10px;position:relative;}
+ul li p:first-child{border-bottom:1px solid #999999;font-size:14px;padding:7px 12px;}
+ul li p:first-child span{color:#6E6E6E;font-size:14px;}
+ul li p:first-child span:nth-child(2){color:#A40000;padding-left:10px;}
+ul li p:first-child span:last-child{float:right;}
+ul li p:last-child{padding:0 12px;clear:both;display:block;overflow:hidden;word-break:break-all;word-wrap:break-word;height:40px;line-height:40px;}
+ul li p:last-child span{color:#6E6E6E;font-size:14px;}
+ul li .del{background:url(../../../image/wap/del.png) center no-repeat #EEE;position:absolute;right:0;bottom:0;display:block;height:36px;overflow:hidden;padding:0;text-indent:-9876px;top:auto;width:50px;z-index:100;}
+.add{padding:0 0 20px;}
+.add a{height:32px;font-size:12px;line-height:32px;border-radius:5px 5px 5px 5px;width:100%;display:block;background:#D63638;color:#FFFFFF!important;border:1px solid #D63638;text-align:center;}
+dl dt{color:#333333;display:block;font-size:14px;padding:10px 0;}
+dl dd{border:1px solid #CCCCCC;display:block;background:#FFFFFF;font-size:12px;line-height:30px;position:relative;}
+input[type="text"]{background:#FFFFFF;border:0 none;border-radius:0 0 0 0;font-weight:normal;height:30px;line-height:24px;vertical-align:top;width:100%;text-indent:10px;}
+#d_1{text-indent:10px;}
+#d_2{padding:0 10px 10px;}
+.orderadder{padding:0 15px;}
+select{width:100%;margin-top:10px;height:30px;line-height:30px;}
+input[type="submit"]{height:32px;font-size:12px;line-height:32px;border-radius:5px 5px 5px 5px;width:100%;display:block;background:#D63638;color:#FFFFFF!important;border:1px solid #D63638;text-align:center;margin:15px auto;}
+.form-error{color:#F00;padding:0 10px;}

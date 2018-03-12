@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>产品分类</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script src="../script/my_lightbox.js" language="javascript"></script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>产品分类</h3>
+                <ul>
+                    <li <{if $smarty.get.operation==''}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"><span>管理</span></a></li>
+                   	<li <{if $smarty.get.operation=='add'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=add"><span>添加</span></a></li>
+                    <{if $smarty.get.operation=='edit'}>
+                    <li class="current"><a href="#"><span>修改</span></a></li>
+                    <{/if}>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>
+        <form action="" method="post">
+        <{if $smarty.get.operation=='add' or $smarty.get.operation=='edit' }>
+            <form name="form" id="form" method="post">
+            <input name="id" type="hidden" id="id" value="<{$re.catid}>">
+            <table class="table table1">
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">产品分类</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                <tr>
+                    <td width="100">分类</td>
+                    <td>
+                    <select class="ws350" name='pid' >
+                    	<option value='0'>顶级类别</option>
+                        <{foreach item=list from=$de}>
+                        
+             			<option <{if $re.cid==$list.catid || $smarty.get.catid==$list.catid}> selected="selected" <{/if}> value="<{$list.catid}>"><{$list.cat}></option>
+                           
+                            <{foreach item=slist from=$list.scat}>
+                            <option <{if $re.cid==$slist.catid || $smarty.get.catid==$slist.catid}> selected="selected" <{/if}> value="<{$slist.catid}>">|__<{$slist.cat}></option>
+                            	    
+                                    <{foreach item=lists from=$slist.scat}>
+                                    <option <{if $re.cid==$lists.catid || $smarty.get.catid==$lists.catid}> selected="selected" <{/if}> value="<{$lists.catid}>">|____<{$lists.cat}></option>
+                            		<{/foreach}> 
+                                    
+                            <{/foreach}> 
+                            
+                        <{/foreach}> 
+            		</select>
+                    <div id="form-error" class="form-error"></div>
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td>分类名</td>
+                    <td>
+                    <{if $smarty.get.operation=='edit'}>
+                    <input name="cat" type="text" id="cat" class="w350" value="<{$re.cat}>"/>
+                    <{else}>
+                    <textarea name="cat" id="cat" class="w350" rows="10"></textarea>
+                    <{/if}>
+                    <div id="form-error" class="form-error"></div>
+                    </td>
+                </tr>
+                <tr>
+                	<td>不显示月份</td>
+                	<td>
+       				<{section name=name loop=12}>
+                    <label><input type="checkbox" name="month[]" <{if $re.cat}><{if @$smarty.section.name.index+1|in_array:$re.month}>checked="checked"<{/if}><{/if}> value="<{$smarty.section.name.index+1}>" /><{$smarty.section.name.index+1}>月</label>
+                    <{/section}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>佣金提成</td>
+                    <td>
+                    <input name="commission" type="text" id="commission" class="w350" value="<{$re.commission}>"/>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>关连属性集</td>
+                    <td>
+                    <select class="ws350" name="ext_field_cat" >
+              		<option value="">不关连属性集</option>
+                    <{foreach item=list from=$property }>
+                    <option <{if $re.ext_field_cat==$list.id}>selected="selected"<{/if}> value="<{$list.id}>"><{$list.name}></option>
+                    <{/foreach}>
+                    </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>推荐显示</td>
+                    <td>
+                    <input type="checkbox" value="1" id="isindex" name="isindex"  <{if $re.isindex }> checked="checked" <{/if}> >
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>是否支持购买</td>
+                    <td>
+                    <input type="checkbox" value="1" id="isbuy" name="isbuy"  <{if $re.isbuy }> checked="checked" <{/if}> >
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>LOGO</td>
+                    <td>
+                    <input name="pic" class="w350" type="text" id="pic" value="<{$re.pic}>" />
+                    <input name="oldpic" type="hidden" value="<{$de.pic}>" />
+                    [<a href="javascript:uploadfile('上传LOGO','pic',40,30,'cat')">上传</a>] 
+                    [<a href="javascript:preview('pic');">预览</a>]
+                    [<a onclick="javascript:$('#pic').val('');" href="#">删除</a>] <span class="bz"></span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>选中标志</td>
+                    <td>
+                    <input type="text" id="current" name="current"  value="<{$re.current}>" >
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>模版</td>
+                    <td>
+                    <input type="text" id="templates" name="templates"  value="<{$re.templates}>" >
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>关联品牌</td>
+                    <td>
+                    <{foreach item=list from=$brand}>
+					<{if $list.brand}>
+                        <dl class="brand">
+                            <dt><{$list.catname}></dt>
+                            <dl>
+                                <{foreach item=slist from=$list.brand}>
+                                <label>
+                                <input <{if @$slist.id|in_array:$re.brands}>checked="checked"<{/if}> name="brand[]" type="checkbox" value="<{$slist.id}>">
+                                <{$slist.name}>
+                                </label>
+                                <{/foreach}>
+                            </dl>
+                        </dl>
+					<{/if}> 
+                    <{/foreach}>
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    <input class="submit" type="submit" value="提交">
+                    <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">
+                   
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        <{else}>
+        <table class="table">
+            <tbody>
+                <tr class="header partition">
+                    <th width="30"></th>
+                    <th width="70">显示顺序</th>
+                    <th class="al">分类名称</th>
+                    <th>关联属性</th>
+                    <th>显示</th>
+                    <th width="70"></th>
+                </tr>
+            </tbody>  
+            <{foreach item=list from=$de}>
+            <tbody>
+                <tr>
+                	<{if $list.scat}>
+                	<td onclick="toggle_group('group_<{$list.catid}>')">
+                    <a id="a_group_<{$list.catid}>" href="javascript:void(0)">[-]</a>
+                    </td>
+                    <{else}><td></td><{/if}>
+                    <td class="al"><input type="text" class="w50" maxlength="3" name="displayorder[<{$list.catid}>]" value="<{$list.nums}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
+                    <td class="al">
+                        <input type="text" class="w150" name="name[<{$list.catid}>]" value="<{$list.cat}>" />
+                        <a class="addchildboard" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=add&catid=<{$list.catid}>">添加子分类</a>
+                    </td>
+                    <td><{if $list.property}><{$list.property}><{else}>通用<{/if}></td>
+                    <td><{if $list.isindex==1}>显示<{else}>不显示<{/if}></td>
+                    <td>
+					<a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$list.catid}>"><{$editimg}></a>
+                    <a onclick="return confirm('确定删除吗');" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&delid=<{$list.catid}>"><{$delimg}></a>
+                  
+                   </td>
+                </tr>
+            </tbody>
+            
+            <{if $list.scat}>
+            <tbody id="group_<{$list.catid}>">
+            <{foreach item=slist from=$list.scat}>
+                <tr>
+                	<td></td>
+                	<td class="al"><input type="text" class="w50" maxlength="3" name="displayorder[<{$slist.catid}>]" value="<{$slist.nums}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
+                    <td  class="al"><div class="board"><input type="text" class="w150" name="name[<{$slist.catid}>]" value="<{$slist.cat}>" /><a class="addchildboard" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=add&catid=<{$slist.catid}>">添加子分类</a></div></td>
+                    <td><{if $slist.property}><{$slist.property}><{else}>通用<{/if}></td>
+                    <td><{if $slist.isindex==1}>显示<{else}>不显示<{/if}></td>
+                    <td>
+					<a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$slist.catid}>"><{$editimg}></a>
+                    <a onclick="return confirm('确定删除吗');" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&delid=<{$slist.catid}>"><{$delimg}></a>
+                   </td>
+                </tr>
+            
+			<{foreach item=clist from=$slist.scat}>
+				<tr>
+                	<td></td>
+                	<td class="al"><input type="text" class="w50" maxlength="3" name="displayorder[<{$clist.catid}>]" value="<{$clist.nums}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
+                    <td class="al"><div class="childboard"><input type="text" class="w150" name="name[<{$clist.catid}>]" value="<{$clist.cat}>" /><a class="addchildboard" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=add&catid=<{$clist.catid}>">添加子分类</a></div></td>
+                    <td><{if $clist.property}><{$clist.property}><{else}>通用<{/if}></td>
+                    <td><{if $clist.isindex==1}>显示<{else}>不显示<{/if}></td>
+                    <td>
+					<a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$clist.catid}>"><{$editimg}></a>
+                    <a onclick="return confirm('确定删除吗');" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&delid=<{$clist.catid}>"><{$delimg}></a>
+                   </td>
+                </tr>
+             <{foreach item=lists from=$clist.scat}>
+				<tr>
+                	<td></td>
+                	<td class="al"><input type="text" class="w50" maxlength="3" name="displayorder[<{$lists.catid}>]" value="<{$lists.nums}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
+                    <td class="al"><div class="childsboard"><input type="text" class="w150" name="name[<{$lists.catid}>]" value="<{$lists.cat}>" /></div></td>
+                    <td><{if $lists.property}><{$lists.property}><{else}>通用<{/if}></td>
+                    <td><{if $lists.isindex==1}>显示<{else}>不显示<{/if}></td>
+                    <td>
+					<a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$lists.catid}>"><{$editimg}></a>
+                    <a onclick="return confirm('确定删除吗');" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&delid=<{$lists.catid}>"><{$delimg}></a>
+                   </td>
+                </tr>
+            <{foreachelse}>
+            <{/foreach}>   
+            <{foreachelse}>
+            <{/foreach}>
+            <{foreachelse}>
+            <{/foreach}>
+            </tbody>
+            <{/if}>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+            <tfoot>
+                <tr>
+                	<td></td>
+                	<td colspan="2">
+                        <input type="hidden" name="act" value="op" />
+                        <input type="submit" name="submit" value="<{$lang.btn_submit}>" />
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+        <{/if}>
+    </div>
+</body>
+<script>
+function toggle_group(oid, conf) {
+	obj = $('#a_'+oid)[0];
+	if(!conf) {
+		var conf = {'show':'[-]','hide':'[+]'};
+	}
+	var obody = $('#'+oid)[0];
+	if(obody.style.display == 'none') {
+		obody.style.display = '';
+		obj.innerHTML = conf.show;
+	} else {
+		obody.style.display = 'none';
+		obj.innerHTML = conf.hide;
+	}
+}
+</script>
+</html>

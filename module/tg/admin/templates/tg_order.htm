@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>团购订单</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>团购订单</h3>
+                <ul>
+                    <li <{if $smarty.get.operation=='' and $smarty.get.type==''}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"><span>管理</span></a></li>
+                    
+                    <li <{if $smarty.get.type=='20'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=20"><span>未支付</span></a></li>
+                    <li <{if $smarty.get.type=='30'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=30"><span>未发货</span></a></li>
+                    <li <{if $smarty.get.type=='40'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=40"><span>已发货</span></a></li>
+                    <li <{if $smarty.get.type=='50'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=50"><span>已完成</span></a></li>
+                    <li <{if $smarty.get.type=='10'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=10"><span>已取消</span></a></li>
+                    
+                    <{if $smarty.get.operation=='edit'}>
+                    <li class="current"><a href="#"><span>操作</span></a></li>
+                    <{/if}>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>  
+        <{if $smarty.get.operation=='edit' }>
+            <table class="table table1">
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">订单详情</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr class="tr">
+                    <td width="50">订单状态</td>
+                    <td width="100"><b class="org"><{assign var=val value=$de.status}><{$statu_list.$val}></b></td>
+                
+                    <td width="50">订单编号</td>
+                    <td width="100"><{$de.order_id}></td>
+                    
+                    <td width="50">下单时间</td>
+                    <td><{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table1">    
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">订单信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td></td>
+                        <td>商品</td>
+                        <td width="150">单价（元）</td>
+                        <td width="150">数量</td>
+                        <td width="300">总价（元）</td>
+                    </tr>
+                    <tr>
+                        <td width="90"><a target="_blank" href="../?m=tg&s=detail&id=<{$de.tg_id}>"><img width="80" src="<{$de.tg_pic}>"></a></td>
+                        <td><a target="_blank" href="../?m=tg&s=detail&id=<{$de.tg_id}>"><{$de.tg_name}></a></td>
+                        <td>&nbsp;<{$de.price|number_format:2}></td>
+                        <td>&nbsp;<{$de.quantity}></td>
+                        <td>&nbsp;<{$de.price*$de.quantity|number_format:2}></td>
+                    </tr>
+                    <tr>
+                    	<td colspan="99">备注: <{$de.remark}></td>
+                    </tr>
+                    <tr>
+                    	<td colspan="99">下单时间: <{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                    </tr>
+                    <{if $de.payment_time}>
+                    <tr>
+                    	<td colspan="99">付款时间: <{$de.payment_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                    </tr>
+                    <{/if}>
+                    <{if $de.shipping_time}>
+                    <tr>
+                    	<td colspan="99">发货时间: <{$de.shipping_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}>
+                        <{if $de.code}><b>验证吗: <{$de.code}></b><{/if}>
+                        </td>
+                    </tr>
+                    <{/if}>
+                    <{if $de.finished_time}>
+                    <tr>
+                    	<td colspan="99"><{if $de.status==10}>取消时间<{else}>完成时间<{/if}>: <{$de.finished_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                    </tr>
+                    <{/if}>
+                </tbody>
+            </table>
+            <table class="table table1">         
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">收货地址</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="100">收货人</td>
+                        <td><{$de.contact}></td>
+                    </tr>
+                    <tr>
+                        <td>联系电话</td>
+                        <td><{$de.tel}></td>
+                    </tr>
+                    <tr>
+                        <td>收货地址</td>
+                        <td><{$de.address}></td>
+                    </tr>
+                </tbody>
+            </table>
+            <{if ($de.status>30 && $de.shipping_code) || ($de.status==10 && $de.shipping_code)}>
+            <table class="table table1">         
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">发货地址</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="100">发货人</td>
+                        <td><{$de.shipping_name}></td>
+                    </tr>
+                    <tr>
+                        <td>联系电话</td>
+                        <td><{$de.shipping_tel}></td>
+                    </tr>
+                    <tr>
+                        <td>发货地址</td>
+                        <td><{$de.shipping_address}></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table1">         
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">物流信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="100">物流名称</td>
+                        <td><{$de.shipping_company}></td>
+                    </tr>
+                    <tr>
+                        <td>物流单号</td>
+                        <td><{$de.shipping_code}></td>
+                    </tr>
+                </tbody>
+            </table>
+            <{/if}>
+            <table class="table table1">    
+                <thead>
+                    <tr>
+                        <th class="partition">操作历史</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                         <td><b class="org"><{$de.member_name}></b> 于 <b><{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></b> <b class="org">提交</b> 下一状态：待付款</td>
+                    </tr>
+                    <{if $de.payment_time}>
+                    <tr>
+                         <td><b class="org"><{$de.member_name}></b> 于 <b><{$de.payment_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></b> <b class="org">付款</b> 下一状态：待发货</td>
+                    </tr>
+                    <{/if}>
+                    <{if $de.shipping_time}>
+                    <tr>
+                        <td><b class="org">管理员</b> 于 <b><{$de.shipping_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></b> <b class="org">发货</b> 下一状态：待收货</td>
+                    </tr>
+                    <{/if}>
+                    <{if $de.finished_time}>
+                    <tr>
+                        <td>
+                        <{if $de.status==10}>
+                        <b class="org">管理员</b> 于 <b><{$de.finished_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></b> <b class="org">取消订单</b>&nbsp;&nbsp;原因: <{$de.admin_remark}>
+                        <{else}>
+                        <b class="org"><{$de.member_name}></b> 于 <b><{$de.finished_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></b> <b class="org">确定收货 完成订单</b>
+                        <{/if}>
+                        </td>
+                    </tr>
+                    <{/if}>
+                </tbody>
+            </table>
+            
+            <{if $de.status==30}>
+                <{if $de.is_virtual=='false'}>
+                <script type="text/javascript" charset="utf-8" src="../script/district.js" ></script>
+                <script language="javascript">
+                var weburl="<{$config.weburl}>";
+                </script>
+                <form name="form" id="form" method="post">
+                <input name="id" type="hidden" id="id" value="<{$de.id}>">
+                <table class="table table1">
+                    <thead>
+                        <tr>
+                            <th class="partition" colspan="99">发货地址</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td width="100">发货人</td>
+                        <td><input name="shipping_name" type="text" id="shipping_name" /></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" width="100">发货地址</td>
+                        <td>
+                        <input type="hidden" name="t" id="t" value="" />
+                        <input type="hidden" name="province" id="id_1" value="" />
+                        <input type="hidden" name="city" id="id_2" value="" />
+                        <input type="hidden" name="area" id="id_3" value="" />
+                       
+                        <select name="select_1" id="select_1" onChange="district(this);">
+                        <option value="">--请选择--</option>
+                        <{$district}>
+                        </select>
+                        <select name="select_2" id="select_2" onChange="district(this);" class="hidden"></select>
+                        <select name="select_3" id="select_3" onChange="district(this);" class="hidden"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <input name="shipping_address" type="text" id="shipping_address" class="w350" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100">联系电话</td>
+                        <td><input name="shipping_tel" type="text" id="shipping_tel" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table1">
+                    <thead>
+                        <tr>
+                            <th class="partition" colspan="99">物流信息</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td width="100">物流名称</td>
+                        <td width="350">物流单号</td>
+                        <td></td>
+                    </tr>
+                    <{foreach item=list from=$re}>
+                    <tr>
+                        <td><{$list.company}></td>
+                        <td class="tl"><input type="text" class="text w300" name="shipping_code" value="" values="<{$list.id}>" genre="send"></td>
+                        <td><a class="btn2" href="javascript:void(0);" values="<{$list.id}>" values1="<{$list.company}>" genre="send">确认</a></td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+                <input name="act" type="hidden" id="action" value="shipping">
+                <input name="shipping_company" type="hidden" id="shipping_company" value="">
+                </form>
+                <script>
+                $('a[genre="send"]').live('click',function(){
+                    if ($('input[values="'+$(this).attr('values')+'"]').val() == ''){
+                        alert('请填写物流单号！');return false;
+                    }
+                    if ($('input[name="shipping_name"]').val() == ''){
+                        alert('请填写发货人！');return false;
+                    }
+                    if ($('select[name="select_1"]').val() == ''){
+                        alert('请填省市区！');return false;
+                    }
+                    if ($('select[name="select_2"]').val() == ''){
+                        alert('请填省市区！');return false;
+                    }
+                    if ($('select[name="select_3"]').val() == ''){
+                        alert('请填省市区！');return false;
+                    }
+                    if ($('input[name="shipping_address"]').val() == ''){
+                        alert('请填发货地址！');return false;
+                    }
+                    if ($('input[name="shipping_tel"]').val() == ''){
+                        alert('请填写联系电话！');return false;
+                    }
+                    $('input[genre="send"]').attr('disabled',true);
+                    $('input[values="'+$(this).attr('values')+'"]').attr('disabled',false);
+                    $('#shipping_company').val($(this).attr('values1'));
+                    $('#form').submit();
+                });
+                </script> 
+                <{else}>
+                <form name="form1" id="form1" method="post">
+                <input name="id" type="hidden" id="id" value="<{$de.id}>">
+                <table class="table table1">
+                    <thead>
+                        <tr>
+                            <th class="partition" colspan="99">验证码</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td width="70">验证码:</td>
+                        <td><input readonly="readonly" type="text" value="<{$code}>" name="code" /> </td>
+                    </tr>
+                    <tr>
+                    	<td>标题:</td>
+                    	<td><input type="text" class="w350" name="title" value="{sitename}提醒:您的团购订单{order_sn}已发货。" /></td>
+                    </tr>
+                    <tr>
+                    	<td>内容：</td>
+                   		<td>
+                        <script charset="utf-8" src="../lib/kindeditor/kindeditor-min.js"></script>
+						<script>
+                        var editor;
+                        KindEditor.ready(function(K) {
+                            editor = K.create('textarea[name="content"]', {
+                              
+                            });
+                        });
+                        </script>
+                        <textarea name="content" style="width:100%;height:200px;">
+                        <p>尊敬的{username}:</p>
+                        <p>您的团购订单<a target="_blank" href="main.php?m=tg&s=admin_tg_order&id={order_id}&type=show">{order_sn}</a>发货了，请注意查收。</p>
+                        <p>验证码：{code}</p>
+                        <p>如果您有什么疑问可以联系管理员，Email: {adminemail}。</p>
+                        <div align="right"><a target="_blank" href="<{$config.weburl}>">{sitename}</a><br />{time}</div>
+                        </textarea>
+                        <ul class="hint">
+                            <li>{username} : 用户名</li>
+                            <li>{time} : 发送时间</li>
+                            <li>{sitename} : 网站名称</li>
+                            <li>{adminemail} : 管理员 Email</li>
+                            <li>{order_sn} : 团购订单</li>
+                            <li>{product_name} : 产品名称</li>
+                            <li>{code} : 验证码</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                        <input class="submit" type="submit" value="发送验证码">
+                        <input name="act" type="hidden" id="action" value="send">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </form>
+                <{/if}>
+            <{/if}>
+            <{if $de.status!=10}>
+            <form name="form1" id="form1" method="post">
+            <input name="id" type="hidden" id="id" value="<{$de.id}>">
+            <table class="table table1">
+            	<thead>
+                    <tr>
+                        <th class="partition" colspan="99">取消订单</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="100" valign="top"><div class="mt10">取消缘由</div></td>
+                    <td>
+                    <ul class="cancel">
+                        <li>
+                            <input type="radio" value="无法备齐货物" id="d1" name="admin_remark" checked="">
+                            <label for="d1">无法备齐货物</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="不是有效的订单" id="d2" name="admin_remark">
+                            <label for="d2">不是有效的订单</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="买家主动要求" id="d3" name="admin_remark">
+                            <label for="d3">买家主动要求</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="其他原因" id="d4" flag="other_reason" name="admin_remark">
+                            <label for="d4">其他原因</label>
+                        </li>
+                        <li style="display:none; height:48px;" id="other_reason">
+                        	<textarea class="w300" rows="2" name="other_reason"></textarea>
+                        </li>
+                    </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    <input class="submit" onclick="return confirm('您确实要取消该订单吗');" type="submit" value="取消订单">
+                    <input name="act" type="hidden" id="action" value="cancel">
+                    </td>
+                </tr>
+                </tbody>
+			</table>
+            </form>
+            <script type="text/javascript">
+			$(function(){
+				$("input[name='admin_remark']").click(function(){
+					if ($(this).attr('flag') == 'other_reason')
+					{
+						$('#other_reason').show();
+					}
+					else
+					{
+						$('#other_reason').hide();
+					}
+				});
+			});
+			</script> 
+            <{/if}>
+        <{else}>
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th width="150" class="al">&nbsp;订单编号</th>
+                    <th width="100" class="al">买家名称</th>
+                    <th class="al">商品</th>
+                    <th width="100" >商品数量</th>
+                    <th width="100">订单总价</th>
+                    <th width="150">下单时间</th>
+                    <th width="70">订单状态</th>
+                    <th width="50"></th>
+                </tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+                    <td class="al">&nbsp;<a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$list.id}>" ><{$list.order_id}></a></td>
+                    <td class="al"><a target="_blank" href="../home.php?uid=<{$list.member_id}>"><{$list.member_name}></a></td>
+                    <td class="al"><a target="_blank" href="../?m=tg&s=detail&id=<{$list.tg_id}>"><{$list.tg_name}></a></td>
+                    <td>&nbsp;<{$list.quantity}></td>
+                    <td>&nbsp;<{$list.price*$list.quantity|number_format:2}></td>
+                    <td><{$list.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                    <td><{assign var=val value=$list.status}><{$statu_list.$val}></td>
+                    <td>
+                    <a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$list.id}>"><{$setimg}></a> 
+                    </td>
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <tfoot>
+                <tr>
+                	<td colspan="3"></td>
+                    <td colspan="99"><div class="page"><{$de.page}></div></td>
+                </tr>
+            </tfoot>
+        </table>
+        <{/if}>
+    </div>
+</body>
+</html>

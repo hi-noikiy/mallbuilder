@@ -1,0 +1,85 @@
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span> 
+    	咨询管理 
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+    <div class="hd">
+        <ul class="tabs">
+            <li class="<{if !$smarty.get.type}>active<{else}>normal<{/if}>"><a href="main.php?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>">购买咨询</a></li>
+            <li class="<{if $smarty.get.type=='to_reply'}>active<{else}>normal<{/if}>"><a href="main.php?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=to_reply">未回复咨询</a></li>
+            <li class="<{if $smarty.get.type=='replied'}>active<{else}>normal<{/if}>"><a href="main.php?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=replied">已回复咨询</a></li>
+            
+            <{if $smarty.get.type=='add'}>
+            <li class="active"><a href="main.php?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=add">回复</a></li>
+            <{/if}>
+        </ul>
+    </div>
+    <{if $smarty.get.type=='add'}>
+    <div class="form-style">
+        <form action="" method="post">
+        <input type="hidden" value="edit" name="act">
+        <input type="hidden" value="<{$de.id}>" name="id">
+        <dl>
+            <dt>产品名称：</dt>
+            <dd><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$de.product_id}>"><{$de.product_name}></a></dd>
+        </dl>
+        <dl>
+            <dt>提问者：</dt>
+            <dd><{$de.member_name}></dd>
+        </dl>
+        <dl>
+            <dt>咨询内容：</dt>
+            <dd>
+            <{$de.question}>
+            <p style="color:#999999;"><{$de.answer_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+            </dd>
+        </dl>
+        <dl>
+            <dt>回复：</dt>
+            <dd>
+            <textarea style="width:90%; height:180px;" id="answer" name="answer"><{$de.answer}></textarea>
+            </dd>
+        </dl>
+        <dl class="foot">
+            <dt>&nbsp;</dt>
+            <dd><input type="submit" value="提交" class="submit"></dd>
+        </dl>
+        </form>
+    </div>
+    <{else}>
+    <table class="table-list-style">
+        <thead>
+        <tr>
+            <th>咨询/回复</th>
+        </tr>
+        </thead>
+        <tbody>
+        <{foreach item=slist key=num from=$re.list}>
+        <tr>
+            <td class="tl"><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$slist.product_id}>"><{$slist.product_name}></a>&nbsp;&nbsp;咨询用户:&nbsp;<{$slist.member_name}></td>
+        </tr>
+        <tr>    
+            <td class="tl">
+            <p>咨询内容:<{$slist.question}> <a href="main.php?m=product&s=admin_shop_consult&id=<{$slist.id}>&type=add">回复</a></p>
+            <{if $slist.answer}><p>回复:<{$slist.answer}></p><{/if}>
+            </td>
+        </tr>
+        <{foreachelse}>
+        <tr>
+            <td colspan="20" class="norecord">
+                <i></i><span>暂无符合条件的数据记录</span>	
+            </td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="20"><div class="pagination"><{$re.page}></div></td>
+        </tr>
+        </tfoot>
+    </table>
+    <{/if}>
+</div>

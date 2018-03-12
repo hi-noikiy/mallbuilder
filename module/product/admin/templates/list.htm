@@ -1,0 +1,242 @@
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript" charset="utf-8" ></script>
+<{if $smarty.get.operation=='property'}>
+    <div class="container">
+    	<div class="oflow"  style="height:517px">
+        <table class="table4 mt20">
+            <thead>
+            <tr>
+                <td>扩展属性值</td>
+                <td width="70" class="ac">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="99">
+                <ul class="button">
+                    <li class="button">
+                        <a class="a_button" onClick="addrow(this,0)" href="javascript:void(0);">添加扩展属性值</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <div class="dialog_button">
+        <input id="save" type="button" value="保存">
+        <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">   
+        </div>
+        <div id="error"></div> 
+    </div>
+    <script>
+
+	$('#save').click(function(){
+
+		var str = '';
+		var id = "<{$smarty.get.id}>";
+		$.each($(".container input[name='item_name[]']"),function(i){
+			
+			var aa= $(this).val();
+			if(aa)
+			{
+				if(!str)
+					str = aa;
+				else
+					str = str+','+aa;
+			}
+		});
+	   
+        var iframe=window.parent.document.getElementById("iframe_property").contentWindow;
+
+		var ss=iframe.$("#property").find("input[genre='"+id+"']");
+		$.each(ss,function(i){
+			$(this).val(str);
+		});
+        window.parent.DialogManager.close("list");
+    });
+
+	var rowtypedata = [
+        [
+            ['<input type="text" name="item_name[]" value="" />'], 
+            ['<div><a href="javascript:;" class="deleterow" onClick="deleterow(this)">删除</a></div>','ac'],
+        ],
+    ];
+
+	var addrowdirect = 0;
+    var j = 1;
+	
+    function addrow(obj, type) {
+    
+
+        var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+        
+        if(!addrowdirect) {
+            var row = table.insertRow(obj.parentNode.parentNode.parentNode.parentNode.rowIndex);
+        } else {
+            var row = table.insertRow(obj.parentNode.parentNode.parentNode.parentNode.rowIndex + addrowdirect);
+        }
+        
+        var typedata = rowtypedata[type];
+        
+        for(var i = 0; i <= typedata.length - 1; i++) {
+            
+            var cell = row.insertCell(i);
+			if(typedata[i][1]) {
+				cell.className = typedata[i][1];
+			}
+            var tmp = typedata[i][0];
+            cell.innerHTML = tmp;
+        
+        }
+        addrowdirect = 0;
+        j++;
+    }
+    function deleterow(obj) {
+        var table = obj.parentNode.parentNode.parentNode.parentNode.parentNode;
+        var tr = obj.parentNode.parentNode.parentNode;
+        table.deleteRow(tr.rowIndex);
+    }
+    </script>
+<{elseif $smarty.get.operation=='product'}>
+	<div class="container">
+    	<div class="oflow"  style="height:517px">
+        <table class="table4 mt20">
+            <thead>
+            <tr>
+                <td><{$de.field_name}> 产品绑定</td>
+              <!--  <td width="80"></td>-->
+            </tr>
+            </thead>
+            
+            <tbody>
+            	<{foreach item=list key=key from=$de.item}>
+            	<tr>
+                	<td>
+                    	<{$list.1}>
+                    </td>
+                 <!--   <td><a class="addtr" id="related_button" href="javascript:void();">产品绑定</a>
+                    <input type="hidden" id="hidden_related" name="product_related" value="<{if $de.product_related}><{$de.product_related}>,<{else}>0,<{/if}>" /></td>-->
+                </tr>
+                <tr>
+                	<td>
+                    	<input type="text" class="w300" genre="<{$list.0}>" name="pro[]" value="" />
+                        <span style="float:left; margin:4px 0 0 5px">产品ID号 "," 隔开.</span>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <!--  <tr>
+                <td colspan="99">
+                <ul class="button">
+                    <li class="button">
+                        <a class="a_button" onClick="addrow(this,0)" href="javascript:void(0);">添加扩展属性值</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>-->
+           
+        </table>
+        </div>
+        <div class="dialog_button">
+        <input id="save" type="button" value="保存">
+        <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">   
+        </div>
+        <div id="error"></div> 
+    </div>
+    <script>
+		
+		$('#save').click(function(){
+		var str = '';
+		var id = "<{$smarty.get.id}>";
+		
+		$.each($(".container input[name='pro[]']"),function(i){
+			
+			var aa= $(this).val();
+			var type= $(this).attr("genre");
+			
+			if(aa)
+			{				
+				if(!str)
+					str = type+"|"+aa;
+				else
+					str = str+',-'+type+"|"+aa;
+			}
+		});
+        var iframe=window.parent.document.getElementById("iframe_property").contentWindow;
+		var ss=iframe.$("#property").find("input[values='"+id+"']");
+	
+		$.each(ss,function(i){
+			$(this).val(str);
+		});
+        window.parent.DialogManager.close("list");
+    });
+    </script>
+<{else}>
+    <{if $de}>
+    <script src="<{$config.weburl}>/script/base.js" type="text/javascript" charset="utf-8" ></script>
+    <form action="" method="post">
+    <div class="container list">
+        <div class="left">
+            <div class="mt"><h2>请选择规格</h2></div>
+            <div class="mc">
+            <ul id="ul">
+                <{foreach item=list key=num from=$de}>
+                    <li>
+                        <input type="checkbox" id="id<{$num}>" value="<{$list.id}>" name="id">
+                        <label for="id<{$num}>"><{$list.field_name}></label>
+                    </li>
+                <{/foreach}>
+            </ul>
+            </div>
+        </div>
+        <div class="right">
+            <div class="mt"><h2>规格预览区</h2></div>
+            <div class="mc">
+                <div class="tips">请在左侧列表选择规格！</div>
+                <{foreach item=list key=num from=$de}>
+                <dl class="hidden">
+                    <dt>
+                    <h2><{$list.field_name}></h2>
+                    <p><{$list.field_desc}></p>
+                    </dt>
+                    <{foreach item=slist from=$list.items}>
+                         <dd><{$slist}></dd>
+                    <{/foreach}>
+                </dl>
+                <{/foreach}>
+            </div>
+        </div>
+        <div class="dialog_button">
+        <input id="save" type="button" value="保存">
+        <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">   
+        </div>
+        <div id="error"></div> 
+    </div>
+    </form>  
+    <{else}>
+        <div class="norecord"><i></i><span>暂无符合条件的数据记录</span></div>
+    <{/if}>
+    
+    <script>
+    $.each($('.left li'),function(i){
+        $(this).find("input[type='checkbox']").live('click',function(){
+    
+            $($('.right dl')[i]).removeClass("hidden").siblings().addClass("hidden");
+        });	
+    });
+    
+    $('#save').click(function(){
+        var obj=$("input[type='checkbox']:checked");
+        if(!obj.length)
+        {
+            error('error','对不起，请选择数据，再进行操作!');
+            return false;
+        }
+        var iframe=window.parent.document.getElementById("iframe_property").contentWindow;
+        
+        iframe.addrow("list",'<{$smarty.get.type}>',<{if $smarty.get.type==4}>1<{else}>0<{/if}>);
+        window.parent.DialogManager.close("list");
+    });
+    </script>
+<{/if}>

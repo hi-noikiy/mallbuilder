@@ -1,0 +1,245 @@
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="javascript:history.back();"><nav>返回</nav></a></section>
+    	<section class="nav-c"><span>详情页</span></section>
+    	<section class="nav-e"><a href="<{$config.weburl}>/shop.php?uid=<{$de.userid}>"><nav>店铺</nav></a></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/datial.css" rel="stylesheet" type="text/css" />
+<section class="detail">
+<{if !$smarty.get.d}>
+<div class="p-img">
+	<img src="<{if $de.pic}><{$de.pic}>_220X220.jpg<{else}>image/default/nopic.gif<{/if}>">
+</div>
+<div class="p-name"><{$de.pname}></div>
+<ul class="info">
+    <li class="price">
+        <span>价　　格：</span>
+        <div><{$config.money}><font id="price"><{$de.price|number_format:2}></font></div>
+    </li>
+    <li><span>产品编号：</span><font id="code"><{$de.code}></font></li>
+    <li>
+        <span>物流运费：</span>
+        <{if $de.freight_type==0}>
+            <{$lang.sell_freight}>
+        <{else}>
+            <{if $de.user_ip}><{$de.area}>|<{$lang.to}> <{$de.user_ip}><{/if}>
+            <{if !$de.freight}>
+                <{$lang.sent_by_post}>：<{$de.post_price}>
+                <{$lang.express_delivery}><{$de.express_price}>
+                EMS：<{$de.ems_price}>
+            <{else}>
+                <{$de.freight_count}>
+            <{/if}>
+        <{/if}>
+    </li>
+    <li class="sell">
+        <span>销　　量：</span>
+        已售出<em><{$de.sell_amount}></em>件 
+    </li>
+    <li class="evaluate">
+        <span>评　　价：</span>
+        <em class="stars"><em><i style="width:100%"></i></em></em>
+    </li>
+    <li><span>宝贝类型：</span><{$de.ptype}></li>
+</ul>
+<div class="sep-line"></div>
+<{if $de.isbuy==1}>
+    <{if $validTime==1}>
+    	<form id="form" name="form" action="<{$config.weburl}>/?m=product&s=cart" method="post">
+		<{if $de.porperty}>
+        <div class="buy_box">
+            <div class="select_style clearfix">
+                <{foreach item=list from=$de.extfiled.d}>
+                    <{$list}>
+                <{/foreach}>
+            </div>
+        </div>
+        <div class="sep-line"></div>
+        <{/if}>
+        <input name="id" type="hidden" value="<{$de.id}>" />
+        <input name="sid" id="sid" type="hidden" value="0" />
+        <input name="nums" id="nums" type="hidden" value="1" />
+        <input name="sku" id="sku" type="hidden" value="0" />
+		
+        <div class="choose_result"></div>
+        <div class="choose_btn ">
+            <a href="javascript:collect_goods('<{$de.id}>');">收藏</a>
+            <a href="javascript:buy()">立刻购买</a>
+            <a href="?m=product&s=cart">购物车</a>
+        </div>
+         </form>
+    <{else}>
+    	<div class="nobuy">此产品已过期</div>
+    <{/if}>
+<{else}>
+	<div class="nobuy">此产品不支持在线购买功能</div>
+<{/if}>
+<{if $de.detail}>
+<div class="goto"><a href="?m=product&s=detail&id=<{$smarty.get.id}>&d=1">查看图文详情</a></div>
+<{/if}>
+<div class="sep-line"></div>
+<ul class="info">
+    <li>
+    <li>
+        <span>卖　　家：</span><{$com.company}>
+    </li>
+    <li>
+        <span>地　　点：</span><{$com.area}>
+    </li>
+    <li>
+        <span>动　　态：</span>
+        描述<b class="red"> <{$score.a|number_format:1}></b>
+        服务<b class="red"> <{$score.b|number_format:1}></b>
+        物流<b class="red"> <{$score.d|number_format:1}></b>
+    </li>
+    <li>
+        <span>信　　誉：</span><img alt="<{$lang.credit_of_seller}><{$com.sellerpoints}>" title="<{$lang.credit_of_seller}><{$com.sellerpoints}>" align="absmiddle" src="<{$config.weburl}>/image/points/<{$com.sellerpointsimg}>">
+    </li>
+    <li class="btn"><a href="shop.php?uid=<{$de.userid}>">进入店铺&gt;&gt;</a></li>
+</ul>
+<{else}>
+<div class="content">
+<{$de.detail}>
+</div>
+<{/if}>
+<script>
+function collect_goods(id){
+	var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+	var uname='<{$smarty.cookies.USER}>';
+	if(uname=='')
+	{
+		alert('<{$lang.no_logo}>');
+		window.location.href='<{$config.weburl}>/login.php?forward=index.php?m=product&s=detail&id='+id;
+		return false;
+	}
+	var pars = 'pid='+id+'&uname='+uname;
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest>1)
+			alert('<{$lang.fav_ok}>');
+		else if (originalRequest>0)
+			alert('<{$lang.fav_isbing}>');
+		else
+			alert('<{$lang.error}>');
+	}
+}
+function buy()
+{
+	var B = false;
+	$('ul[genre="property"]').each(function(){
+	
+		if(!$(this).find('a').hasClass('checked')){
+	        B = true;
+		}
+	});
+	
+    if (goodsspec.getSpec() == null || B)
+    {
+        alert('请选择相关规格');
+    }
+	else
+	{
+		$("#form").submit();
+		return !B;	
+	}
+}
+/* spec对象 */
+function spec(id, spec, price, stock, code)
+{
+	this.id    = id;
+	this.spec  = spec;
+	this.price = price;
+	this.stock = stock;
+	this.code  = code;
+}
+/* goodsspec对象 */
+function goodsspec(specs, specQty, defSpec)
+{
+	this.specs = specs;
+	this.specQty = specQty;
+	this.defSpec = defSpec;
+	this.spec1 = null;
+	this.spec2 = null;
+	if (this.specQty >= 1)
+	{
+		for(var i = 0; i < this.specs.length; i++)
+		{
+			if (this.specs[i].id == this.defSpec)
+			{
+				<{foreach item=list key=num from=$de.extfiled.d}>
+				this.spec<{$num+1}> = this.specs[i].spec[<{$num}>];
+				<{/foreach}>
+				break;
+			}
+		}
+	}
+
+	// 取得选中的spec
+	this.getSpec = function()
+	{
+		for (var i = 0; i < this.specs.length; i++)
+		{
+			<{foreach item=list key=num from=$de.extfiled.d}>
+			if (this.specs[i].spec[<{$num}>] != this.spec<{$num+1}>) continue;
+			<{/foreach}>
+			return this.specs[i];
+		}
+		return null;
+	}
+
+}
+/* 选中某规格 num=1,2 */
+function selectSpec(num,obj, SID)
+{
+	goodsspec['spec' + num] = SID;
+	$(obj).addClass("checked");
+	$(obj).parents('li').siblings().find('a').removeClass("checked");
+	
+	var spec = goodsspec.getSpec();
+	var sign = 't';
+	$('ul[genre="property"]').each(function(){
+		if(!$(this).find('a').hasClass('checked')){
+			sign = 'f';
+		}
+	});
+	if (spec != null && sign == 't')
+	{
+		$('#stock').html(spec.stock);
+		$('#price').html(spec.price.toFixed(2));
+		$('#code').html(spec.code);
+		$('#sid').val(spec.id);
+		$('#sku').val(spec.code);
+
+		if(parseInt(spec.stock) == 0)
+		{
+			$('[class="choose_result"]').show().html('<div class="dd"><em>所选库存量不足，请选择其它购买。</em></div>');
+			$('#addcart_submit').attr('disabled',true).css('cursor','pointer');
+		}
+		else
+		{
+			SP_V = '';
+			$('ul[genre="property"]').find('li > .checked').each(function(i){
+				SP_V += '<strong>"'+$(this).text()+'"</strong>，';
+			});
+			SP_V = SP_V.substr(0,SP_V.length-1);
+			$('[class="choose_result"]').show().html('<em>您选择了：</em>'+SP_V+'');
+			$('#addcart_submit').attr('disabled',false).css('cursor','auto');
+		}
+	}
+}
+var specs = new Array();
+<{foreach item=list key=num from=$de.porperty}>
+specs.push(new spec(<{$list.id}>, ['<{$list.property_value_id|replace:",":"','"}>'], <{$list.price}>, <{$list.stock}>, <{$list.sku}>));
+var specQty = <{$de.extfiled.d|@count}>;
+var defSpec = <{$de.porperty.0.id}>;
+<{foreachelse}>
+specs.push(new spec('', '', '', '', ''));
+var specQty = 0;
+var defSpec = 0;
+<{/foreach}>
+var goodsspec = new goodsspec(specs, specQty, defSpec);
+</script>
+</section>

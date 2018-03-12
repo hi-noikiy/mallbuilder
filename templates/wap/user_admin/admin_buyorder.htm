@@ -1,0 +1,82 @@
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script><header>
+	<div class="nav-w">
+	<section class="nav-s"><a href="<{$config.weburl}>/main.php"><nav>我的商城</nav></a></section>
+		<section class="nav-c">
+            <span class="select">
+                <{if $smarty.get.status=='1'}>等待付款
+                <{elseif $smarty.get.status=='2'}>等待发货
+                <{elseif $smarty.get.status=='3'}>已经发货
+                <{elseif $smarty.get.status=='4'}>已经完成
+                <{elseif $smarty.get.status=='5'}>等待退货
+                <{elseif $smarty.get.status=='6'}>退货完成
+                <{elseif $smarty.get.status=='0'}>已经取消
+                <{else}>全部订单<{/if}>
+                <em></em>
+            </span>
+            <div style="display:none;" class="i-select">
+                <ul>
+                    <li key="" class="sub-line"><a href="main.php?m=product&s=admin_buyorder">全部订单</a></li>
+                    <li key="1"><a href="main.php?m=product&s=admin_buyorder&status=1">等待付款</a></li>
+                    <li key="2"><a href="main.php?m=product&s=admin_buyorder&status=2">等待发货</a></li>
+                    <li key="3"><a href="main.php?m=product&s=admin_buyorder&status=3">已经发货</a></li>
+                    <li key="4"><a href="main.php?m=product&s=admin_buyorder&status=4">已经完成</a></li>
+                    <li key="0"><a href="main.php?m=product&s=admin_buyorder&status=0">已经取消</a></li>
+                </ul>
+            </div>
+        </section>
+	<section class="nav-e"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    </div>
+</header>
+<script>
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+		if($(obj).next().is(":visible")){
+			$(document).one('click',function(){
+				$(".select").next().slideUp("fast");
+			});
+		}});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().html(str+" <em class='up'></em>");
+		$(this).parent().parent().slideToggle();
+	});
+});
+</script>
+<link href="<{$config.weburl}>/templates/wap/css/buyorder.css" rel="stylesheet" type="text/css" />
+
+<section class="order">
+
+<{foreach item=buylist key=num from=$blist.list}>
+<div class="item">
+ 	<div class="top"><a href="shop.php?uid=<{$buylist.seller_id}>"><{$buylist.company}></a></div>	       
+    <a href="<{$config.weburl}>/main.php?m=product&s=admin_orderdetail&id=<{$buylist.order_id}>">
+    <{foreach item=plist from=$buylist.product}>
+        <dl class="clearfix">
+        <dt><img height="80" width="80" src="<{if !$plist.pic}>image/default/nopic.gif<{else}><{$plist.pic}><{/if}>"></dt>
+        <dd>
+            <p class="p-name"><{$plist.name}></p>
+            <p class="p-price"><strong><{$config.money}><{$plist.price}></strong> x <{$plist.num}></p>
+            <p class="p-detail">产品编号:<{$plist.code}></p>
+        </dd>
+        </dl>
+    <{/foreach}>
+    </a>
+ 	<div class="bottom">
+    	实付款:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$buylist.product_price+$buylist.logistics_price|number_format:2}></strong></span>
+        <span>
+        <{if $buylist.status==2}><{$buylist.statu_text}><{/if}>
+     	<{$buylist.next_action}>
+        <{if $buylist.status=='4'}>已经完成<{/if}>
+        </span>
+    </div>	   
+</div>
+<{foreachelse}>
+<div class="itemsNull">
+    <h3>没有搜索到相关宝贝</h3>
+</div>
+<{/foreach}>
+<{$blist.page}>
+</section>

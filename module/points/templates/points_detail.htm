@@ -1,0 +1,79 @@
+<{include file="points_header.htm"}>
+<div class="w clearfix">
+	<div class="left">
+    	<div class="m hot">
+        	<div class="mt">热销礼品</div>
+            <div class="mc clearfix">
+                <ul class="clearfix">
+                    <{foreach item=list key=key from=$re}>
+                    <li>
+                        <a href="<{$config.weburl}>/?m=points&s=detail&id=<{$list.id}>">
+                            <img src="<{$list.pic}>">
+                            <h3><{$list.name}></h3>
+                        </a>
+                    </li>
+                    <{/foreach}>
+                </ul>      
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="product_intro">
+            <div class="product_name">
+                <h1><{$de.name}></h1>
+            </div>
+            <ul class="product_info clearfix">
+                <li><div class="dt">编号:</div><{$de.sku}></li>
+                <li><div class="dt">兑换价:</div><span class="price"><{$de.points}></span></li>
+                <li><div class="dt">市场价:</div>￥<{$de.price}></li>
+                <li><div class="dt">库存:</div><{$de.stock}>件</li>
+                <li><div class="dt">已兑换:</div><{$de.sell_amount}>件</li>
+            </ul>
+			<a class="buy" href=""></a>
+            <div class="fenx">
+                <div class="bshare-custom">
+                	<a title="分享到QQ空间" class="bshare-qzone"></a>
+                    <a title="分享到新浪微博" class="bshare-sinaminiblog"></a>
+                    <a title="分享到微信" class="bshare-weixin" href="javascript:void(0);"></a>
+                    <a title="分享到人人网" class="bshare-renren"></a>
+                    <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+                    <a title="分享到网易微博" class="bshare-neteasemb"></a>
+                    <a title="分享到天涯" class="bshare-tianya" href="javascript:void(0);"></a>
+                    <a title="分享到豆瓣" class="bshare-douban" href="javascript:void(0);"></a>
+                    <a title="分享到飞信" class="bshare-feixin" href="javascript:void(0);"></a>
+                    <a title="分享到朋友网" class="bshare-qqxiaoyou" href="javascript:void(0);"></a>
+                    <a title="分享到开心网" class="bshare-kaixin001" href="javascript:void(0);"></a>
+                    <a title="分享到百度空间" class="bshare-baiduhi" href="javascript:void(0);"></a>
+               </div>
+               <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=1&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+            </div>
+            <div id="preview">
+                <div id="imgmove"><img src="<{$de.pic}>" title="<{$de.name}>"></div>
+            </div>
+    	</div>  
+        <div class="detail">
+        	<ul class="tit">
+            	<li>商品详情</li>
+            </ul>
+            <div class="con">
+			<{$de.content}>
+			</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.ui.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/dialog/dialog.js" id="dialog_js"></script>
+<script>
+$(".buy").live('click',function(){
+	var uname='<{$smarty.cookies.USER}>';
+	if(uname=='')
+	{
+		alert('<{$lang.no_logo}>');
+		window.location.href='<{$config.weburl}>/login.php?forward='+encodeURIComponent("index.php/?m=points&s=detail&id=<{$smarty.get.id}>");
+		return false;
+	}					
+	ajax_form("buy", '确认收货信息', '<{$config.weburl}>/index.php?m=points&s=order&id=<{$smarty.get.id}>',500);
+	return false;
+});
+</script>
+<{include file="points_footer.htm"}>

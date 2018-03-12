@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>首页内容配置</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>首页内容配置</h3>
+                <ul>
+                    <li <{if $smarty.get.operation==''}>class="current"<{/if}> ><a href="home_config.php"><span>首页产品</span></a></li>
+                    
+                    <li <{if $smarty.get.operation=='cat'}>class="current"<{/if}> ><a href="home_config.php?operation=cat"><span>首页分类</span></a></li>
+                  
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>  
+        <{if $smarty.get.operation=='cat'}>
+        <form name="form" id="form" method="post">
+        <table class="table home tl">
+        <tbody>
+            <tr class="header partition">
+                <th width="20"></th>
+                <th width="60">显示顺序</th>
+                <th class="al" width="200">分类名称</th>
+                <th width="120">显示名称</th>
+                <th width="120">颜色</th>
+                <th width="120">标签</th>
+                <th>子菜单</th>
+			</tr>
+            <{foreach item=list key=key name=name from=$de}>
+        	<{assign var=catid value=$list.catid}>
+            <tr>
+            	<td><input id="catid" <{if $index_catid.$catid.catid}>checked="checked"<{/if}> type="checkbox" name="index_catid[<{$list.catid}>]" value="<{$list.catid}>" /></td>
+            	<td><input type="text" name="displayorder[<{$list.catid}>]" class="w50" value="<{if $index_catid.$catid.displayorder}><{$index_catid.$catid.displayorder}><{else}>255<{/if}>" /></td>
+                <td><{$smarty.foreach.name.iteration}>F&nbsp;&nbsp;&nbsp;<{$list.cat}></td>
+            	<td><input type="text" name="name[<{$list.catid}>]" placeholder="<{$list.cat}>" value="<{$index_catid.$catid.name}>" /></td>
+            	<td><input type="text" name="color[<{$list.catid}>]" placeholder="#0000000" value="<{$index_catid.$catid.color}>" /></td>
+            	<td><input type="text" name="temp[<{$list.catid}>]" value="<{$index_catid.$catid.temp}>" /></td>
+                <td>
+            	<{foreach item=slist from=$list.con}>
+                <label><input <{if @$slist.catid|in_array:$index_catid.$catid.tab}>checked="checked"<{/if}> type="checkbox" name="tab[<{$list.catid}>][]" value="<{$slist.catid}>" /><{$slist.cat}></label>
+                <{/foreach}>
+                </td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td colspan="2">
+                <input type="hidden" name="act" value="save" />
+                <input type="submit" value="提交" />
+            </td>
+        </tr>
+        </tfoot>
+        </table>
+        </form>    
+        <{else}>
+        <form name="form" id="form" method="post">
+        <table class="table2" width="100%">
+            <tr>
+                <td class="td">疯狂抢购</td>
+            </tr>
+            <tr>
+                <td <{if $reg_config.newpro_list|@count>7}>class="small"<{/if}>>
+                <{foreach item=list from=$reg_config.newpro_list}>
+                <li class="plist">
+                    <div class="p-img"><img src="<{$list.pic}>_<{if $reg_config.newpro_list|@count>7}>60X60<{else}>120X120<{/if}>.jpg"></div>
+                    <div class="p-name"><{$list.pname}></div>
+                    <div class="p-price"><strong><{$config.money}><{$list.price}></strong></div>
+                    <div class="handle"><a href="?key=newpro&id=<{$list.id}>">删除</a></div>
+                </li>
+                <{/foreach}>
+                <li class="plist add_pro<{if !$reg_config.newpro_list|@count}> no<{/if}> " key="newpro"><a href="#"></a></li>
+                </td>
+            </tr>
+            <tr>
+                <td class="td">热卖产品</td>
+            </tr>
+            <tr>
+                <td <{if $reg_config.hotpro_list|@count>7}>class="small"<{/if}>>
+                <{foreach item=list from=$reg_config.hotpro_list}>
+                <li class="plist<{if $reg_config.hotpro_list|@count>7}> small<{/if}>">
+                    <div class="p-img"><img src="<{$list.pic}>_<{if $reg_config.hotpro_list|@count>7}>60X60<{else}>120X120<{/if}>.jpg"></div>
+                    <div class="p-name"><{$list.pname}></div>
+                    <div class="p-price"><strong><{$config.money}><{$list.price}></strong></div>
+                    <div class="handle"><a href="?key=hotpro&id=<{$list.id}>">删除</a></div>
+                </li>
+                <{/foreach}>
+                <li class="plist add_pro<{if !$reg_config.hotpro_list|@count}> no<{/if}> " key="hotpro"><a href="#"></a></li>
+				</td>
+            </tr>
+          
+        </table>
+        </form>
+        <{/if}>
+    </div>
+<script>
+$(".home").find("input[id='catid']").each(function(i){
+	var obj=$(this).parent().parent();										   
+	if($(this).attr('checked')==true)
+	{
+		obj.find('input').attr('disabled','');
+	}
+	else
+	{
+		obj.find('input').attr('disabled','disabled');
+	}
+	$(this).attr('disabled','');
+})
+$("#catid").live('click',function(){
+	var obj=$(this).parent().parent();	
+	if($(this).attr('checked')==true)
+	{
+		obj.find('input').attr('disabled','');
+	}
+	else
+	{
+		obj.find('input').attr('disabled','disabled');
+	}
+	$(this).attr('disabled','');
+});
+$(".add_pro").live('click',function(){
+	var key = $(this).attr('key');
+	window.parent.iframe_form("list", "选择产品", '<{$config.weburl}>/admin/module.php?m=product&s=product_list.php&key='+key,790,600);
+	return false;
+});
+$('.plist').hover(function(){					 
+	$(this).addClass("hover");
+},function(){
+	$(this).removeClass("hover");	
+});
+</script>    
+</body>
+</html>
